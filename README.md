@@ -6,54 +6,61 @@ DevFest Dhow is an intelligent, thematic Progressive Web App designed to be an i
 
 ## 🌊 About the Journey
 
-Set sail on your DevFest adventure! Our ocean-themed PWA transforms your conference experience with:
+This ocean-themed PWA is designed to transform your conference experience with maritime terminology:
 
-- 🧭 **Navigators** - That's you! Our valued conference attendees
-- ⛵ **Voyages** - Different conference tracks to explore  
-- 🏝️ **Islands** - Individual sessions and talks to discover
-- 🎯 **The Helm** - Your personalized dashboard command center
+- 🧭 **Navigators** - Conference attendees
+- ⛵ **Voyages** - Conference tracks  
+- 🏝️ **Islands** - Individual sessions and talks
+- 🎯 **The Helm** - Dashboard and control center
 
-## 🎯 Key Features
+## 🎯 Current Implementation
 
-- 📱 **Progressive Web App** - Works seamlessly across all devices
-- 🗺️ **Smart Navigation** - Find your way through sessions and venues
-- 📅 **Personal Schedule** - Build your custom conference itinerary
-- 🔔 **Smart Notifications** - Never miss important sessions or updates
-- 🌐 **Offline Support** - Access your schedule even without internet
-- 🎨 **Ocean Theme** - Immersive maritime experience throughout
+This is a foundational Angular application with:
+
+- 📱 **Angular 20.2.1** - Latest Angular framework with standalone components
+- 🔄 **Server-Side Rendering** - Full SSR with prerendering support
+- ⚡ **Client Hydration** - Enhanced performance with event replay
+- 🎯 **Modern Architecture** - Standalone components, functional configuration
+- 🌊 **Ocean-Ready Structure** - Foundation for maritime-themed development
 
 ## ⚓ Getting Started
 
-### 🚀 Setting Sail (Development Server)
+### 🚀 Development Commands
 
-To launch your development voyage, run:
+Launch your development voyage:
 
 ```bash
+npm start
+# or
 ng serve
 ```
 
-Navigate to `http://localhost:4200/` in your browser. The app will automatically reload when you modify source files - just like the tide! 🌊
+Navigate to `http://localhost:4200/` in your browser. The app will automatically reload when you modify source files.
 
-### 🏗️ Building New Islands (Code Scaffolding)
+Build the project for production:
 
-Create new components for your maritime journey:
+```bash
+npm run build
+```
+
+Serve the SSR build:
+
+```bash
+npm run serve:ssr:devfest-dhow
+```
+
+Watch mode for continuous building:
+
+```bash
+npm run watch
+```
+
+### 🏗️ Creating Components
+
+Generate new components using Angular CLI:
 
 ```bash
 ng generate component component-name
-```
-
-Explore all available blueprints:
-
-```bash
-ng generate --help
-```
-
-### 🔨 Preparing for Launch (Building)
-
-Build the project for deployment:
-
-```bash
-ng build
 ```
 
 Your compiled treasure will be stored in the `dist/` directory, optimized for smooth sailing in production waters! 
@@ -78,10 +85,27 @@ Note: Choose an e2e testing framework that suits your navigation needs.
 
 ## 🗺️ Technical Stack
 
-Built with modern web technologies for the best DevFest experience:
-- **Angular** - Powerful framework for smooth sailing
-- **PWA** - Progressive Web App capabilities for offline adventures
-- **Responsive Design** - Perfect experience on any device
+Built with cutting-edge web technologies:
+
+### Core Framework
+- **Angular 20.2.1** - Latest Angular with standalone components
+- **TypeScript 5.9.2** - Type-safe development
+- **RxJS 7.8** - Reactive programming
+
+### Server-Side Rendering
+- **Angular SSR** - Server-side rendering with prerendering
+- **Express.js 4.18.2** - Node.js server framework
+- **Client Hydration** - Enhanced performance with event replay
+
+### Development & Testing  
+- **Angular CLI 20.2.0** - Development tooling
+- **Karma + Jasmine** - Unit testing framework
+- **TypeScript Build System** - Modern build pipeline
+
+### Architecture Features
+- **Standalone Components** - Modern Angular component architecture
+- **Functional Configuration** - Latest Angular configuration patterns
+- **Zone.js with Event Coalescing** - Optimized change detection
 
 ## 🌊 DevFest Pwani 2025
 
