@@ -30,104 +30,6 @@ body {
   overflow-x: hidden;
 }
 
-// Layout utilities
-.max-w-7xl {
-  max-width: 80rem;
-}
-
-.mx-auto {
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.px-4 {
-  padding-left: 1rem;
-  padding-right: 1rem;
-}
-
-.px-2 {
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
-}
-
-.py-2 {
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-}
-
-.p-2 {
-  padding: 0.5rem;
-}
-
-.pt-2 {
-  padding-top: 0.5rem;
-}
-
-.pb-3 {
-  padding-bottom: 0.75rem;
-}
-
-.mt-4 {
-  margin-top: 1rem;
-}
-
-.h-16 {
-  height: 4rem;
-}
-
-.h-6 {
-  height: 1.5rem;
-}
-
-.h-10 {
-  height: 2.5rem;
-}
-
-.w-6 {
-  width: 1.5rem;
-}
-
-.w-auto {
-  width: auto;
-}
-
-.w-full {
-  width: 100%;
-}
-
-// Flexbox utilities
-.flex {
-  display: flex;
-}
-
-.items-center {
-  align-items: center;
-}
-
-.justify-between {
-  justify-content: space-between;
-}
-
-.justify-center {
-  justify-content: center;
-}
-
-.inline-flex {
-  display: inline-flex;
-}
-
-.space-x-3 > * + * {
-  margin-left: 0.75rem;
-}
-
-.space-x-8 > * + * {
-  margin-left: 2rem;
-}
-
-.space-y-1 > * + * {
-  margin-top: 0.25rem;
-}
-
 // Transition utilities
 .transition-colors {
   transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
@@ -187,6 +89,8 @@ body {
   transition-duration: 200ms;
   border: none;
   cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
 
   &:hover {
     background-color: #7b1fa2;
@@ -195,6 +99,136 @@ body {
   &:focus {
     outline: 2px solid $purple-700;
     outline-offset: 2px;
+  }
+}
+
+// Additional utility classes for the app
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+
+  @media (min-width: 768px) {
+    padding: 0 2rem;
+  }
+}
+
+.section-padding {
+  padding: 3rem 0;
+
+  @media (min-width: 768px) {
+    padding: 4rem 0;
+  }
+
+  @media (min-width: 1024px) {
+    padding: 5rem 0;
+  }
+}
+
+// Ocean-themed card styling
+.ocean-card {
+  background: linear-gradient(135deg, rgba(21, 101, 192, 0.05), rgba(0, 172, 193, 0.05));
+  border: 1px solid rgba(21, 101, 192, 0.1);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(21, 101, 192, 0.15);
+    border-color: rgba(21, 101, 192, 0.2);
+  }
+}
+
+// Gradient text for ocean theme
+.ocean-gradient-text {
+  background: linear-gradient(135deg, $ocean-blue, $wave-teal);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 700;
+}
+
+// Button variants
+.btn-secondary {
+  background-color: transparent;
+  color: $ocean-blue;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border: 2px solid $ocean-blue;
+  border-radius: 0.375rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+
+  &:hover {
+    background-color: $ocean-blue;
+    color: $white;
+    transform: translateY(-1px);
+  }
+}
+
+.btn-ocean {
+  background: linear-gradient(135deg, $ocean-blue, $wave-teal);
+  color: $white;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(21, 101, 192, 0.3);
+  }
+}
+
+// Navigation specific styles
+.nav-brand {
+  display: flex;
+  align-items: center;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: $ocean-blue;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+// Responsive utilities
+.hidden-mobile {
+  @media (max-width: 767px) {
+    display: none !important;
+  }
+}
+
+.hidden-desktop {
+  @media (min-width: 768px) {
+    display: none !important;
+  }
+}
+
+.show-mobile {
+  display: block;
+
+  @media (min-width: 768px) {
+    display: none !important;
+  }
+}
+
+.show-desktop {
+  display: none;
+
+  @media (min-width: 768px) {
+    display: block !important;
   }
 }
 
