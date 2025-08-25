@@ -243,40 +243,74 @@ npm test -- --code-coverage # With coverage
 
 ## 🎨 Styling Guidelines
 
-### Primary: Tailwind CSS
-- Use Tailwind CSS utility classes as the primary styling approach
-- Only write custom CSS when Tailwind utilities are insufficient
-- Leverage Tailwind's responsive design utilities
-- Create global styles for common styles used across the application
+### Primary: Custom CSS/SCSS
+- Use custom CSS/SCSS as the primary styling approach for maximum control and consistency
+- Leverage SCSS variables and mixins for maintainable styles
+- Create reusable component styles with ocean-themed naming conventions
+- All globally used styles should be added to `src/styles.scss` file
 
 ```html
-<!-- Example: Using Tailwind classes -->
-<div class="bg-ocean-blue text-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-  <h2 class="text-xl font-bold mb-2">Voyage Details</h2>
-  <p class="text-sm opacity-90">Navigate your conference journey</p>
+<!-- Example: Using custom CSS classes -->
+<div class="voyage-card">
+  <h2 class="voyage-title">Voyage Details</h2>
+  <p class="voyage-description">Navigate your conference journey</p>
 </div>
 ```
 
-### Secondary: SCSS for Complex Styles
-- Use SCSS only for complex styles that can't be achieved with Tailwind
-- Component styles: Use `:host` for component root styling
-- Global styles: Add to `src/styles.scss`
-- Always reuse styles from global styles file
-- If needed styles aren't available, add them to global styles file first
-
 ```scss
-// Component-specific complex styles
-:host {
-  display: block;
-  @apply bg-gradient-to-br from-ocean-blue to-deep-sea;
+// Custom styles in component or global styles
+.voyage-card {
+  background-color: $ocean-blue;
+  color: $white;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  }
 }
 
-.complex-animation {
-  @keyframes wave-motion {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-  }
-  animation: wave-motion 2s ease-in-out infinite;
+.voyage-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.voyage-description {
+  font-size: 0.875rem;
+  opacity: 0.9;
+}
+```
+
+### Global Styles Management
+- Add all reusable styles to `src/styles.scss` file
+- Use ocean-themed SCSS variables for consistent color palette
+- Create utility classes for common patterns (transitions, containers, etc.)
+- Component styles: Use `:host` for component root styling
+- Always check if needed styles already exist in global styles before creating new ones
+
+```scss
+// Example global styles structure in styles.scss
+// Ocean-themed color palette
+$ocean-blue: #1565C0;
+$wave-teal: #00ACC1;
+$sand-beige: #D7CCC8;
+$coral-orange: #FF7043;
+$deep-sea: #0D47A1;
+$magenta-violet: #9c27b0;
+
+// Utility classes
+.btn-primary {
+  background-color: $magenta-violet;
+  color: $white;
+  // ... other styles
+}
+
+.nav-link {
+  color: $gray-700;
+  // ... other styles
 }
 ```
 
@@ -311,7 +345,7 @@ $magenta-violet: #9c27b0;
 - Always test SCSS files don't exceed maximum budgets (4kB warning, 8kB error)
 - Monitor component style sizes during development
 - Use `ng build --stats-json` to analyze bundle composition
-- Prefer Tailwind utilities over custom CSS to reduce bundle size
+- Prefer global styles and variables from styles.scss to reduce bundle size
 
 ### Component Styling Best Practices
 - Use BEM methodology when custom CSS is required
