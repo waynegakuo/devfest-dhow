@@ -5,81 +5,58 @@
   background: linear-gradient(135deg, rgba($ocean-blue, 0.03), rgba($wave-teal, 0.03));
   padding: 2rem 0;
 
-  .dashboard-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 2rem;
-    flex-wrap: wrap;
+  // Using global .dashboard-header class - specific component styling added below
 
-    @media (max-width: 768px) {
-      flex-direction: column;
-      gap: 1.5rem;
-    }
+  .welcome-section {
+    flex: 1;
 
-    .welcome-section {
-      flex: 1;
-
-      .dashboard-title {
-        font-size: 2.5rem;
-        font-weight: bold;
-        margin: 0 0 0.5rem 0;
-
-        @media (max-width: 768px) {
-          font-size: 2rem;
-        }
-      }
-
-      .dashboard-subtitle {
-        font-size: 1.125rem;
-        color: $gray-700;
-        margin: 0;
-      }
-    }
-
-    .navigator-info {
-      min-width: 300px;
+    .dashboard-title {
+      font-size: 2.5rem;
+      font-weight: bold;
+      margin: 0 0 0.5rem 0;
 
       @media (max-width: 768px) {
-        width: 100%;
-        min-width: unset;
+        font-size: 2rem;
       }
+    }
 
-      .navigator-details {
+    .dashboard-subtitle {
+      font-size: 1.125rem;
+      color: $gray-700;
+      margin: 0;
+    }
+  }
 
-        .navigator-avatar {
-          width: 3rem;
-          height: 3rem;
-          border-radius: 50%;
-          background: linear-gradient(135deg, $ocean-blue, $wave-teal);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: $white;
-          font-weight: bold;
-          font-size: 1.25rem;
+  .navigator-info {
+    min-width: 300px;
+
+    @media (max-width: 768px) {
+      width: 100%;
+      min-width: unset;
+    }
+
+    .navigator-details {
+      // Using global .navigator-avatar class
+
+      .navigator-data {
+        flex: 1;
+
+        h3 {
+          margin: 0 0 0.25rem 0;
+          color: $gray-700;
+          font-size: 1.125rem;
         }
 
-        .navigator-data {
-          flex: 1;
+        p {
+          margin: 0 0 0.5rem 0;
+          color: $gray-400;
+          font-size: 0.875rem;
+        }
 
-          h3 {
-            margin: 0 0 0.25rem 0;
-            color: $gray-700;
-            font-size: 1.125rem;
-          }
-
-          p {
-            margin: 0 0 0.5rem 0;
-            color: $gray-400;
-            font-size: 0.875rem;
-          }
-
-          .navigator-meta {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-          }
+        .navigator-meta {
+          display: flex;
+          gap: 0.5rem;
+          flex-wrap: wrap;
         }
       }
     }
