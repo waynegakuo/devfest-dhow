@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, HostListener, ElementRef } from '@angular/core';
 import {CommonModule, NgOptimizedImage} from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth/auth.service';
@@ -13,13 +13,13 @@ import { AuthService } from '../../../services/auth/auth.service';
 export class NavbarComponent {
   private authService = inject(AuthService);
   private router = inject(Router);
+  private elementRef = inject(ElementRef);
 
   isMobileMenuOpen = false;
+  isUserDropdownOpen = false;
 
-  // Expose auth service signals to template
-  get isAuthenticated() {
-    return this.authService.isAuthenticated;
-  }
+  // Expose auth service signals to the template
+  isAuthenticated = this.authService.isAuthenticated;
 
   get currentUser() {
     return this.authService.currentUser;
@@ -39,6 +39,30 @@ export class NavbarComponent {
 
   closeMobileMenu(): void {
     this.isMobileMenuOpen = false;
+  }
+
+  /**
+   * Toggle user dropdown menu
+   */
+  toggleUserDropdown(): void {
+    this.isUserDropdownOpen = !this.isUserDropdownOpen;
+  }
+
+  /**
+   * Close user dropdown menu
+   */
+  closeUserDropdown(): void {
+    this.isUserDropdownOpen = false;
+  }
+
+  /**
+   * Close dropdown when clicking outside
+   */
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: Event): void {
+    if (this.isUserDropdownOpen && !this.elementRef.nativeElement.contains(event.target)) {
+      this.closeUserDropdown();
+    }
   }
 
   /**

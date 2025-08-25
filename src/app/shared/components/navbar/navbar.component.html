@@ -20,15 +20,30 @@
     <!-- CTA Button / User Profile -->
     <div class="navbar-cta desktop-nav">
       @if (isAuthenticated()) {
-        <div class="user-profile" (click)="signOut()">
-          @if (userPhotoUrl) {
-            <img [src]="userPhotoUrl" [alt]="userDisplayName || 'Navigator'" class="user-avatar">
-          } @else {
-            <div class="user-avatar-placeholder">
-              {{ (userDisplayName || 'Navigator')[0] }}
+        <div class="user-profile-container">
+          <div class="user-profile" (click)="toggleUserDropdown()">
+            @if (userPhotoUrl) {
+              <img [src]="userPhotoUrl" [alt]="userDisplayName || 'Navigator'" class="user-avatar">
+            } @else {
+              <div class="user-avatar-placeholder">
+                {{ (userDisplayName || 'Navigator')[0] }}
+              </div>
+            }
+            <span class="user-name">{{ userDisplayName || 'Navigator' }}</span>
+            <svg class="dropdown-icon" [class.rotated]="isUserDropdownOpen" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M7 10l5 5 5-5z"/>
+            </svg>
+          </div>
+          @if (isUserDropdownOpen) {
+            <div class="user-dropdown">
+              <button class="dropdown-item" (click)="signOut(); closeUserDropdown()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.59L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/>
+                </svg>
+                Sign Out
+              </button>
             </div>
           }
-          <span class="user-name">{{ userDisplayName || 'Navigator' }}</span>
         </div>
       } @else {
         <button class="btn-primary" (click)="boardTheShip()">Board the Ship</button>
@@ -54,15 +69,30 @@
       <a href="/compass" class="mobile-nav-link" (click)="closeMobileMenu()">Compass</a>
       <div class="mobile-nav-cta">
         @if (isAuthenticated()) {
-          <div class="user-profile mobile-user-profile" (click)="signOut(); closeMobileMenu()">
-            @if (userPhotoUrl) {
-              <img [src]="userPhotoUrl" [alt]="userDisplayName || 'Navigator'" class="user-avatar">
-            } @else {
-              <div class="user-avatar-placeholder">
-                {{ (userDisplayName || 'Navigator')[0] }}
+          <div class="user-profile-container mobile-user-container">
+            <div class="user-profile mobile-user-profile" (click)="toggleUserDropdown()">
+              @if (userPhotoUrl) {
+                <img [src]="userPhotoUrl" [alt]="userDisplayName || 'Navigator'" class="user-avatar">
+              } @else {
+                <div class="user-avatar-placeholder">
+                  {{ (userDisplayName || 'Navigator')[0] }}
+                </div>
+              }
+              <span class="user-name">{{ userDisplayName || 'Navigator' }}</span>
+              <svg class="dropdown-icon" [class.rotated]="isUserDropdownOpen" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M7 10l5 5 5-5z"/>
+              </svg>
+            </div>
+            @if (isUserDropdownOpen) {
+              <div class="user-dropdown mobile-dropdown">
+                <button class="dropdown-item" (click)="signOut(); closeUserDropdown(); closeMobileMenu()">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.59L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/>
+                  </svg>
+                  Sign Out
+                </button>
               </div>
             }
-            <span class="user-name">{{ userDisplayName || 'Navigator' }}</span>
           </div>
         } @else {
           <button class="btn-primary" (click)="boardTheShip(); closeMobileMenu()">Board the Ship</button>
