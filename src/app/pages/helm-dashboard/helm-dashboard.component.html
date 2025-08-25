@@ -1,0 +1,182 @@
+<div class="helm-dashboard" [class.sidebar-open]="sidebarOpen()">
+  <!-- Navigator Tools Sidebar -->
+  <app-navigator-sidebar
+    [isOpen]="sidebarOpen()"
+    [voyages]="voyages()"
+    [progress]="progress()"
+    (sidebarClose)="closeSidebar()"
+    (toolChange)="setActiveTool($event)">
+  </app-navigator-sidebar>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Floating Navigator Tools Button -->
+    <button class="floating-action-btn" (click)="toggleSidebar()" [class.active]="sidebarOpen()">
+      <span class="toggle-icon">🧭</span>
+      <span class="btn-text">Navigator Tools</span>
+    </button>
+
+    <div class="container">
+    <!-- Dashboard Header -->
+    <div class="dashboard-header">
+      <div class="welcome-section">
+        <h1 class="dashboard-title ocean-gradient-text">⚓ The Helm Dashboard</h1>
+        <p class="dashboard-subtitle">Chart your course through DevFest Dhow 2025</p>
+      </div>
+
+      <!-- Navigator Info Card -->
+      <div class="navigator-info ocean-card">
+        <div class="navigator-details">
+          <div class="navigator-avatar">
+            <span>{{ navigator.name[0] }}</span>
+          </div>
+          <div class="navigator-data">
+            <h3>{{ navigator.name }}</h3>
+            <p>{{ navigator.email }}</p>
+            <div class="navigator-meta">
+              <span class="registration-badge">{{ navigator.registrationNumber }}</span>
+              <span class="level-badge">{{ navigator.voyageLevel }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Progress Overview -->
+    <div class="progress-section">
+      <div class="progress-cards">
+        <div class="progress-card ocean-card">
+          <div class="progress-icon">🏝️</div>
+          <div class="progress-info">
+            <h4>Islands Discovered</h4>
+            <span class="progress-number">{{ progress().attendedIslands }}/{{ progress().totalIslands }}</span>
+          </div>
+        </div>
+
+        <div class="progress-card ocean-card">
+          <div class="progress-icon">🧭</div>
+          <div class="progress-info">
+            <h4>Voyage Progress</h4>
+            <span class="progress-number">{{ progress().completionRate }}%</span>
+          </div>
+        </div>
+
+        <div class="progress-card ocean-card">
+          <div class="progress-icon">⛵</div>
+          <div class="progress-info">
+            <h4>Active Voyages</h4>
+            <span class="progress-number">{{ voyages().length }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Progress Bar -->
+      <div class="progress-bar-container ocean-card">
+        <div class="progress-bar-header">
+          <h4>Voyage Completion</h4>
+          <span>{{ progress().completionRate }}% Complete</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" [style.width.%]="progress().completionRate"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Schedule Overview -->
+    <div class="schedule-section">
+      <h2 class="section-title">Today's Journey</h2>
+      <div class="schedule-timeline">
+        @for (island of getAllIslandsByTime(); track island.id) {
+          <div class="timeline-item" [class.attended]="island.attended" [class.upcoming]="isIslandUpcoming(island)">
+            <div class="timeline-time">
+              <span class="time">{{ island.time }}</span>
+              <span class="duration">{{ island.duration }}</span>
+            </div>
+
+            <div class="timeline-content ocean-card">
+              <div class="island-header">
+                <h3 class="island-title">{{ island.title }}</h3>
+                <div class="island-actions">
+                  <button
+                    class="attendance-btn"
+                    [class.attended]="island.attended"
+                    (click)="toggleAttendance(getVoyageForIsland(island.id), island.id)"
+                  >
+                    @if (island.attended) {
+                      ✅ Attended
+                    } @else {
+                      ⭕ Mark as Attended
+                    }
+                  </button>
+                </div>
+              </div>
+
+              <div class="island-details">
+                <div class="speaker-info">
+                  <strong>{{ island.speaker }}</strong>
+                  <span class="speaker-role">{{ island.speakerRole }} at {{ island.speakerCompany }}</span>
+                </div>
+                <div class="venue-info">
+                  📍 {{ island.venue }}
+                </div>
+                <p class="island-description">{{ island.description }}</p>
+
+                <div class="island-tags">
+                  @for (tag of island.tags; track tag) {
+                    <span class="tag">{{ tag }}</span>
+                  }
+                </div>
+              </div>
+
+              @if (isIslandUpcoming(island)) {
+                <div class="upcoming-indicator">
+                  🔔 Starting Soon
+                </div>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Voyages Overview -->
+    <div class="voyages-section">
+      <h2 class="section-title">Your Voyages</h2>
+      <div class="voyages-grid">
+        @for (voyage of voyages(); track voyage.id) {
+          <div class="voyage-card ocean-card">
+            <div class="voyage-header">
+              <h3>{{ voyage.name }}</h3>
+              <span class="voyage-date">{{ voyage.date }}</span>
+            </div>
+
+            <div class="voyage-stats">
+              <div class="stat">
+                <span class="stat-number">{{ voyage.islands.length }}</span>
+                <span class="stat-label">Islands</span>
+              </div>
+              <div class="stat">
+                <span class="stat-number">{{ getAttendedCount(voyage) }}</span>
+                <span class="stat-label">Attended</span>
+              </div>
+            </div>
+
+            <div class="voyage-islands">
+              @for (island of voyage.islands; track island.id) {
+                <div class="island-mini" [class.attended]="island.attended">
+                  <span class="island-time">{{ island.time }}</span>
+                  <span class="island-name">{{ island.title }}</span>
+                  @if (island.attended) {
+                    <span class="attended-check">✅</span>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+
+    </div>
+  </div>
+</div>

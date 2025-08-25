@@ -1,0 +1,333 @@
+// Import design system variables
+@use '../../../../styles/variables' as *;
+
+// Navigator Tools Sidebar Styles
+.navigator-sidebar {
+  position: fixed;
+  top: 0;
+  right: -350px;
+  width: 350px;
+  height: 100vh;
+  background: linear-gradient(135deg, rgba(21, 101, 192, 0.05), rgba(0, 172, 193, 0.05));
+  backdrop-filter: blur(10px);
+  border-left: 1px solid rgba(21, 101, 192, 0.1);
+  z-index: 1000;
+  transition: right 0.3s ease;
+  overflow-y: auto;
+
+  &.open {
+    right: 0;
+  }
+
+  @media (max-width: 768px) {
+    width: 100vw;
+    right: -100vw;
+  }
+
+  .sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    border-bottom: 1px solid rgba(21, 101, 192, 0.1);
+    background: rgba(255, 255, 255, 0.8);
+
+    h3 {
+      margin: 0;
+      color: $gray-700;
+      font-size: 1.25rem;
+      font-weight: bold;
+    }
+
+    .sidebar-close-btn {
+      background: transparent;
+      border: none;
+      color: $gray-400;
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 0.375rem;
+      transition: all 0.2s ease;
+
+      &:hover {
+        color: $gray-700;
+        background-color: rgba(21, 101, 192, 0.1);
+      }
+    }
+  }
+
+  .sidebar-nav {
+    padding: 1rem;
+    border-bottom: 1px solid rgba(21, 101, 192, 0.1);
+
+    .nav-tool-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      width: 100%;
+      padding: 0.75rem 1rem;
+      margin-bottom: 0.5rem;
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: left;
+      font-family: inherit;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      .tool-icon {
+        font-size: 1.25rem;
+        line-height: 1;
+      }
+
+      .tool-name {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: $gray-700;
+      }
+
+      &:hover {
+        background-color: rgba(21, 101, 192, 0.1);
+        border-color: rgba(21, 101, 192, 0.2);
+      }
+
+      &.active {
+        background-color: rgba(21, 101, 192, 0.15);
+        border-color: $ocean-blue;
+
+        .tool-name {
+          color: $ocean-blue;
+          font-weight: 600;
+        }
+      }
+    }
+  }
+
+  .sidebar-content {
+    padding: 1.5rem;
+    height: calc(100vh - 200px);
+    overflow-y: auto;
+
+    .tool-view {
+      h4 {
+        margin: 0 0 0.75rem 0;
+        color: $gray-700;
+        font-size: 1.125rem;
+        font-weight: 600;
+      }
+
+      p {
+        color: $gray-400;
+        line-height: 1.5;
+        margin-bottom: 1.5rem;
+        font-weight: 500;
+      }
+
+      .btn-full-width {
+        width: 100%;
+        margin-top: 1.5rem;
+      }
+
+      // Schedule view specific styles
+      .schedule-summary {
+        margin-bottom: 1.5rem;
+
+        .schedule-day {
+          background-color: rgba(21, 101, 192, 0.05);
+          padding: 1rem;
+          border-radius: 0.5rem;
+          border-left: 3px solid $ocean-blue;
+
+          strong {
+            display: block;
+            color: $ocean-blue;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+          }
+
+          ul {
+            margin: 0;
+            padding-left: 1.25rem;
+
+            li {
+              color: $gray-700;
+              font-size: 0.875rem;
+              margin-bottom: 0.25rem;
+            }
+          }
+        }
+      }
+
+      // Agenda view specific styles
+      .agenda-options {
+        margin-bottom: 1.5rem;
+
+        .agenda-format,
+        .agenda-content {
+          margin-bottom: 1rem;
+
+          label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            font-size: 0.875rem;
+            color: $gray-700;
+
+            input[type="radio"],
+            input[type="checkbox"] {
+              accent-color: $ocean-blue;
+            }
+          }
+        }
+      }
+
+      // Reminders view specific styles
+      .reminder-settings {
+        margin-bottom: 1.5rem;
+
+        .reminder-timing {
+          margin-bottom: 1rem;
+
+          label {
+            display: block;
+            color: $gray-700;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+          }
+
+          select {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid $gray-200;
+            border-radius: 0.375rem;
+            font-family: inherit;
+            color: $gray-700;
+
+            &:focus {
+              outline: 2px solid $ocean-blue;
+              outline-offset: 2px;
+              border-color: $ocean-blue;
+            }
+          }
+        }
+
+        .upcoming-reminders {
+          strong {
+            display: block;
+            color: $gray-700;
+            margin-bottom: 0.75rem;
+            font-size: 0.875rem;
+          }
+
+          .reminder-session {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background-color: rgba(21, 101, 192, 0.05);
+            border-radius: 0.375rem;
+            margin-bottom: 0.5rem;
+
+            .session-time {
+              font-size: 0.75rem;
+              font-weight: 600;
+              color: $ocean-blue;
+              min-width: 50px;
+            }
+
+            .session-title {
+              flex: 1;
+              font-size: 0.9rem;
+              color: $gray-700;
+              font-weight: 500;
+            }
+
+            .reminder-toggle {
+              width: 24px;
+              height: 24px;
+              border-radius: 50%;
+              border: 1px solid $gray-400;
+              background: transparent;
+              cursor: pointer;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              font-size: 0.75rem;
+              transition: all 0.2s ease;
+
+              &:hover {
+                border-color: $ocean-blue;
+              }
+
+              &.active {
+                background-color: $ocean-blue;
+                border-color: $ocean-blue;
+                color: white;
+              }
+            }
+          }
+        }
+      }
+
+      // Connect view specific styles
+      .connect-options {
+        margin-bottom: 1.5rem;
+
+        .connect-feature {
+          display: flex;
+          align-items: flex-start;
+          gap: 1rem;
+          padding: 1rem;
+          background-color: rgba(21, 101, 192, 0.05);
+          border-radius: 0.5rem;
+          margin-bottom: 0.75rem;
+
+          .feature-icon {
+            font-size: 1.5rem;
+            line-height: 1;
+          }
+
+          .feature-info {
+            flex: 1;
+
+            strong {
+              display: block;
+              color: $gray-700;
+              font-size: 0.875rem;
+              margin-bottom: 0.25rem;
+            }
+
+            p {
+              color: $gray-400;
+              font-size: 0.75rem;
+              line-height: 1.4;
+              margin: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.sidebar-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  animation: fadeIn 0.3s ease;
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+}

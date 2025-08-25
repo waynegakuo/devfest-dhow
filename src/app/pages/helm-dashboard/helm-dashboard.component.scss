@@ -1,0 +1,399 @@
+@use '../../../styles/variables' as *;
+
+.helm-dashboard {
+  min-height: 100vh;
+  background: linear-gradient(135deg, rgba($ocean-blue, 0.03), rgba($wave-teal, 0.03));
+  padding: 2rem 0;
+
+  .dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 2rem;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .welcome-section {
+      flex: 1;
+
+      .dashboard-title {
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin: 0 0 0.5rem 0;
+
+        @media (max-width: 768px) {
+          font-size: 2rem;
+        }
+      }
+
+      .dashboard-subtitle {
+        font-size: 1.125rem;
+        color: $gray-700;
+        margin: 0;
+      }
+    }
+
+    .navigator-info {
+      min-width: 300px;
+
+      @media (max-width: 768px) {
+        width: 100%;
+        min-width: unset;
+      }
+
+      .navigator-details {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+
+        .navigator-avatar {
+          width: 3rem;
+          height: 3rem;
+          border-radius: 50%;
+          background: linear-gradient(135deg, $ocean-blue, $wave-teal);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: $white;
+          font-weight: bold;
+          font-size: 1.25rem;
+        }
+
+        .navigator-data {
+          flex: 1;
+
+          h3 {
+            margin: 0 0 0.25rem 0;
+            color: $gray-700;
+            font-size: 1.125rem;
+          }
+
+          p {
+            margin: 0 0 0.5rem 0;
+            color: $gray-400;
+            font-size: 0.875rem;
+          }
+
+          .navigator-meta {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+
+          }
+        }
+      }
+    }
+  }
+
+  .progress-section {
+    margin-bottom: 3rem;
+
+    .progress-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+
+      .progress-card {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1.5rem;
+
+        .progress-icon {
+          font-size: 2rem;
+          line-height: 1;
+        }
+
+        .progress-info {
+          flex: 1;
+
+          h4 {
+            margin: 0 0 0.25rem 0;
+            font-size: 0.875rem;
+            color: $gray-700;
+            font-weight: 500;
+          }
+
+          .progress-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: $ocean-blue;
+          }
+        }
+      }
+    }
+
+    .progress-bar-container {
+      .progress-bar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+
+        h4 {
+          margin: 0;
+          color: $gray-700;
+          font-size: 1rem;
+        }
+
+        span { color: $gray-400; font-size: 0.875rem; }
+      }
+
+    }
+  }
+
+  .schedule-section, .voyages-section, .quick-actions { margin-bottom: 3rem; }
+
+  .schedule-timeline {
+    .timeline-item {
+      display: flex;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+      align-items: flex-start;
+
+      @media (max-width: 768px) {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      &.attended {
+        .timeline-content {
+          opacity: 0.8;
+          border-left: 4px solid $success-green;
+        }
+      }
+
+      &.upcoming {
+        .timeline-content {
+          border-left: 4px solid $coral-orange;
+          background: linear-gradient(135deg, rgba($coral-orange, 0.05), rgba($coral-orange, 0.02));
+        }
+      }
+
+      .timeline-time {
+        min-width: 100px;
+        text-align: right;
+        padding-top: 0.5rem;
+
+        @media (max-width: 768px) {
+          text-align: left;
+          min-width: unset;
+        }
+
+        .time {
+          display: block;
+          font-weight: bold;
+          color: $ocean-blue;
+          font-size: 1.125rem;
+        }
+
+        .duration {
+          display: block;
+          color: $gray-400;
+          font-size: 0.875rem;
+        }
+      }
+
+      .timeline-content {
+        flex: 1;
+        position: relative;
+
+        .island-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          gap: 1rem;
+          margin-bottom: 1rem;
+
+          @media (max-width: 768px) {
+            flex-direction: column;
+            gap: 0.5rem;
+          }
+
+          .island-title {
+            margin: 0;
+            font-size: 1.125rem;
+            color: $gray-700;
+            flex: 1;
+          }
+
+          .island-actions {
+            .attendance-btn {
+              background-color: transparent;
+              border: 2px solid $gray-200;
+              color: $gray-400;
+              padding: 0.5rem 1rem;
+              border-radius: 0.375rem;
+              cursor: pointer;
+              transition: all 0.2s ease;
+              font-size: 0.875rem;
+              font-weight: 500;
+
+              &:hover {
+                border-color: $ocean-blue;
+                color: $ocean-blue;
+              }
+
+              &.attended {
+                border-color: $success-green;
+                color: $success-green;
+                background-color: rgba($success-green, 0.1);
+              }
+            }
+          }
+        }
+
+        .island-details {
+          .speaker-info {
+            margin-bottom: 0.5rem;
+
+            strong {
+              color: $gray-700;
+              font-size: 1rem;
+            }
+
+            .speaker-role {
+              display: block;
+              color: $gray-400;
+              font-size: 0.875rem;
+              margin-top: 0.25rem;
+            }
+          }
+
+          .venue-info {
+            color: $gray-400;
+            font-size: 0.875rem;
+            margin-bottom: 0.75rem;
+          }
+
+          .island-description {
+            color: $gray-700;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+          }
+
+        }
+
+        .upcoming-indicator {
+          position: absolute;
+          top: -0.5rem;
+          right: -0.5rem;
+          background-color: $coral-orange;
+          color: $white;
+          padding: 0.25rem 0.75rem;
+          border-radius: 1rem;
+          font-size: 0.75rem;
+          font-weight: 500;
+          box-shadow: $shadow-coral;
+        }
+      }
+    }
+  }
+
+  .voyages-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+
+    .voyage-card {
+      .voyage-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+
+        h3 {
+          margin: 0;
+          color: $gray-700;
+          font-size: 1.125rem;
+        }
+
+        .voyage-date { color: $gray-400; font-size: 0.875rem; }
+      }
+
+      .voyage-stats {
+        display: flex;
+        gap: 2rem;
+        margin-bottom: 1.5rem;
+
+        .stat {
+          text-align: center;
+
+          .stat-number {
+            display: block;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: $ocean-blue;
+          }
+
+          .stat-label {
+            display: block;
+            font-size: 0.75rem;
+            color: $gray-400;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+          }
+        }
+      }
+
+      .voyage-islands {
+        .island-mini {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 0.5rem;
+          border-radius: 0.375rem;
+          margin-bottom: 0.5rem;
+          background-color: rgba($ocean-blue, 0.05);
+          transition: all 0.2s ease;
+          &:hover { background-color: rgba($ocean-blue, 0.1); }
+
+          &.attended {
+            background-color: rgba($success-green, 0.1);
+            border-left: 3px solid $success-green;
+          }
+
+          .island-time {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: $ocean-blue;
+            min-width: 50px;
+          }
+
+          .island-name {
+            flex: 1;
+            margin: 0 1rem;
+            font-size: 0.875rem;
+            color: $gray-700;
+          }
+
+          .attended-check {
+            font-size: 0.875rem;
+          }
+        }
+      }
+    }
+  }
+
+  // Sidebar integration
+  &.sidebar-open {
+    .main-content {
+      margin-right: 350px;
+
+      @media (max-width: 768px) {
+        margin-right: 0;
+      }
+    }
+  }
+
+  .main-content {
+    transition: margin-right 0.3s ease;
+    position: relative;
+  }
+}

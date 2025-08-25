@@ -1,0 +1,144 @@
+<!-- Navigator Tools Sidebar -->
+<div class="navigator-sidebar" [class.open]="isOpen">
+  <div class="sidebar-header">
+    <h3>Navigator Tools</h3>
+    <button class="sidebar-close-btn" (click)="closeSidebar()" aria-label="Close sidebar">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="sidebar-nav">
+    @for (tool of navigatorTools; track tool.id) {
+      <button
+        class="nav-tool-btn"
+        [class.active]="activeTool() === tool.id"
+        (click)="setActiveTool(tool.id)"
+      >
+        <span class="tool-icon">{{ tool.icon }}</span>
+        <span class="tool-name">{{ tool.name }}</span>
+      </button>
+    }
+  </div>
+
+  <div class="sidebar-content">
+    @switch (activeTool()) {
+      @case ('schedule') {
+        <div class="tool-view">
+          <h4>📅 Full Conference Schedule</h4>
+          <p>View all sessions, workshops, and events happening throughout DevFest Dhow 2025.</p>
+          <div class="schedule-summary">
+            <div class="schedule-day">
+              <strong>Day 1 - February 15</strong>
+              <ul>
+                <li>{{ voyages.length }} Voyage Tracks</li>
+                <li>{{ progress.totalIslands }} Sessions Total</li>
+                <li>Multiple Venues Available</li>
+              </ul>
+            </div>
+          </div>
+          <button class="btn-ocean btn-full-width">View Complete Schedule</button>
+        </div>
+      }
+      @case ('agenda') {
+        <div class="tool-view">
+          <h4>📋 Personal Agenda</h4>
+          <p>Download your customized agenda with all your selected sessions and important information.</p>
+          <div class="agenda-options">
+            <div class="agenda-format">
+              <label>
+                <input type="radio" name="format" value="pdf" checked>
+                <span>PDF Format</span>
+              </label>
+              <label>
+                <input type="radio" name="format" value="ical">
+                <span>Calendar (.ical)</span>
+              </label>
+            </div>
+            <div class="agenda-content">
+              <label>
+                <input type="checkbox" checked>
+                <span>Include speaker details</span>
+              </label>
+              <label>
+                <input type="checkbox" checked>
+                <span>Include venue information</span>
+              </label>
+              <label>
+                <input type="checkbox">
+                <span>Include session descriptions</span>
+              </label>
+            </div>
+          </div>
+          <button class="btn-ocean btn-full-width">Download Agenda</button>
+        </div>
+      }
+      @case ('reminders') {
+        <div class="tool-view">
+          <h4>🎯 Session Reminders</h4>
+          <p>Set up notifications for your important sessions so you never miss a moment.</p>
+          <div class="reminder-settings">
+            <div class="reminder-timing">
+              <label for="reminder-time">Remind me:</label>
+              <select id="reminder-time">
+                <option value="5">5 minutes before</option>
+                <option value="10" selected>10 minutes before</option>
+                <option value="15">15 minutes before</option>
+                <option value="30">30 minutes before</option>
+              </select>
+            </div>
+            <div class="upcoming-reminders">
+              <strong>Upcoming Sessions:</strong>
+              @for (island of getAllIslandsByTime().slice(0, 3); track island.id) {
+                <div class="reminder-session">
+                  <span class="session-time">{{ island.time }}</span>
+                  <span class="session-title">{{ island.title }}</span>
+                  <button class="reminder-toggle" [class.active]="!island.attended">
+                    @if (island.attended) { ✓ } @else { + }
+                  </button>
+                </div>
+              }
+            </div>
+          </div>
+          <button class="btn-ocean btn-full-width">Save Reminder Settings</button>
+        </div>
+      }
+      @case ('connect') {
+        <div class="tool-view">
+          <h4>👥 Connect with Navigators</h4>
+          <p>Network with fellow developers and expand your professional connections.</p>
+          <div class="connect-options">
+            <div class="connect-feature">
+              <span class="feature-icon">🔍</span>
+              <div class="feature-info">
+                <strong>Find Navigators</strong>
+                <p>Search for other attendees by interests, skills, or company</p>
+              </div>
+            </div>
+            <div class="connect-feature">
+              <span class="feature-icon">💬</span>
+              <div class="feature-info">
+                <strong>Join Discussions</strong>
+                <p>Participate in session discussions and Q&A</p>
+              </div>
+            </div>
+            <div class="connect-feature">
+              <span class="feature-icon">📱</span>
+              <div class="feature-info">
+                <strong>Exchange Contacts</strong>
+                <p>Seamlessly share your professional information</p>
+              </div>
+            </div>
+          </div>
+          <button class="btn-ocean btn-full-width">Explore Networking</button>
+        </div>
+      }
+    }
+  </div>
+</div>
+
+<!-- Sidebar Backdrop -->
+@if (isOpen) {
+  <div class="sidebar-backdrop" (click)="closeSidebar()"></div>
+}

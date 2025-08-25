@@ -1,21 +1,7 @@
 /* DevFest Dhow - Global Styles */
 
-// Ocean-themed color palette
-$ocean-blue: #1565C0;
-$wave-teal: #00ACC1;
-$sand-beige: #D7CCC8;
-$coral-orange: #FF7043;
-$deep-sea: #0D47A1;
-$magenta-violet: #9c27b0;
-
-// Additional colors for utilities
-$white: #ffffff;
-$gray-50: #f9fafb;
-$gray-100: #f3f4f6;
-$gray-200: #e5e7eb;
-$gray-400: #9ca3af;
-$gray-700: #374151;
-$purple-700: #7c3aed;
+// Import design system variables
+@use 'styles/variables' as *;
 
 // Reset and base styles
 * {
@@ -230,6 +216,64 @@ body {
   }
 }
 
+// Badge utilities
+.badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+
+  &.badge-ocean {
+    background-color: rgba($ocean-blue, 0.1);
+    color: $ocean-blue;
+  }
+
+  &.badge-magenta {
+    background-color: rgba($magenta-violet, 0.1);
+    color: $magenta-violet;
+  }
+}
+
+// Section utilities
+.section-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: $gray-700;
+  margin: 0 0 1.5rem 0;
+}
+
+// Progress bar utilities
+.progress-bar {
+  height: 0.5rem;
+  background-color: rgba($ocean-blue, 0.1);
+  border-radius: 0.25rem;
+  overflow: hidden;
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(135deg, $ocean-blue, $wave-teal);
+    border-radius: 0.25rem;
+    transition: width 0.3s ease;
+  }
+}
+
+// Tag utilities
+.tag {
+  background-color: rgba($ocean-blue, 0.1);
+  color: $ocean-blue;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  display: inline-block;
+}
+
+.tags-container {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
 // Responsive utilities
 .hidden-mobile {
   @media (max-width: 767px) {
@@ -267,5 +311,68 @@ body {
 
   &:hover {
     transform: scale(1.05);
+  }
+}
+
+// Sidebar utilities
+.btn-full-width {
+  width: 100%;
+}
+
+// CSS Custom Properties for theme consistency
+:root {
+  --ocean-blue: #1565C0;
+  --wave-teal: #00ACC1;
+  --sand-beige: #D7CCC8;
+  --coral-orange: #FF7043;
+  --deep-sea: #0D47A1;
+  --magenta-violet: #9c27b0;
+  --white: #ffffff;
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-700: #374151;
+}
+
+// Floating action button utility
+.floating-action-btn {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background: linear-gradient(135deg, var(--ocean-blue), var(--wave-teal));
+  color: var(--white);
+  border: none;
+  border-radius: 50px;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 15px rgba(21, 101, 192, 0.3);
+  font-family: inherit;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(21, 101, 192, 0.4);
+  }
+
+  &.active {
+    background: linear-gradient(135deg, var(--magenta-violet), var(--deep-sea));
+  }
+
+  @media (max-width: 480px) {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    padding: 0;
+    justify-content: center;
+
+    .btn-text {
+      display: none;
+    }
   }
 }
