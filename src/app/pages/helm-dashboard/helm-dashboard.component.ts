@@ -1,8 +1,9 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, inject, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Island } from '../../models/island.model';
 import { Voyage } from '../../models/voyage.model';
 import { NavigatorSidebarComponent } from '../../shared/components/navigator-sidebar/navigator-sidebar.component';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-helm-dashboard',
@@ -12,6 +13,8 @@ import { NavigatorSidebarComponent } from '../../shared/components/navigator-sid
   styleUrl: './helm-dashboard.component.scss'
 })
 export class HelmDashboardComponent {
+  private authService = inject(AuthService);
+
   // Navigator's personal voyages and schedule
   private voyagesSignal = signal<Voyage[]>([
     {
@@ -126,13 +129,31 @@ export class HelmDashboardComponent {
 
   readonly progress = this.progressSignal.asReadonly();
 
-  // Current navigator info (dummy data)
-  navigator = {
-    name: 'Navigator Explorer',
-    email: 'explorer@devfest.com',
-    registrationNumber: 'DHW2025-001',
-    voyageLevel: 'Captain'
-  };
+  // Current navigator info from logged-in user
+  navigator = computed(() => {
+    const user = this.authService.currentUser();
+    if (!user) {
+      return {
+        name: 'Guest Navigator',
+        email: 'guest@devfest.com',
+        registrationNumber: 'DHW2025-GUEST',
+        voyageLevel: 'Explorer'
+      };
+    }
+
+    // Generate registration number from user ID
+    const registrationNumber = `DHW2025-${user.uid.slice(-3).toUpperCase()}`;
+
+    // Determine voyage level based on user activity (can be enhanced later)
+    const voyageLevel = 'Captain';
+
+    return {
+      name: user.displayName || 'Anonymous Navigator',
+      email: user.email || 'navigator@devfest.com',
+      registrationNumber,
+      voyageLevel
+    };
+  });
 
   // Navigator Tools Sidebar state
   private sidebarOpenSignal = signal(false);

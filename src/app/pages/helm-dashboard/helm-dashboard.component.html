@@ -28,14 +28,14 @@
       <div class="navigator-info ocean-card">
         <div class="navigator-details flex-center">
           <div class="navigator-avatar">
-            <span>{{ navigator.name[0] }}</span>
+            <span>{{ navigator().name[0] }}</span>
           </div>
           <div class="navigator-data">
-            <h3>{{ navigator.name }}</h3>
-            <p>{{ navigator.email }}</p>
+            <h3>{{ navigator().name }}</h3>
+            <p>{{ navigator().email }}</p>
             <div class="navigator-meta">
-              <span class="registration-badge">{{ navigator.registrationNumber }}</span>
-              <span class="level-badge">{{ navigator.voyageLevel }}</span>
+              <span class="registration-badge">{{ navigator().registrationNumber }}</span>
+              <span class="level-badge">{{ navigator().voyageLevel }}</span>
             </div>
           </div>
         </div>
