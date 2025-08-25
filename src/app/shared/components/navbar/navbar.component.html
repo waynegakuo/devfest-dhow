@@ -2,24 +2,38 @@
   <div class="navbar-container">
     <!-- Logo/Brand -->
     <div class="navbar-brand">
-      <a href="/" class="brand-link">
+      <a routerLink="/" class="brand-link">
         <img ngSrc="/assets/logo/devfest-dhow-logo.svg" height="16" width="16" alt="DevFest Dhow" class="brand-logo">
       </a>
     </div>
 
-    <!-- Desktop Navigation -->
-    <div class="navbar-nav desktop-nav">
-      <a href="/" class="nav-link">Home Port</a>
-      <a href="/voyages" class="nav-link">Voyages</a>
-      <a href="/islands" class="nav-link">Islands</a>
-      <a href="/navigators" class="nav-link">Navigators</a>
-      <a href="/helm" class="nav-link">The Helm</a>
-      <a href="/compass" class="nav-link">Compass</a>
-    </div>
+    <!-- Desktop Navigation and User Auth grouped together -->
+    <div class="navbar-right desktop-nav">
+      <div class="navbar-nav">
+        @if (availableRoutes.home) {
+          <a routerLink="/" class="nav-link">Home Port</a>
+        }
+        @if (availableRoutes.voyages) {
+          <a routerLink="/voyages" class="nav-link">Voyages</a>
+        }
+        @if (availableRoutes.islands) {
+          <a routerLink="/islands" class="nav-link">Islands</a>
+        }
+        @if (availableRoutes.navigators) {
+          <a routerLink="/navigators" class="nav-link">Navigators</a>
+        }
+        @if (availableRoutes.helm) {
+          <a routerLink="/helm" class="nav-link">The Helm</a>
+        }
+        @if (availableRoutes.compass) {
+          <a routerLink="/compass" class="nav-link">Compass</a>
+        }
+      </div>
 
-    <!-- CTA Button / User Profile -->
-    <div class="navbar-cta desktop-nav">
-      <app-user-auth></app-user-auth>
+      <!-- CTA Button / User Profile -->
+      <div class="navbar-cta">
+        <app-user-auth></app-user-auth>
+      </div>
     </div>
 
     <!-- Mobile Menu Button -->
@@ -33,12 +47,24 @@
   <!-- Mobile Navigation -->
   <div class="mobile-nav" [class.open]="isMobileMenuOpen">
     <div class="mobile-nav-content">
-      <a href="/" class="mobile-nav-link" (click)="closeMobileMenu()">Home Port</a>
-      <a href="/voyages" class="mobile-nav-link" (click)="closeMobileMenu()">Voyages</a>
-      <a href="/islands" class="mobile-nav-link" (click)="closeMobileMenu()">Islands</a>
-      <a href="/navigators" class="mobile-nav-link" (click)="closeMobileMenu()">Navigators</a>
-      <a href="/helm" class="mobile-nav-link" (click)="closeMobileMenu()">The Helm</a>
-      <a href="/compass" class="mobile-nav-link" (click)="closeMobileMenu()">Compass</a>
+      @if (availableRoutes.home) {
+        <a routerLink="/" class="mobile-nav-link" (click)="closeMobileMenu()">Home Port</a>
+      }
+      @if (availableRoutes.voyages) {
+        <a routerLink="/voyages" class="mobile-nav-link" (click)="closeMobileMenu()">Voyages</a>
+      }
+      @if (availableRoutes.islands) {
+        <a routerLink="/islands" class="mobile-nav-link" (click)="closeMobileMenu()">Islands</a>
+      }
+      @if (availableRoutes.navigators) {
+        <a routerLink="/navigators" class="mobile-nav-link" (click)="closeMobileMenu()">Navigators</a>
+      }
+      @if (availableRoutes.helm) {
+        <a routerLink="/helm" class="mobile-nav-link" (click)="closeMobileMenu()">The Helm</a>
+      }
+      @if (availableRoutes.compass) {
+        <a routerLink="/compass" class="mobile-nav-link" (click)="closeMobileMenu()">Compass</a>
+      }
       <div class="mobile-nav-cta">
         <app-user-auth (closeMobileMenu)="closeMobileMenu()"></app-user-auth>
       </div>

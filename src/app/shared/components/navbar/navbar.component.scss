@@ -65,12 +65,19 @@
   }
 }
 
+.navbar-right {
+  align-items: center;
+  gap: 2rem;
+}
+
 .navbar-nav {
+  display: flex;
   align-items: center;
   gap: 2rem;
 }
 
 .navbar-cta {
+  display: flex;
   align-items: center;
 }
 
