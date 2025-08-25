@@ -18,7 +18,7 @@
 
     <div class="container">
     <!-- Dashboard Header -->
-    <div class="dashboard-header">
+    <div class="dashboard-header mb-3">
       <div class="welcome-section">
         <h1 class="dashboard-title ocean-gradient-text">⚓ The Helm Dashboard</h1>
         <p class="dashboard-subtitle">Chart your course through DevFest Dhow 2025</p>
@@ -26,7 +26,7 @@
 
       <!-- Navigator Info Card -->
       <div class="navigator-info ocean-card">
-        <div class="navigator-details">
+        <div class="navigator-details flex-center">
           <div class="navigator-avatar">
             <span>{{ navigator.name[0] }}</span>
           </div>
@@ -43,9 +43,9 @@
     </div>
 
     <!-- Progress Overview -->
-    <div class="progress-section">
-      <div class="progress-cards">
-        <div class="progress-card ocean-card">
+    <div class="progress-section mb-3">
+      <div class="progress-cards grid-auto-fit mb-2">
+        <div class="progress-card ocean-card flex-center">
           <div class="progress-icon">🏝️</div>
           <div class="progress-info">
             <h4>Islands Discovered</h4>
@@ -53,7 +53,7 @@
           </div>
         </div>
 
-        <div class="progress-card ocean-card">
+        <div class="progress-card ocean-card flex-center">
           <div class="progress-icon">🧭</div>
           <div class="progress-info">
             <h4>Voyage Progress</h4>
@@ -61,7 +61,7 @@
           </div>
         </div>
 
-        <div class="progress-card ocean-card">
+        <div class="progress-card ocean-card flex-center">
           <div class="progress-icon">⛵</div>
           <div class="progress-info">
             <h4>Active Voyages</h4>
@@ -72,7 +72,7 @@
 
       <!-- Progress Bar -->
       <div class="progress-bar-container ocean-card">
-        <div class="progress-bar-header">
+        <div class="progress-bar-header flex-between mb-1">
           <h4>Voyage Completion</h4>
           <span>{{ progress().completionRate }}% Complete</span>
         </div>
@@ -83,7 +83,7 @@
     </div>
 
     <!-- Schedule Overview -->
-    <div class="schedule-section">
+    <div class="schedule-section mb-3">
       <h2 class="section-title">Today's Journey</h2>
       <div class="schedule-timeline">
         @for (island of getAllIslandsByTime(); track island.id) {
@@ -94,7 +94,7 @@
             </div>
 
             <div class="timeline-content ocean-card">
-              <div class="island-header">
+              <div class="island-header flex-between mb-1">
                 <h3 class="island-title">{{ island.title }}</h3>
                 <div class="island-actions">
                   <button
@@ -145,12 +145,12 @@
       <div class="voyages-grid">
         @for (voyage of voyages(); track voyage.id) {
           <div class="voyage-card ocean-card">
-            <div class="voyage-header">
+            <div class="voyage-header flex-between mb-1">
               <h3>{{ voyage.name }}</h3>
               <span class="voyage-date">{{ voyage.date }}</span>
             </div>
 
-            <div class="voyage-stats">
+            <div class="voyage-stats mb-1-5">
               <div class="stat">
                 <span class="stat-number">{{ voyage.islands.length }}</span>
                 <span class="stat-label">Islands</span>
