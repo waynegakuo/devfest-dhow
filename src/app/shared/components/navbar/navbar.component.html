@@ -17,9 +17,22 @@
       <a href="/compass" class="nav-link">Compass</a>
     </div>
 
-    <!-- CTA Button -->
+    <!-- CTA Button / User Profile -->
     <div class="navbar-cta desktop-nav">
-      <a href="/register" class="btn-primary">Board the Ship</a>
+      @if (isAuthenticated()) {
+        <div class="user-profile" (click)="signOut()">
+          @if (userPhotoUrl) {
+            <img [src]="userPhotoUrl" [alt]="userDisplayName || 'Navigator'" class="user-avatar">
+          } @else {
+            <div class="user-avatar-placeholder">
+              {{ (userDisplayName || 'Navigator')[0] }}
+            </div>
+          }
+          <span class="user-name">{{ userDisplayName || 'Navigator' }}</span>
+        </div>
+      } @else {
+        <button class="btn-primary" (click)="boardTheShip()">Board the Ship</button>
+      }
     </div>
 
     <!-- Mobile Menu Button -->
@@ -40,7 +53,20 @@
       <a href="/helm" class="mobile-nav-link" (click)="closeMobileMenu()">The Helm</a>
       <a href="/compass" class="mobile-nav-link" (click)="closeMobileMenu()">Compass</a>
       <div class="mobile-nav-cta">
-        <a href="/register" class="btn-primary" (click)="closeMobileMenu()">Board the Ship</a>
+        @if (isAuthenticated()) {
+          <div class="user-profile mobile-user-profile" (click)="signOut(); closeMobileMenu()">
+            @if (userPhotoUrl) {
+              <img [src]="userPhotoUrl" [alt]="userDisplayName || 'Navigator'" class="user-avatar">
+            } @else {
+              <div class="user-avatar-placeholder">
+                {{ (userDisplayName || 'Navigator')[0] }}
+              </div>
+            }
+            <span class="user-name">{{ userDisplayName || 'Navigator' }}</span>
+          </div>
+        } @else {
+          <button class="btn-primary" (click)="boardTheShip(); closeMobileMenu()">Board the Ship</button>
+        }
       </div>
     </div>
   </div>
