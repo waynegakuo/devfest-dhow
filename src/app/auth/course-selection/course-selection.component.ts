@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TechTrack, ExpertiseLevel, CourseSelection } from '../../models/navigator.model';
-import { NavigatorService } from '../../services/navigator.service';
+import { NavigatorService } from '../../services/navigator/navigator.service';
 
 @Component({
   selector: 'app-course-selection',

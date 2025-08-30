@@ -4,6 +4,8 @@ import { Island } from '../../models/island.model';
 import { Voyage } from '../../models/voyage.model';
 import { NavigatorSidebarComponent } from '../../shared/components/navigator-sidebar/navigator-sidebar.component';
 import { AuthService } from '../../services/auth/auth.service';
+import { MyVoyagePlanService } from '../../services/my-voyage-plan/my-voyage-plan.service';
+import { VoyagePlanItem } from '../../models/voyage-plan.model';
 
 @Component({
   selector: 'app-helm-dashboard',
@@ -14,6 +16,7 @@ import { AuthService } from '../../services/auth/auth.service';
 })
 export class HelmDashboardComponent {
   private authService = inject(AuthService);
+  private myVoyage = inject(MyVoyagePlanService);
 
   // Navigator's personal voyages and schedule
   private voyagesSignal = signal<Voyage[]>([
@@ -204,6 +207,31 @@ export class HelmDashboardComponent {
       allIslands.push(...voyage.islands);
     });
     return allIslands.sort((a, b) => a.time.localeCompare(b.time));
+  }
+
+  // My Voyage Plan helpers
+  isInMyVoyage(islandId: string): boolean {
+    return this.myVoyage.isInPlan(islandId);
+  }
+
+  toggleMyVoyage(voyage: Voyage, island: Island): void {
+    const item: VoyagePlanItem = {
+      island,
+      voyageId: voyage.id,
+      voyageName: voyage.name,
+      voyageDate: voyage.date
+    };
+    this.myVoyage.toggleSession(item);
+  }
+
+  toggleMyVoyageByIsland(island: Island): void {
+    const v = this.voyages().find(vg => vg.islands.some(i => i.id === island.id));
+    if (!v) return;
+    this.toggleMyVoyage(v, island);
+  }
+
+  myVoyagePlanSorted() {
+    return this.myVoyage.itemsSorted();
   }
 
   // Check if island is happening now or soon
