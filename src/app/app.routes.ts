@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { loginRedirectGuard } from './guards/login-redirect.guard';
 import { helmAuthGuard } from './guards/helm-auth.guard';
+import { courseSelectionGuard } from './guards/course-selection.guard';
 
 export const routes: Routes = [
   {
@@ -13,8 +14,13 @@ export const routes: Routes = [
     canActivate: [loginRedirectGuard]
   },
   {
+    path: 'chart-course',
+    loadComponent: () => import('./auth/course-selection/course-selection.component').then(m => m.CourseSelectionComponent),
+    canActivate: [helmAuthGuard]
+  },
+  {
     path: 'helm',
     loadComponent: () => import('./pages/helm-dashboard/helm-dashboard.component').then(m => m.HelmDashboardComponent),
-    canActivate: [helmAuthGuard]
+    canActivate: [courseSelectionGuard]
   }
 ];

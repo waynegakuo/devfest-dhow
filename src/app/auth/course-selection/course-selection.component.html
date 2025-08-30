@@ -1,0 +1,112 @@
+<div class="course-selection-container">
+  <div class="course-selection-card">
+    <div class="helm-header">
+      <h1 class="voyage-title">Chart Your Course</h1>
+      <p class="voyage-subtitle">Set sail on your DevFest journey by selecting your tech track and expertise level</p>
+    </div>
+
+    <div class="selection-section">
+      <div class="track-selection">
+        <h2 class="section-title">Choose Your Tech Track</h2>
+        <p class="section-description">Which waters would you like to navigate?</p>
+
+        <div class="track-options">
+          @for (track of techTracks; track track) {
+            <button
+              type="button"
+              class="track-option"
+              [class.selected]="selectedTrack() === track"
+              (click)="selectTrack(track)">
+              <div class="track-icon">
+                @switch (track) {
+                  @case ('AI/ML') {
+                    <i class="track-emoji">🤖</i>
+                  }
+                  @case ('Cloud') {
+                    <i class="track-emoji">☁️</i>
+                  }
+                  @case ('Web') {
+                    <i class="track-emoji">🌐</i>
+                  }
+                  @case ('Mobile') {
+                    <i class="track-emoji">📱</i>
+                  }
+                }
+              </div>
+              <span class="track-name">{{ track }}</span>
+            </button>
+          }
+        </div>
+      </div>
+
+      <div class="expertise-selection">
+        <h2 class="section-title">Select Your Expertise Level</h2>
+        <p class="section-description">How experienced are you as a navigator?</p>
+
+        <div class="expertise-options">
+          @for (level of expertiseLevels; track level) {
+            <button
+              type="button"
+              class="expertise-option"
+              [class.selected]="selectedExpertise() === level"
+              (click)="selectExpertise(level)">
+              <div class="expertise-icon">
+                @switch (level) {
+                  @case ('Beginner') {
+                    <i class="expertise-emoji">🗺️</i>
+                  }
+                  @case ('Intermediate') {
+                    <i class="expertise-emoji">⚓</i>
+                  }
+                  @case ('Expert') {
+                    <i class="expertise-emoji">🧭</i>
+                  }
+                }
+              </div>
+              <div class="expertise-content">
+                <span class="expertise-name">{{ level }}</span>
+                <span class="expertise-desc">
+                  @switch (level) {
+                    @case ('Beginner') {
+                      New to the seas
+                    }
+                    @case ('Intermediate') {
+                      Steady navigator
+                    }
+                    @case ('Expert') {
+                      Master of the helm
+                    }
+                  }
+                </span>
+              </div>
+            </button>
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="navigation-actions">
+      <button
+        type="button"
+        class="btn-secondary skip-btn"
+        (click)="skipForNow()"
+        [disabled]="isSubmitting()">
+        Skip for now
+      </button>
+
+      <button
+        type="button"
+        class="btn-primary submit-btn"
+        [class.loading]="isSubmitting()"
+        [disabled]="!isFormValid() || isSubmitting()"
+        (click)="onSubmit()">
+        @if (isSubmitting()) {
+          <span class="loading-spinner"></span>
+          Setting course...
+        } @else {
+          Begin voyage
+        }
+      </button>
+    </div>
+  </div>
+</div>
