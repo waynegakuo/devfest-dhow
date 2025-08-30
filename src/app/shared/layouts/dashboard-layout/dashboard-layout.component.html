@@ -1,0 +1,26 @@
+<!-- Dashboard Layout with Left Sidebar -->
+<div class="dashboard-layout" [class.sidebar-open]="sidebarOpen()">
+  <!-- Navigator Sidebar -->
+  <app-navigator-sidebar
+    [isOpen]="sidebarOpen()"
+    [voyages]="voyages()"
+    [progress]="progress()"
+    (sidebarClose)="closeSidebar()"
+    (navigationChange)="handleNavigationChange($event)">
+  </app-navigator-sidebar>
+
+  <!-- Main Content Area -->
+  <div class="main-content-area">
+
+    <!-- Floating Navigator Tools Button -->
+    <button class="floating-navigator-btn" (click)="toggleSidebar()" [class.active]="sidebarOpen()" aria-label="Toggle navigation">
+      <span class="btn-icon">🧭</span>
+      <span class="btn-text">Navigator Tools</span>
+    </button>
+
+    <!-- Page Content (Router Outlet) -->
+    <main class="page-content">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

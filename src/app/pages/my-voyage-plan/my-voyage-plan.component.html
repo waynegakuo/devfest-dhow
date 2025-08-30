@@ -1,0 +1,92 @@
+<!-- My Voyage Plan - Personal Schedule Page -->
+<div class="voyage-plan-page">
+  <!-- Page Header -->
+  <header class="page-header">
+    <div class="page-title">
+      <h1>🗺️ My Voyage Plan</h1>
+      <p>Your Personalized Schedule</p>
+    </div>
+    @if (totalSessions().length > 0) {
+      <button class="clear-plan-btn" (click)="clearVoyagePlan()">
+        Clear Plan
+      </button>
+    }
+  </header>
+
+    <!-- Schedule Content -->
+    <main class="schedule-content">
+      @if (myVoyagePlan().length === 0) {
+        <!-- Empty State -->
+        <div class="empty-state">
+          <div class="empty-icon">🗺️</div>
+          <h2>Your Voyage Plan Awaits</h2>
+          <p>You haven't selected any sessions yet. Start building your personalized schedule by exploring The Archipelago and adding sessions to your voyage plan.</p>
+          <button class="btn-primary" (click)="navigateToArchipelago()">
+            Explore The Archipelago
+          </button>
+        </div>
+      } @else {
+        <!-- Voyage Plan Content -->
+        <div class="voyage-plan-intro">
+          <h2>Your Curated Journey</h2>
+          <p>Here's your personalized schedule with {{ myVoyagePlan().length }} selected sessions, organized chronologically for your DevFest Dhow adventure.</p>
+        </div>
+
+        <!-- Sessions List -->
+        <div class="sessions-timeline">
+          @for (item of myVoyagePlan(); track item.island.id) {
+            <div class="session-card" [class.upcoming]="isUpcoming(item)">
+              <div class="session-time">
+                <div class="time-display">{{ formatTime(item.island.time) }}</div>
+                <div class="date-display">{{ formatDate(item.voyageDate) }}</div>
+              </div>
+
+              <div class="session-content">
+                <div class="session-header">
+                  <h3 class="session-title">{{ item.island.title }}</h3>
+                  <button
+                    class="remove-btn"
+                    (click)="removeFromPlan(item.island.id)"
+                    aria-label="Remove from plan">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                    </svg>
+                  </button>
+                </div>
+
+                <div class="speaker-info">
+                  <span class="speaker-name">{{ item.island.speaker }}</span>
+                  <span class="speaker-details">{{ item.island.speakerRole }} at {{ item.island.speakerCompany }}</span>
+                </div>
+
+                <div class="session-meta">
+                  <span class="duration">⏱️ {{ item.island.duration }}</span>
+                  <span class="venue">📍 {{ item.island.venue }}</span>
+                </div>
+
+                <p class="session-description">{{ item.island.description }}</p>
+
+                <div class="session-tags">
+                  @for (tag of item.island.tags; track tag) {
+                    <span class="tag">{{ tag }}</span>
+                  }
+                </div>
+
+                @if (isUpcoming(item)) {
+                  <div class="upcoming-badge">
+                    <span>🚢 Upcoming</span>
+                  </div>
+                }
+              </div>
+            </div>
+          }
+        </div>
+
+        <!-- Plan Actions -->
+        <div class="plan-actions">
+          <button class="btn-secondary">📅 Export to Calendar</button>
+          <button class="btn-secondary">📧 Email Schedule</button>
+        </div>
+      }
+    </main>
+</div>
