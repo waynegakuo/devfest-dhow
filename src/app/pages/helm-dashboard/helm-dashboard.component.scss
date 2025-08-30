@@ -293,19 +293,4 @@
     }
   }
 
-  // Sidebar integration
-  &.sidebar-open {
-    .main-content {
-      margin-right: 350px;
-
-      @media (max-width: 768px) {
-        margin-right: 0;
-      }
-    }
-  }
-
-  .main-content {
-    transition: margin-right 0.3s ease;
-    position: relative;
-  }
 }

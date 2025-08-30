@@ -1,22 +1,5 @@
-<div class="helm-dashboard" [class.sidebar-open]="sidebarOpen()">
-  <!-- Navigator Tools Sidebar -->
-  <app-navigator-sidebar
-    [isOpen]="sidebarOpen()"
-    [voyages]="voyages()"
-    [progress]="progress()"
-    (sidebarClose)="closeSidebar()"
-    (toolChange)="setActiveTool($event)">
-  </app-navigator-sidebar>
-
-  <!-- Main Content -->
-  <div class="main-content">
-    <!-- Floating Navigator Tools Button -->
-    <button class="floating-action-btn" (click)="toggleSidebar()" [class.active]="sidebarOpen()">
-      <span class="toggle-icon">🧭</span>
-      <span class="btn-text">Navigator Tools</span>
-    </button>
-
-    <div class="container">
+<div class="helm-dashboard">
+  <div class="container">
     <!-- Dashboard Header -->
     <div class="dashboard-header mb-3">
       <div class="welcome-section">
@@ -229,4 +212,3 @@
 
     </div>
   </div>
-</div>

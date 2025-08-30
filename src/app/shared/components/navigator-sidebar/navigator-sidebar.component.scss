@@ -1,27 +1,27 @@
 // Import design system variables
 @use '../../../../styles/variables' as *;
 
-// Navigator Tools Sidebar Styles
+// Navigator Sidebar Styles
 .navigator-sidebar {
   position: fixed;
-  top: 0;
-  right: -350px;
-  width: 350px;
-  height: 100vh;
+  top: 4rem;
+  left: -300px;
+  width: 300px;
+  height: calc(100vh - 4rem);
   background: linear-gradient(135deg, rgba(21, 101, 192, 0.05), rgba(0, 172, 193, 0.05));
   backdrop-filter: blur(10px);
-  border-left: 1px solid rgba(21, 101, 192, 0.1);
-  z-index: 1000;
-  transition: right 0.3s ease;
+  border-right: 1px solid rgba(21, 101, 192, 0.1);
+  z-index: 999;
+  transition: left 0.3s ease;
   overflow-y: auto;
 
   &.open {
-    right: 0;
+    left: 0;
   }
 
   @media (max-width: 768px) {
     width: 100vw;
-    right: -100vw;
+    left: -100vw;
   }
 
   // Using global .sidebar-header and .sidebar-close-btn classes
@@ -35,205 +35,46 @@
 
   .sidebar-nav {
     padding: 1rem;
-    border-bottom: 1px solid rgba(21, 101, 192, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 
-    // Using global .nav-tool-btn class
+    .nav-item-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      background: transparent;
+      border: none;
+      border-radius: 0.5rem;
+      color: $gray-700;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      width: 100%;
 
-    .nav-tool-btn .tool-icon {
-      font-size: 1.25rem;
-      line-height: 1;
-    }
-  }
-
-  .sidebar-content {
-    padding: 1.5rem;
-    height: calc(100vh - 200px);
-    overflow-y: auto;
-
-    .tool-view {
-      h4 {
-        margin: 0 0 0.75rem 0;
-        color: $gray-700;
-        font-size: 1.125rem;
-        font-weight: 600;
+      &:hover {
+        background-color: rgba(156, 39, 176, 0.1);
+        color: $magenta-violet;
       }
 
-      p {
-        color: $gray-400;
-        line-height: 1.5;
-        margin-bottom: 1.5rem;
+      &.active {
+        background-color: $magenta-violet;
+        color: white;
+      }
+
+      .nav-icon {
+        font-size: 1.25rem;
+        line-height: 1;
+        min-width: 1.5rem;
+      }
+
+      .nav-name {
         font-weight: 500;
-      }
-
-      .btn-full-width {
-        width: 100%;
-        margin-top: 1.5rem;
-      }
-
-      // Schedule view specific styles
-      .schedule-summary {
-        margin-bottom: 1.5rem;
-
-        .schedule-day {
-          background-color: rgba(21, 101, 192, 0.05);
-          padding: 1rem;
-          border-radius: 0.5rem;
-          border-left: 3px solid $ocean-blue;
-
-          strong {
-            display: block;
-            color: $ocean-blue;
-            margin-bottom: 0.5rem;
-            font-size: 0.875rem;
-          }
-
-          ul {
-            margin: 0;
-            padding-left: 1.25rem;
-
-            li {
-              color: $gray-700;
-              font-size: 0.875rem;
-              margin-bottom: 0.25rem;
-            }
-          }
-        }
-      }
-
-      // Agenda view specific styles
-      .agenda-options {
-        margin-bottom: 1.5rem;
-
-        .agenda-format,
-        .agenda-content {
-          margin-bottom: 1rem;
-
-          label {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 0.5rem;
-            cursor: pointer;
-            font-size: 0.875rem;
-            color: $gray-700;
-
-            input[type="radio"],
-            input[type="checkbox"] {
-              accent-color: $ocean-blue;
-            }
-          }
-        }
-      }
-
-      // Reminders view specific styles
-      .reminder-settings {
-        margin-bottom: 1.5rem;
-
-        .reminder-timing {
-          margin-bottom: 1rem;
-
-          label {
-            display: block;
-            color: $gray-700;
-            font-size: 0.875rem;
-            font-weight: 500;
-            margin-bottom: 0.5rem;
-          }
-
-          #reminder-time {
-            width: 100%;
-            padding: 0.5rem 0.75rem;
-            border: 1px solid rgba(21, 101, 192, 0.2);
-            border-radius: 0.375rem;
-            background-color: $white;
-            color: $gray-700;
-            font-size: 0.875rem;
-            font-family: inherit;
-            transition: border-color 0.2s ease, box-shadow 0.2s ease;
-            appearance: none;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right 0.5rem center;
-            background-size: 1rem;
-            padding-right: 2.5rem;
-
-            &:focus {
-              outline: none;
-              border-color: $ocean-blue;
-              box-shadow: 0 0 0 2px rgba(21, 101, 192, 0.1);
-            }
-
-            &:hover {
-              border-color: rgba(21, 101, 192, 0.3);
-            }
-          }
-        }
-
-        .upcoming-reminders {
-          strong {
-            display: block;
-            color: $gray-700;
-            margin-bottom: 0.75rem;
-            font-size: 0.875rem;
-          }
-
-          // Using global .reminder-session and .reminder-toggle classes
-        }
-      }
-
-      // Connect view specific styles
-      .connect-options {
-        margin-bottom: 1.5rem;
-
-        .connect-feature {
-          display: flex;
-          align-items: flex-start;
-          gap: 1rem;
-          padding: 1rem;
-          background-color: rgba(21, 101, 192, 0.05);
-          border-radius: 0.5rem;
-          margin-bottom: 0.75rem;
-
-          .feature-icon {
-            font-size: 1.5rem;
-            line-height: 1;
-          }
-
-          .feature-info {
-            flex: 1;
-
-            strong {
-              display: block;
-              color: $gray-700;
-              font-size: 0.875rem;
-              margin-bottom: 0.25rem;
-            }
-
-            p {
-              color: $gray-400;
-              font-size: 0.75rem;
-              line-height: 1.4;
-              margin: 0;
-            }
-          }
-        }
+        font-size: 0.875rem;
       }
     }
   }
+
 }
 
-.sidebar-backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 999;
-  animation: fadeIn 0.3s ease;
-
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-}

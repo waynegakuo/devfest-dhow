@@ -2,7 +2,6 @@ import { Component, signal, inject, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Island } from '../../models/island.model';
 import { Voyage } from '../../models/voyage.model';
-import { NavigatorSidebarComponent } from '../../shared/components/navigator-sidebar/navigator-sidebar.component';
 import { AuthService } from '../../services/auth/auth.service';
 import { MyVoyagePlanService } from '../../services/my-voyage-plan/my-voyage-plan.service';
 import { VoyagePlanItem } from '../../models/voyage-plan.model';
@@ -10,7 +9,7 @@ import { VoyagePlanItem } from '../../models/voyage-plan.model';
 @Component({
   selector: 'app-helm-dashboard',
   standalone: true,
-  imports: [CommonModule, NavigatorSidebarComponent],
+  imports: [CommonModule],
   templateUrl: './helm-dashboard.component.html',
   styleUrl: './helm-dashboard.component.scss'
 })
@@ -158,10 +157,6 @@ export class HelmDashboardComponent {
     };
   });
 
-  // Navigator Tools Sidebar state
-  private sidebarOpenSignal = signal(false);
-
-  readonly sidebarOpen = this.sidebarOpenSignal.asReadonly();
 
   // Toggle island attendance
   toggleAttendance(voyageId: string, islandId: string): void {
@@ -259,17 +254,4 @@ export class HelmDashboardComponent {
     return voyage.islands.filter(island => island.attended).length;
   }
 
-  // Navigator Tools Sidebar methods
-  toggleSidebar(): void {
-    this.sidebarOpenSignal.set(!this.sidebarOpen());
-  }
-
-  closeSidebar(): void {
-    this.sidebarOpenSignal.set(false);
-  }
-
-  setActiveTool(toolId: string): void {
-    // Tool change is handled by the sidebar component
-    // This method is kept for the event binding but doesn't need implementation
-  }
 }
