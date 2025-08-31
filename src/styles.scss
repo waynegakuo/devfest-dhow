@@ -1,5 +1,27 @@
 /* DevFest Dhow - Global Styles */
 
+/*
+ * FONT USAGE GUIDELINES - Ocean-Themed Typography System
+ * =====================================================
+ *
+ * PRIMARY FONT: "Architects Daughter" (Creative, Handwritten)
+ * - Use for: Body text, headers, titles, branding elements, and most content
+ * - Classes: .font-primary, .font-heading, .font-brand, .font-body
+ * - Default for: body element (ocean-themed throughout)
+ *
+ * SECONDARY FONT: "Roboto" (Clean, Readable)
+ * - Use for: Specific UI elements that need high readability
+ * - Classes: .font-secondary, .font-ui
+ *
+ * SPECIAL: "Google Sans" (Navigator Sidebar Only)
+ * - Use only for: Navigator sidebar components
+ * - Hardcoded in navigator-sidebar.component.scss
+ *
+ * ACCESSIBILITY: Architects Daughter provides character and ocean theme
+ * consistency throughout the app, with Roboto available for specific
+ * high-readability requirements.
+ */
+
 // Import design system variables
 @use 'styles/variables' as *;
 
@@ -11,7 +33,7 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: "Architects Daughter", serif;
+  font-family: $font-family-primary; // Use Architects Daughter as default font
   line-height: 1.6;
   overflow-x: hidden;
 }
@@ -25,6 +47,37 @@ body {
 
 .duration-200 {
   transition-duration: 200ms;
+}
+
+// Font utilities - Ocean-themed typography system
+.font-primary {
+  font-family: $font-family-primary !important; // Architects Daughter - for headers, branding, and creative elements
+}
+
+.font-secondary {
+  font-family: $font-family-secondary !important; // Roboto - for body text, UI elements, and readability
+}
+
+
+// Semantic font classes based on usage
+.font-heading {
+  font-family: $font-family-primary; // Creative font for all headings
+  font-weight: $font-weight-bold;
+}
+
+.font-body {
+  font-family: $font-family-primary; // Architects Daughter for body text
+  font-weight: $font-weight-normal;
+}
+
+.font-ui {
+  font-family: $font-family-secondary; // Clean font for UI elements
+  font-weight: $font-weight-medium;
+}
+
+.font-brand {
+  font-family: $font-family-primary; // Creative font for branding elements
+  font-weight: $font-weight-bold;
 }
 
 // Component styles
@@ -231,6 +284,7 @@ body {
 .nav-brand {
   display: flex;
   align-items: center;
+  font-family: $font-family-primary; // Use creative font for branding
   font-size: 1.25rem;
   font-weight: 700;
   color: $ocean-blue;
@@ -262,6 +316,7 @@ body {
 
 // Section utilities
 .section-title {
+  font-family: $font-family-primary; // Use creative font for section headers
   font-size: 1.5rem;
   font-weight: bold;
   color: $gray-700;
@@ -312,6 +367,7 @@ body {
   }
 
   .feature-title {
+    font-family: $font-family-primary; // Use creative font for feature titles
     font-size: 1.5rem;
     font-weight: bold;
     color: $ocean-blue;
@@ -691,6 +747,7 @@ body {
 
 // CSS Custom Properties for theme consistency
 :root {
+  // Colors
   --ocean-blue: #1565C0;
   --wave-teal: #00ACC1;
   --sand-beige: #D7CCC8;
@@ -704,6 +761,10 @@ body {
   --gray-300: #d1d5db;
   --gray-400: #9ca3af;
   --gray-700: #374151;
+
+  // Typography - Ocean-themed font families
+  --font-primary: #{$font-family-primary}; // "Architects Daughter" - Primary font for body text, headers, and most content
+  --font-secondary: #{$font-family-secondary}; // "Roboto" - Secondary font for specific high-readability UI elements
 }
 
 // Floating action button utility

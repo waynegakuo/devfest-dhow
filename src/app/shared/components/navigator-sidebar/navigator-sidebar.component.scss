@@ -1,5 +1,6 @@
 // Import design system variables
 @use '../../../../styles/variables' as *;
+@use '../../../../styles/google-sans' as *;
 
 // Navigator Sidebar Styles
 .navigator-sidebar {
@@ -31,6 +32,7 @@
     color: $gray-700;
     font-size: 1.25rem;
     font-weight: bold;
+    font-family: 'Google Sans', sans-serif; // Use Google Sans specifically for sidenav
   }
 
   .sidebar-nav {
@@ -52,6 +54,7 @@
       cursor: pointer;
       transition: all 0.2s ease;
       width: 100%;
+      font-family: 'Google Sans', sans-serif; // Use Google Sans specifically for sidenav
 
       &:hover {
         background-color: rgba(156, 39, 176, 0.1);
@@ -72,6 +75,117 @@
       .nav-name {
         font-weight: 500;
         font-size: 0.875rem;
+      }
+    }
+  }
+
+  // Ocean Terminology Section Styles
+  .terminology-section {
+    margin-top: 1rem;
+    border-top: 1px solid rgba(21, 101, 192, 0.1);
+    padding-top: 1rem;
+
+    .terminology-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 0.75rem 1rem;
+      background: transparent;
+      border: none;
+      border-radius: 0.5rem;
+      color: $gray-700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: 'Google Sans', sans-serif;
+
+      &:hover {
+        background-color: rgba(156, 39, 176, 0.1);
+        color: $magenta-violet;
+      }
+
+      &.expanded {
+        background-color: rgba(156, 39, 176, 0.05);
+        color: $magenta-violet;
+      }
+
+      .terminology-icon {
+        font-size: 1.25rem;
+        margin-right: 0.75rem;
+      }
+
+      .terminology-title {
+        flex: 1;
+        text-align: left;
+        font-weight: 500;
+        font-size: 0.875rem;
+      }
+
+      .expand-icon {
+        font-size: 0.75rem;
+        transition: transform 0.2s ease;
+      }
+    }
+
+    .terminology-content {
+      padding: 1rem;
+      background: rgba(21, 101, 192, 0.02);
+      border-radius: 0.5rem;
+      margin-top: 0.5rem;
+
+      .terminology-header {
+        margin-bottom: 1rem;
+
+        h4 {
+          margin: 0 0 0.25rem 0;
+          font-size: 1rem;
+          font-weight: 600;
+          color: $gray-700;
+          font-family: 'Google Sans', sans-serif;
+        }
+
+        p {
+          margin: 0;
+          font-size: 0.75rem;
+          color: $gray-500;
+          font-family: 'Google Sans', sans-serif;
+        }
+      }
+
+      .terminology-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+
+      .terminology-item {
+        .term-header {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          margin-bottom: 0.25rem;
+
+          .term-icon {
+            font-size: 1rem;
+            min-width: 1.25rem;
+          }
+
+          .term-name {
+            font-weight: 600;
+            font-size: 0.8125rem;
+            color: $gray-700;
+            font-family: 'Google Sans', sans-serif;
+          }
+        }
+
+        .term-definition {
+          margin: 0;
+          font-size: 0.75rem;
+          color: $gray-600;
+          line-height: 1.4;
+          padding-left: 1.75rem;
+          font-family: 'Google Sans', sans-serif;
+        }
       }
     }
   }

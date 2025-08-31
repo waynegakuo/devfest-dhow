@@ -23,5 +23,39 @@
     }
   </div>
 
+  <!-- Ocean Terminology Key -->
+  <div class="terminology-section">
+    <button
+      class="terminology-toggle"
+      (click)="toggleTerminology()"
+      [class.expanded]="showTerminology()"
+    >
+      <span class="terminology-icon">🗺️</span>
+      <span class="terminology-title">Ocean Guide</span>
+      <span class="expand-icon">{{ showTerminology() ? '▼' : '▶' }}</span>
+    </button>
+
+    @if (showTerminology()) {
+      <div class="terminology-content">
+        <div class="terminology-header">
+          <h4>Maritime Terms Explained</h4>
+          <p>Understanding DevFest Dhow's ocean-themed navigation</p>
+        </div>
+
+        <div class="terminology-list">
+          @for (term of oceanTerminology; track term.name) {
+            <div class="terminology-item">
+              <div class="term-header">
+                <span class="term-icon">{{ term.icon }}</span>
+                <span class="term-name">{{ term.name }}</span>
+              </div>
+              <p class="term-definition">{{ term.definition }}</p>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </div>
+
 </div>
 

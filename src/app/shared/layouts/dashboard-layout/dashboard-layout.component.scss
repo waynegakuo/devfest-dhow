@@ -1,5 +1,6 @@
 // Import design system variables
 @use '../../../../styles/variables' as *;
+@use 'sass:color';
 
 .dashboard-layout {
   display: flex;
@@ -57,7 +58,7 @@
     &:hover {
       transform: translateY(-2px);
       box-shadow: 0 12px 40px rgba(156, 39, 176, 0.4);
-      background: linear-gradient(135deg, darken($magenta-violet, 5%), rgba(156, 39, 176, 0.9));
+      background: linear-gradient(135deg, color.scale($magenta-violet, $lightness: -5%), rgba(156, 39, 176, 0.9));
     }
 
     &:active {

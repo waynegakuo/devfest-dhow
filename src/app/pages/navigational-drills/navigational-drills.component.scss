@@ -1,4 +1,5 @@
 @use '../../../styles/variables' as *;
+@use 'sass:color';
 
 .navigational-drills-page {
   min-height: 100vh;
@@ -111,7 +112,7 @@
           transition: background 0.2s ease;
 
           &:hover {
-            background: darken($magenta-violet, 10%);
+            background: color.scale($magenta-violet, $lightness: -10%);
           }
         }
       }

@@ -15,6 +15,12 @@ export interface NavigationItem {
   action?: string;
 }
 
+export interface OceanTerm {
+  name: string;
+  icon: string;
+  definition: string;
+}
+
 @Component({
   selector: 'app-navigator-sidebar',
   standalone: true,
@@ -46,6 +52,10 @@ export class NavigatorSidebarComponent implements OnInit, OnDestroy{
   private activeNavSignal = signal<string>('helm');
   readonly activeNav = this.activeNavSignal.asReadonly();
 
+  // Terminology toggle state
+  private showTerminologySignal = signal<boolean>(false);
+  readonly showTerminology = this.showTerminologySignal.asReadonly();
+
   // Navigation items configuration
   navigationItems: NavigationItem[] = [
     { id: 'helm', name: 'The Helm', icon: '⚓', description: 'Dashboard - Central hub and key information', route: '/dashboard/helm' },
@@ -57,6 +67,22 @@ export class NavigatorSidebarComponent implements OnInit, OnDestroy{
     { id: 'atlantis', name: 'The Quest for Atlantis', icon: '🏛️', description: 'AR Hunt - Augmented reality scavenger hunt', route: '/dashboard/quest-for-atlantis' },
     { id: 'profile', name: 'My Profile', icon: '👤', description: 'Profile - View and edit your navigator profile', route: '/dashboard/my-profile' },
     { id: 'logout', name: 'Log Out', icon: '🚪', description: 'Securely end your session', action: 'logout' }
+  ];
+
+  // Ocean terminology explanations
+  oceanTerminology: OceanTerm[] = [
+    { name: 'Navigator', icon: '🧭', definition: 'Conference attendee - that\'s you! The person exploring DevFest Dhow.' },
+    { name: 'Voyage', icon: '⛵', definition: 'Conference track or theme - different learning paths through the event.' },
+    { name: 'Island', icon: '🏝️', definition: 'Individual session or talk - specific presentations you can attend.' },
+    { name: 'The Helm', icon: '⚓', definition: 'Dashboard - your central command center for managing your DevFest experience.' },
+    { name: 'Archipelago', icon: '🗺️', definition: 'Full schedule - the complete map of all sessions across all tracks.' },
+    { name: 'Voyage Plan', icon: '📋', definition: 'Your personal schedule - sessions you\'ve selected to attend.' },
+    { name: 'Navigational Drills', icon: '🎯', definition: 'Pre-conference challenges and skill-building activities.' },
+    { name: 'Doubloons', icon: '🪙', definition: 'Rewards and achievements earned through completing codelabs and challenges.' },
+    { name: 'Oracle', icon: '🔮', definition: 'AI assistant powered by Gemini - your guide for DevFest questions.' },
+    { name: 'Ports', icon: '🚢', definition: 'Venues and locations where sessions take place.' },
+    { name: 'Cast Off', icon: '🌊', definition: 'Start your DevFest journey or begin a session.' },
+    { name: 'Drop Anchor', icon: '⚓', definition: 'Save or bookmark something for later reference.' }
   ];
 
   ngOnInit(): void {
@@ -88,6 +114,11 @@ export class NavigatorSidebarComponent implements OnInit, OnDestroy{
   // Close sidebar
   closeSidebar(): void {
     this.sidebarClose.emit();
+  }
+
+  // Toggle terminology section
+  toggleTerminology(): void {
+    this.showTerminologySignal.update(current => !current);
   }
 
   // Navigate to selected item
