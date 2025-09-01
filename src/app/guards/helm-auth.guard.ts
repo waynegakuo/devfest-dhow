@@ -1,21 +1,29 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { AuthService } from '../services/auth/auth.service';
+import { first, map } from 'rxjs';
+import { Auth, authState } from '@angular/fire/auth';
 
 /**
  * Guard that protects the helm dashboard route from unauthenticated access
  * If user is not logged in and tries to access helm, redirect them to login
+ * Uses AngularFire's authState observable to wait for Firebase auth initialization
  */
 export const helmAuthGuard: CanActivateFn = (route, state) => {
-  const authService = inject(AuthService);
   const router = inject(Router);
+  const auth = inject(Auth);
 
-  // If user is not authenticated, redirect to login page
-  if (!authService.isAuthenticated()) {
-    router.navigate(['/login']);
-    return false;
-  }
+  // Use AngularFire's authState observable to check authentication
+  return authState(auth).pipe(
+    first(), // Take only the first emission to avoid multiple checks
+    map(user => {
+      if (!user) {
+        // If user is not authenticated, redirect to login page
+        router.navigate(['/login']);
+        return false;
+      }
 
-  // If user is authenticated, allow access to helm route
-  return true;
+      // If user is authenticated, allow access to helm route
+      return true;
+    })
+  );
 };
