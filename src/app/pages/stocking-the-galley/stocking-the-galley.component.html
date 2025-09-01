@@ -1,0 +1,164 @@
+<div class="stocking-galley">
+
+  <!-- Page Header -->
+  <header class="page-header">
+    <div class="page-title">
+      <h1>📚 Stocking the Galley</h1>
+      <p>Preparatory content curated for your voyage - resources to help you navigate your chosen track with confidence</p>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="schedule-content">
+    <!-- Loading State -->
+    @if (loading()) {
+    <div class="loading-container">
+      <div class="loading-spinner">
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+      </div>
+      <p class="loading-text">Loading your curated resources...</p>
+    </div>
+  }
+
+  <!-- Error State -->
+  @if (error() && !loading()) {
+    <div class="error-container">
+      <div class="error-card">
+        <div class="error-icon">⚠️</div>
+        <h3>Navigation Error</h3>
+        <p>{{ error() }}</p>
+        <button class="btn-primary" (click)="loadContent()">
+          Try Again
+        </button>
+      </div>
+    </div>
+  }
+
+  <!-- Content Loaded Successfully -->
+  @if (curatedContent() && !loading() && !error()) {
+    <div class="content-container">
+
+      <!-- User Track Info -->
+      <div class="track-info-card mb-4">
+        <div class="track-header">
+          <div class="track-badge">
+            <span class="track-name">{{ curatedContent()!.trackName }} Track</span>
+            <span class="expertise-level">{{ getExpertiseLevelDisplay(curatedContent()!.expertiseLevel) }}</span>
+          </div>
+          <div class="content-stats">
+            <span class="stat-item">
+              <strong>{{ curatedContent()!.totalItems }}</strong> Resources
+            </span>
+            <span class="stat-item">
+              <strong>{{ curatedContent()!.sections.length }}</strong> Categories
+            </span>
+          </div>
+        </div>
+        <p class="track-description">
+          We've carefully selected these resources based on your chosen track and expertise level
+          to help you prepare for the most relevant sessions at DevFest Dhow 2025.
+        </p>
+      </div>
+
+      <!-- Curated Content Sections -->
+      @for (section of curatedContent()!.sections; track section.title) {
+        <div class="content-section mb-4">
+          <div class="section-header">
+            <h2 class="section-title">{{ section.title }}</h2>
+            <p class="section-description">{{ section.description }}</p>
+          </div>
+
+          <div class="content-grid">
+            @for (item of section.items; track item.id) {
+              <div class="content-card" (click)="openLink(item.url)">
+                <div class="card-header">
+                  <div class="content-type-badge">
+                    <span class="type-icon">{{ getContentTypeIcon(item.type) }}</span>
+                    <span class="type-label">{{ item.type | titlecase }}</span>
+                  </div>
+                  @if (item.featured) {
+                    <span class="featured-badge">⭐ Featured</span>
+                  }
+                </div>
+
+                <div class="card-body">
+                  <h3 class="content-title">{{ item.title }}</h3>
+                  <p class="content-description">{{ item.description }}</p>
+
+                  <div class="content-meta">
+                    @if (item.author) {
+                      <span class="meta-item">
+                        <strong>By:</strong> {{ item.author }}
+                      </span>
+                    }
+                    @if (item.duration) {
+                      <span class="meta-item">
+                        <strong>Duration:</strong> {{ item.duration }}
+                      </span>
+                    }
+                    @if (item.source) {
+                      <span class="meta-item">
+                        <strong>Source:</strong> {{ item.source }}
+                      </span>
+                    }
+                  </div>
+
+                  @if (item.tags.length > 0) {
+                    <div class="content-tags">
+                      @for (tag of item.tags; track tag) {
+                        <span class="tag">{{ tag }}</span>
+                      }
+                    </div>
+                  }
+                </div>
+
+                <div class="card-footer">
+                  <span class="external-link-indicator">
+                    Open Resource 🔗
+                  </span>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+      <!-- No Content Available -->
+      @if (curatedContent()!.sections.length === 0) {
+        <div class="no-content-card">
+          <div class="no-content-icon">📚</div>
+          <h3>Preparing Your Resources</h3>
+          <p>
+            We're still curating preparatory content for your specific track and expertise level.
+            Check back soon for personalized learning resources!
+          </p>
+          <button class="btn-secondary" (click)="goToChartCourse()">
+            Update Your Preferences
+          </button>
+        </div>
+      }
+
+    </div>
+  }
+
+  <!-- Course Selection Required -->
+  @if (!navigator()?.techTrack || !navigator()?.expertiseLevel) {
+    <div class="course-selection-required">
+      <div class="requirement-card">
+        <div class="requirement-icon">🧭</div>
+        <h3>Chart Your Course First</h3>
+        <p>
+          To provide you with the most relevant preparatory content,
+          we need to know your preferred tech track and expertise level.
+        </p>
+        <button class="btn-primary" (click)="goToChartCourse()">
+          Complete Course Selection
+        </button>
+      </div>
+    </div>
+  }
+  </main>
+
+</div>
