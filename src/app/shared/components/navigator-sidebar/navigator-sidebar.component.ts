@@ -61,6 +61,7 @@ export class NavigatorSidebarComponent implements OnInit, OnDestroy{
     { id: 'helm', name: 'The Helm', icon: '⚓', description: 'Dashboard - Central hub and key information', route: '/dashboard/helm' },
     { id: 'archipelago', name: 'The Archipelago', icon: '🏝️', description: 'Full Schedule - Complete conference schedule', route: '/dashboard/archipelago' },
     { id: 'voyage-plan', name: 'My Voyage Plan', icon: '🗺️', description: 'My Schedule - Your personalized sessions', route: '/dashboard/my-voyage-plan' },
+    { id: 'galley', name: 'Stocking the Galley', icon: '📚', description: 'Preparatory Content - Curated learning resources for your track', route: '/dashboard/stocking-the-galley' },
     { id: 'drills', name: 'Navigational Drills', icon: '🎯', description: 'Challenges - Pre-conference challenges and quizzes', route: '/dashboard/navigational-drills' },
     { id: 'doubloons', name: 'Codelab Doubloons', icon: '🪙', description: 'Rewards - Gamification and codelab progress', route: '/dashboard/codelab-doubloons' },
     { id: 'oracle', name: 'Ask the Oracle', icon: '🔮', description: 'AI Assistant - Gemini-powered chatbot', route: '/dashboard/ask-the-oracle' },

@@ -24,10 +24,6 @@
     display: flex;
     align-items: center;
     gap: 1rem;
-    padding: 1.5rem 2rem;
-    background: white;
-    border-bottom: 1px solid rgba(21, 101, 192, 0.1);
-    box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1);
 
     .sidebar-toggle-btn {
       background: none;
@@ -51,19 +47,6 @@
 
     .page-title {
       flex: 1;
-
-      h1 {
-        margin: 0;
-        font-size: 1.5rem;
-        font-weight: bold;
-        color: $gray-700;
-      }
-
-      p {
-        margin: 0;
-        font-size: 0.875rem;
-        color: $gray-400;
-      }
     }
 
     .clear-plan-btn {
@@ -83,7 +66,6 @@
     }
 
     @media (max-width: 768px) {
-      padding: 1rem;
       flex-direction: column;
       gap: 1rem;
       align-items: flex-start;
