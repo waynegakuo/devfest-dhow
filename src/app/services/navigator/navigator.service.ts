@@ -7,8 +7,8 @@ import {
   updateDoc,
   serverTimestamp
 } from '@angular/fire/firestore';
-import { AuthService } from './auth/auth.service';
-import { Navigator, CourseSelection } from '../models/navigator.model';
+import { AuthService } from '../auth/auth.service';
+import { Navigator, CourseSelection } from '../../models/navigator.model';
 import { from, Observable, switchMap, of } from 'rxjs';
 
 @Injectable({

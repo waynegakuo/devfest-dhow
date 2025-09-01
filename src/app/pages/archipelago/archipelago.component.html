@@ -1,0 +1,55 @@
+<!-- The Archipelago - Full Schedule Page -->
+<div class="archipelago-page">
+  <!-- Page Header -->
+  <header class="page-header">
+    <div class="page-title">
+      <h1>🏝️ The Archipelago</h1>
+      <p>Complete Conference Schedule</p>
+    </div>
+  </header>
+
+    <!-- Schedule Content -->
+    <main class="schedule-content">
+      <div class="schedule-intro">
+        <h2>Explore All Islands of Knowledge</h2>
+        <p>Discover every session, workshop, and event happening throughout DevFest Dhow 2025. Browse the complete schedule to plan your learning journey.</p>
+      </div>
+
+      <!-- Voyage Tracks -->
+      <div class="voyage-tracks">
+        @for (voyage of voyages(); track voyage.id) {
+          <div class="voyage-track">
+            <div class="track-header">
+              <h3>{{ voyage.name }}</h3>
+              <span class="track-date">{{ voyage.date }}</span>
+            </div>
+
+            <div class="islands-grid">
+              @for (island of voyage.islands; track island.id) {
+                <div class="island-card">
+                  <div class="island-time">{{ island.time }}</div>
+                  <div class="island-content">
+                    <h4 class="island-title">{{ island.title }}</h4>
+                    <div class="speaker-info">
+                      <span class="speaker-name">{{ island.speaker }}</span>
+                      <span class="speaker-details">{{ island.speakerRole }} at {{ island.speakerCompany }}</span>
+                    </div>
+                    <div class="session-meta">
+                      <span class="duration">⏱️ {{ island.duration }}</span>
+                      <span class="venue">📍 {{ island.venue }}</span>
+                    </div>
+                    <p class="island-description">{{ island.description }}</p>
+                    <div class="island-tags">
+                      @for (tag of island.tags; track tag) {
+                        <span class="tag">{{ tag }}</span>
+                      }
+                    </div>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    </main>
+</div>

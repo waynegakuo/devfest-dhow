@@ -1,22 +1,5 @@
-<div class="helm-dashboard" [class.sidebar-open]="sidebarOpen()">
-  <!-- Navigator Tools Sidebar -->
-  <app-navigator-sidebar
-    [isOpen]="sidebarOpen()"
-    [voyages]="voyages()"
-    [progress]="progress()"
-    (sidebarClose)="closeSidebar()"
-    (toolChange)="setActiveTool($event)">
-  </app-navigator-sidebar>
-
-  <!-- Main Content -->
-  <div class="main-content">
-    <!-- Floating Navigator Tools Button -->
-    <button class="floating-action-btn" (click)="toggleSidebar()" [class.active]="sidebarOpen()">
-      <span class="toggle-icon">🧭</span>
-      <span class="btn-text">Navigator Tools</span>
-    </button>
-
-    <div class="container">
+<div class="helm-dashboard">
+  <div class="container">
     <!-- Dashboard Header -->
     <div class="dashboard-header mb-3">
       <div class="welcome-section">
@@ -108,6 +91,18 @@
                       ⭕ Mark as Attended
                     }
                   </button>
+                  <button
+                    class="attendance-btn add-plan-btn"
+                    [class.attended]="isInMyVoyage(island.id)"
+                    (click)="toggleMyVoyageByIsland(island)"
+                    title="Add or remove from My Voyage"
+                  >
+                    @if (isInMyVoyage(island.id)) {
+                      ✖ Remove from My Voyage
+                    } @else {
+                      ➕ Add to My Voyage
+                    }
+                  </button>
                 </div>
               </div>
 
@@ -137,6 +132,44 @@
           </div>
         }
       </div>
+    </div>
+
+    <!-- My Voyage Plan -->
+    <div class="voyages-section mb-3">
+      <h2 class="section-title">My Voyage Plan</h2>
+      @if (myVoyagePlanSorted().length === 0) {
+        <div class="ocean-card" style="padding: 1rem;">
+          <p>No islands in your voyage plan yet. Use "Add to My Voyage" on sessions to build your plan.</p>
+        </div>
+      } @else {
+        <div class="voyages-grid">
+          @for (item of myVoyagePlanSorted(); track item.island.id) {
+            <div class="voyage-card ocean-card">
+              <div class="voyage-header flex-between mb-1">
+                <h3>{{ item.island.title }}</h3>
+                <span class="voyage-date">{{ item.voyageDate }} • {{ item.island.time }}</span>
+              </div>
+              <div class="voyage-stats mb-1-5">
+                <div class="stat">
+                  <span class="stat-number">{{ item.voyageName || 'Voyage' }}</span>
+                  <span class="stat-label">Track</span>
+                </div>
+                <div class="stat">
+                  <span class="stat-number">{{ item.island.venue }}</span>
+                  <span class="stat-label">Venue</span>
+                </div>
+              </div>
+              <div class="voyage-islands">
+                <div class="island-mini">
+                  <span class="island-time">{{ item.island.duration }}</span>
+                  <span class="island-name">{{ item.island.speaker }}</span>
+                  <button class="attendance-btn add-plan-btn" (click)="toggleMyVoyageByIsland(item.island)">Remove</button>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      }
     </div>
 
     <!-- Voyages Overview -->
@@ -179,4 +212,3 @@
 
     </div>
   </div>
-</div>

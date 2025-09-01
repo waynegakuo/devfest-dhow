@@ -2,18 +2,20 @@ import { Component, signal, inject, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Island } from '../../models/island.model';
 import { Voyage } from '../../models/voyage.model';
-import { NavigatorSidebarComponent } from '../../shared/components/navigator-sidebar/navigator-sidebar.component';
 import { AuthService } from '../../services/auth/auth.service';
+import { MyVoyagePlanService } from '../../services/my-voyage-plan/my-voyage-plan.service';
+import { VoyagePlanItem } from '../../models/voyage-plan.model';
 
 @Component({
   selector: 'app-helm-dashboard',
   standalone: true,
-  imports: [CommonModule, NavigatorSidebarComponent],
+  imports: [CommonModule],
   templateUrl: './helm-dashboard.component.html',
   styleUrl: './helm-dashboard.component.scss'
 })
 export class HelmDashboardComponent {
   private authService = inject(AuthService);
+  private myVoyage = inject(MyVoyagePlanService);
 
   // Navigator's personal voyages and schedule
   private voyagesSignal = signal<Voyage[]>([
@@ -155,10 +157,6 @@ export class HelmDashboardComponent {
     };
   });
 
-  // Navigator Tools Sidebar state
-  private sidebarOpenSignal = signal(false);
-
-  readonly sidebarOpen = this.sidebarOpenSignal.asReadonly();
 
   // Toggle island attendance
   toggleAttendance(voyageId: string, islandId: string): void {
@@ -206,6 +204,31 @@ export class HelmDashboardComponent {
     return allIslands.sort((a, b) => a.time.localeCompare(b.time));
   }
 
+  // My Voyage Plan helpers
+  isInMyVoyage(islandId: string): boolean {
+    return this.myVoyage.isInPlan(islandId);
+  }
+
+  toggleMyVoyage(voyage: Voyage, island: Island): void {
+    const item: VoyagePlanItem = {
+      island,
+      voyageId: voyage.id,
+      voyageName: voyage.name,
+      voyageDate: voyage.date
+    };
+    this.myVoyage.toggleSession(item);
+  }
+
+  toggleMyVoyageByIsland(island: Island): void {
+    const v = this.voyages().find(vg => vg.islands.some(i => i.id === island.id));
+    if (!v) return;
+    this.toggleMyVoyage(v, island);
+  }
+
+  myVoyagePlanSorted() {
+    return this.myVoyage.itemsSorted();
+  }
+
   // Check if island is happening now or soon
   isIslandUpcoming(island: Island): boolean {
     // For demo purposes, consider sessions in the next 2 hours as upcoming
@@ -231,17 +254,4 @@ export class HelmDashboardComponent {
     return voyage.islands.filter(island => island.attended).length;
   }
 
-  // Navigator Tools Sidebar methods
-  toggleSidebar(): void {
-    this.sidebarOpenSignal.set(!this.sidebarOpen());
-  }
-
-  closeSidebar(): void {
-    this.sidebarOpenSignal.set(false);
-  }
-
-  setActiveTool(toolId: string): void {
-    // Tool change is handled by the sidebar component
-    // This method is kept for the event binding but doesn't need implementation
-  }
 }

@@ -12,7 +12,7 @@ export const loginRedirectGuard: CanActivateFn = (route, state) => {
 
   // If user is authenticated, redirect to helm dashboard
   if (authService.isAuthenticated()) {
-    return router.createUrlTree(['/helm']);
+    return router.createUrlTree(['/dashboard/helm']);
   }
 
   // If user is not authenticated, allow access to login route
