@@ -1,4 +1,4 @@
-import { Injectable, inject, signal } from '@angular/core';
+import {Injectable, inject, signal, EnvironmentInjector, runInInjectionContext} from '@angular/core';
 import {
   Firestore,
   doc,
@@ -17,6 +17,8 @@ import { from, Observable, switchMap, of } from 'rxjs';
 export class NavigatorService {
   private firestore = inject(Firestore);
   private authService = inject(AuthService);
+  private environmentInjector = inject(EnvironmentInjector);
+
 
   // Signal for current navigator data
   currentNavigator = signal<Navigator | null>(null);
@@ -97,25 +99,33 @@ export class NavigatorService {
       return of(null);
     }
 
-    const navigatorRef = doc(this.firestore, 'navigators', user.uid);
 
-    return from(getDoc(navigatorRef)).pipe(
-      switchMap((navigatorDoc) => {
-        if (navigatorDoc.exists()) {
-          const navigatorData = {
-            ...navigatorDoc.data(),
-            createdAt: navigatorDoc.data()['createdAt']?.toDate() || new Date(),
-            updatedAt: navigatorDoc.data()['updatedAt']?.toDate() || new Date()
-          } as Navigator;
+    // Run in injection context to ensure proper DI resolution
+    return runInInjectionContext(this.environmentInjector, () => {
+      // Get reference to the navigator document in Firestore
+      const navigatorRef = doc(this.firestore, 'navigators', user.uid);
 
-          this.currentNavigator.set(navigatorData);
-          return of(navigatorData);
-        } else {
-          // Create navigator if doesn't exist
-          return from(this.createOrUpdateNavigator());
-        }
-      })
-    );
+      // Get navigator document and transform the response
+      return from(getDoc(navigatorRef)).pipe(
+        switchMap((navigatorDoc) => {
+          if (navigatorDoc.exists()) {
+            // Convert Firestore timestamp to Date objects and create navigator data
+            const navigatorData = {
+              ...navigatorDoc.data(),
+              createdAt: navigatorDoc.data()['createdAt']?.toDate() || new Date(),
+              updatedAt: navigatorDoc.data()['updatedAt']?.toDate() || new Date()
+            } as Navigator;
+
+            // Update the navigator signal with latest data
+            this.currentNavigator.set(navigatorData);
+            return of(navigatorData);
+          } else {
+            // Create navigator if doesn't exist
+            return from(this.createOrUpdateNavigator());
+          }
+        })
+      );
+    })
   }
 
   /**

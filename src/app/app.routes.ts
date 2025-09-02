@@ -52,6 +52,10 @@ export const routes: Routes = [
         path: 'ask-the-oracle',
         loadComponent: () => import('./pages/ask-the-oracle/ask-the-oracle.component').then(m => m.AskTheOracleComponent)
       },
+      {
+        path: 'stocking-the-galley',
+        loadComponent: () => import('./pages/stocking-the-galley/stocking-the-galley.component').then(m => m.StockingTheGalleyComponent)
+      },
       // {
       //   path: 'quest-for-atlantis',
       //   loadComponent: () => import('./pages/quest-for-atlantis/quest-for-atlantis.component').then(m => m.QuestForAtlantisComponent)
