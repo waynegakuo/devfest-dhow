@@ -138,6 +138,24 @@ export class HelmDashboardComponent {
     return now.getTime() > sessionTime.getTime();
   }
 
+  // Check if island session is currently ongoing
+  isIslandOngoing(island: Island): boolean {
+    const now = new Date();
+    const sessionStartTime = new Date();
+    const [hours, minutes] = island.time.split(':');
+    sessionStartTime.setHours(parseInt(hours), parseInt(minutes));
+
+    // Parse duration to calculate session end time
+    const durationMatch = island.duration.match(/(\d+)/);
+    const durationMinutes = durationMatch ? parseInt(durationMatch[1]) : 0;
+
+    const sessionEndTime = new Date(sessionStartTime);
+    sessionEndTime.setMinutes(sessionEndTime.getMinutes() + durationMinutes);
+
+    // Session is ongoing if current time is between start and end time
+    return now.getTime() >= sessionStartTime.getTime() && now.getTime() <= sessionEndTime.getTime();
+  }
+
   // Get voyage ID for a given island ID
   getVoyageForIsland(islandId: string): string {
     const voyage = this.voyages().find(voyage =>

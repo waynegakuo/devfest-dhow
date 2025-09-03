@@ -46,6 +46,15 @@
                         }
                       </div>
 
+                      @if (isIslandOngoing(island)) {
+                        <div class="ongoing-status">
+                          <span class="ongoing-badge">
+                            <span class="ongoing-icon">●</span>
+                            <span class="ongoing-text">Ongoing</span>
+                          </span>
+                        </div>
+                      }
+
                       @if (isIslandComplete(island)) {
                         <div class="ended-status">
                           <span class="ended-badge">
