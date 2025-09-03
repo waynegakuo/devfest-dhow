@@ -1,0 +1,146 @@
+<div class="admin-voyage-management">
+  <!-- Header Section -->
+  <div class="page-header">
+    <div class="header-content">
+      <h1 class="page-title">🚢 Fleet Management</h1>
+      <p class="page-subtitle">Manage voyage groups that organize sessions by time or theme</p>
+    </div>
+    <button class="btn-primary create-btn" (click)="createVoyage()">
+      <span class="btn-icon">+</span>
+      Create New Voyage Group
+    </button>
+  </div>
+
+  <!-- Voyages Table -->
+  <div class="voyages-table-section">
+    <div class="table-container">
+      <table class="voyages-table">
+        <thead>
+          <tr>
+            <th>Voyage Group</th>
+            <th>Date</th>
+            <th>Sessions</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (voyage of voyages(); track voyage.id) {
+            <tr class="voyage-row">
+              <td class="voyage-name">
+                <h4>{{ voyage.name }}</h4>
+              </td>
+              <td class="voyage-date">{{ formatDate(voyage.date) }}</td>
+              <td class="voyage-sessions">
+                <span class="sessions-count">{{ voyage.islands.length }} sessions</span>
+              </td>
+              <td class="voyage-actions">
+                <button class="btn-secondary btn-sm" (click)="editVoyage(voyage)" title="Edit Voyage">
+                  ✏️
+                </button>
+                <button class="btn-danger btn-sm" (click)="deleteVoyage(voyage.id)" title="Delete Voyage">
+                  🗑️
+                </button>
+              </td>
+            </tr>
+          }
+          @empty {
+            <tr>
+              <td colspan="4" class="empty-state">
+                <div class="empty-content">
+                  <div class="empty-icon">🚢</div>
+                  <h3>No Voyage Groups Found</h3>
+                  <p>Create your first voyage group to organize sessions by time or theme.</p>
+                  <button class="btn-primary" (click)="createVoyage()">Create Voyage Group</button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Create Voyage Modal -->
+  @if (showCreateModal()) {
+    <div class="modal-overlay" (click)="cancelModal()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h2>Create New Voyage Group</h2>
+          <button class="modal-close" (click)="cancelModal()">&times;</button>
+        </div>
+
+        <div class="modal-body">
+          <form class="voyage-form">
+            <div class="form-group">
+              <label for="voyageName">Voyage Group Name</label>
+              <input
+                type="text"
+                id="voyageName"
+                class="form-control"
+                [(ngModel)]="voyageForm().name"
+                placeholder="e.g., Opening Waters - Morning Keynotes"
+                required>
+            </div>
+
+            <div class="form-group">
+              <label for="voyageDate">Date</label>
+              <input
+                type="date"
+                id="voyageDate"
+                class="form-control"
+                [(ngModel)]="voyageForm().date"
+                required>
+            </div>
+          </form>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn-secondary" (click)="cancelModal()">Cancel</button>
+          <button class="btn-primary" (click)="saveVoyage()">Create Voyage Group</button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Edit Voyage Modal -->
+  @if (showEditModal()) {
+    <div class="modal-overlay" (click)="cancelModal()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h2>Edit Voyage Group</h2>
+          <button class="modal-close" (click)="cancelModal()">&times;</button>
+        </div>
+
+        <div class="modal-body">
+          <form class="voyage-form">
+            <div class="form-group">
+              <label for="editVoyageName">Voyage Group Name</label>
+              <input
+                type="text"
+                id="editVoyageName"
+                class="form-control"
+                [(ngModel)]="voyageForm().name"
+                placeholder="e.g., Opening Waters - Morning Keynotes"
+                required>
+            </div>
+
+            <div class="form-group">
+              <label for="editVoyageDate">Date</label>
+              <input
+                type="date"
+                id="editVoyageDate"
+                class="form-control"
+                [(ngModel)]="voyageForm().date"
+                required>
+            </div>
+          </form>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn-secondary" (click)="cancelModal()">Cancel</button>
+          <button class="btn-primary" (click)="saveVoyage()">Update Voyage Group</button>
+        </div>
+      </div>
+    </div>
+  }
+</div>
