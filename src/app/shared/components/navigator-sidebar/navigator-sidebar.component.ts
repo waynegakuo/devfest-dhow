@@ -47,6 +47,8 @@ export class NavigatorSidebarComponent implements OnInit, OnDestroy{
     attendedIslands: 0,
     completionRate: 0
   };
+  @Input() customNavigationItems: NavigationItem[] | null = null;
+  @Input() isAdminMode = false;
 
   // Output events
   @Output() sidebarClose = new EventEmitter<void>();
@@ -67,6 +69,11 @@ export class NavigatorSidebarComponent implements OnInit, OnDestroy{
   readonly isAdmin = computed(() => {
     const nav = this.navigator();
     return nav?.role === 'admin';
+  });
+
+  // Get effective navigation items (custom or default)
+  readonly effectiveNavigationItems = computed(() => {
+    return this.customNavigationItems || this.navigationItems;
   });
 
   // Navigation items configuration
@@ -117,7 +124,7 @@ export class NavigatorSidebarComponent implements OnInit, OnDestroy{
 
   // Helper method to determine active navigation item from route
   private setActiveNavFromRoute(url: string): void {
-    const matchingItem = this.navigationItems.find(item =>
+    const matchingItem = this.effectiveNavigationItems().find(item =>
       item.route && url.includes(item.route)
     );
 

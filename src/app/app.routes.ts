@@ -59,7 +59,7 @@ export const routes: Routes = [
       },
       {
         path: 'admin-role-assignment',
-        loadComponent: () => import('./pages/admin-role-assignment/admin-role-assignment.component').then(m => m.AdminRoleAssignmentComponent),
+        loadComponent: () => import('./pages/admin/admin-role-assignment/admin-role-assignment.component').then(m => m.AdminRoleAssignmentComponent),
         canActivate: [adminGuard]
       },
       // {
@@ -70,6 +70,46 @@ export const routes: Routes = [
       //   path: 'my-profile',
       //   loadComponent: () => import('./pages/my-profile/my-profile.component').then(m => m.MyProfileComponent)
       // }
+    ]
+  },
+  {
+    path: 'admin',
+    loadComponent: () => import('./shared/layouts/admin-dashboard-layout/admin-dashboard-layout.component').then(m => m.AdminDashboardLayoutComponent),
+    canActivate: [adminGuard],
+    children: [
+      {
+        path: '',
+        redirectTo: 'helm',
+        pathMatch: 'full'
+      },
+      {
+        path: 'helm',
+        loadComponent: () => import('./pages/admin/admin-helm-dashboard/admin-helm-dashboard.component').then(m => m.AdminHelmDashboardComponent)
+      },
+      {
+        path: 'voyages',
+        loadComponent: () => import('./pages/admin/admin-voyage-management/admin-voyage-management.component').then(m => m.AdminVoyageManagementComponent)
+      },
+      {
+        path: 'sessions',
+        loadComponent: () => import('./pages/admin/admin-session-management/admin-session-management.component').then(m => m.AdminSessionManagementComponent)
+      },
+      {
+        path: 'navigators',
+        loadComponent: () => import('./pages/admin/admin-navigator-management/admin-navigator-management.component').then(m => m.AdminNavigatorManagementComponent)
+      },
+      {
+        path: 'analytics',
+        loadComponent: () => import('./pages/admin/admin-analytics/admin-analytics.component').then(m => m.AdminAnalyticsComponent)
+      },
+      {
+        path: 'settings',
+        loadComponent: () => import('./pages/admin/admin-settings/admin-settings.component').then(m => m.AdminSettingsComponent)
+      },
+      {
+        path: 'role-assignment',
+        loadComponent: () => import('./pages/admin/admin-role-assignment/admin-role-assignment.component').then(m => m.AdminRoleAssignmentComponent)
+      }
     ]
   },
   // Legacy routes for backward compatibility - redirect to dashboard

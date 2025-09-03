@@ -25,6 +25,12 @@
         @if (availableRoutes.helm) {
           <a routerLink="/helm" class="nav-link">The Helm</a>
         }
+        @if (availableRoutes.admin && isAdmin()) {
+          <a routerLink="/admin" class="nav-link admin-link">
+            <span class="admin-icon">👑</span>
+            Admiral's Helm
+          </a>
+        }
         @if (availableRoutes.compass) {
           <a routerLink="/compass" class="nav-link">Compass</a>
         }
@@ -61,6 +67,12 @@
       }
       @if (availableRoutes.helm) {
         <a routerLink="/helm" class="mobile-nav-link" (click)="closeMobileMenu()">The Helm</a>
+      }
+      @if (availableRoutes.admin && isAdmin()) {
+        <a routerLink="/admin" class="mobile-nav-link admin-link" (click)="closeMobileMenu()">
+          <span class="admin-icon">👑</span>
+          Admiral's Helm
+        </a>
       }
       @if (availableRoutes.compass) {
         <a routerLink="/compass" class="mobile-nav-link" (click)="closeMobileMenu()">Compass</a>
