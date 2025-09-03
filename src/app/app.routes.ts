@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { loginRedirectGuard } from './guards/login-redirect.guard';
 import { helmAuthGuard } from './guards/helm-auth.guard';
 import { courseSelectionGuard } from './guards/course-selection.guard';
+import { adminGuard } from './guards/admin.guard';
 
 export const routes: Routes = [
   {
@@ -58,7 +59,8 @@ export const routes: Routes = [
       },
       {
         path: 'admin-role-assignment',
-        loadComponent: () => import('./pages/admin-role-assignment/admin-role-assignment.component').then(m => m.AdminRoleAssignmentComponent)
+        loadComponent: () => import('./pages/admin-role-assignment/admin-role-assignment.component').then(m => m.AdminRoleAssignmentComponent),
+        canActivate: [adminGuard]
       },
       // {
       //   path: 'quest-for-atlantis',
