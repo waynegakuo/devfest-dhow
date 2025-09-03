@@ -1,30 +1,8 @@
 @use 'sass:color';
+@use '../../../styles/variables' as *;
 
-// Ocean-themed variables
-$ocean-blue: #1565C0;
-$wave-teal: #00ACC1;
-$sand-beige: #D7CCC8;
-$coral-orange: #FF7043;
-$deep-sea: #0D47A1;
-$magenta-violet: #9c27b0;
-$white: #FFFFFF;
-$gray-50: #FAFAFA;
-$gray-100: #F5F5F5;
-$gray-200: #EEEEEE;
-$gray-300: #E0E0E0;
-$gray-400: #BDBDBD;
-$gray-500: #9E9E9E;
-$gray-600: #757575;
-$gray-700: #616161;
-$gray-800: #424242;
-$gray-900: #212121;
-
-// Success and error colors
-$success-green: #4CAF50;
 $success-light: #E8F5E8;
-$error-red: #F44336;
 $error-light: #FFEBEE;
-$warning-orange: #FF9800;
 $warning-light: #FFF3E0;
 
 .helm-control-center {
@@ -40,7 +18,6 @@ $warning-light: #FFF3E0;
   }
 }
 
-// Header Section
 .control-center-header {
   text-align: center;
   margin-bottom: 3rem;
@@ -49,40 +26,39 @@ $warning-light: #FFF3E0;
   border-radius: 1rem;
   color: $white;
   box-shadow: 0 4px 20px rgba(13, 71, 161, 0.3);
+}
 
-  .header-content {
-    max-width: 600px;
-    margin: 0 auto;
-  }
+.header-content {
+  max-width: 600px;
+  margin: 0 auto;
+}
 
-  .helm-title {
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.75rem;
+.helm-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
 
-    @media (max-width: 768px) {
-      font-size: 2rem;
-    }
-
-    .title-icon {
-      font-size: 2rem;
-      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
-    }
-  }
-
-  .helm-subtitle {
-    font-size: 1.125rem;
-    opacity: 0.9;
-    margin: 0;
-    font-weight: 300;
+  @media (max-width: 768px) {
+    font-size: 2rem;
   }
 }
 
-// Operation Status Messages
+.title-icon {
+  font-size: 2rem;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.helm-subtitle {
+  font-size: 1.125rem;
+  opacity: 0.9;
+  margin: 0;
+  font-weight: 300;
+}
+
 .operation-status {
   margin-bottom: 2rem;
   border-radius: 0.75rem;
@@ -98,43 +74,43 @@ $warning-light: #FFF3E0;
     background-color: $error-light;
     border: 2px solid $error-red;
   }
+}
 
-  .status-content {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
+.status-content {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
 
-    .status-icon {
-      font-size: 1.25rem;
-      flex-shrink: 0;
-    }
+.status-icon {
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
 
-    .status-message {
-      flex: 1;
-      font-weight: 500;
-      color: $gray-800;
-    }
+.status-message {
+  flex: 1;
+  font-weight: 500;
+  color: $gray-800;
+}
 
-    .btn-clear-status {
-      background: none;
-      border: none;
-      font-size: 1.25rem;
-      color: $gray-500;
-      cursor: pointer;
-      padding: 0.25rem;
-      border-radius: 50%;
-      transition: all 0.2s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 2rem;
-      height: 2rem;
+.btn-clear-status {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  color: $gray-500;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
 
-      &:hover {
-        background-color: rgba(0, 0, 0, 0.1);
-        color: $gray-700;
-      }
-    }
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    color: $gray-700;
   }
 }
 
@@ -246,10 +222,7 @@ $warning-light: #FFF3E0;
 }
 
 // Button Styles
-.btn-primary,
-.btn-secondary,
-.btn-danger,
-.btn-refresh {
+%btn-base {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
@@ -269,9 +242,7 @@ $warning-light: #FFF3E0;
     transform: none !important;
   }
 
-  .btn-icon,
-  .loading-spinner,
-  .refresh-icon {
+  .btn-icon, .loading-spinner, .refresh-icon {
     font-size: 1rem;
     flex-shrink: 0;
   }
@@ -281,44 +252,47 @@ $warning-light: #FFF3E0;
   }
 }
 
+%btn-hover {
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+  }
+}
+
 .btn-primary {
+  @extend %btn-base, %btn-hover;
   background: linear-gradient(135deg, $magenta-violet 0%, color.adjust($magenta-violet, $lightness: -10%) 100%);
   color: $white;
   box-shadow: 0 2px 8px rgba(156, 39, 176, 0.3);
 
   &:hover:not(:disabled) {
-    transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(156, 39, 176, 0.4);
-  }
-
-  &:active:not(:disabled) {
-    transform: translateY(0);
   }
 }
 
 .btn-secondary {
+  @extend %btn-base, %btn-hover;
   background: linear-gradient(135deg, $wave-teal 0%, color.adjust($wave-teal, $lightness: -10%) 100%);
   color: $white;
   box-shadow: 0 2px 8px rgba(0, 172, 193, 0.3);
 
   &:hover:not(:disabled) {
-    transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(0, 172, 193, 0.4);
   }
 }
 
 .btn-danger {
+  @extend %btn-base, %btn-hover;
   background: linear-gradient(135deg, $error-red 0%, color.adjust($error-red, $lightness: -10%) 100%);
   color: $white;
   box-shadow: 0 2px 8px rgba(244, 67, 54, 0.3);
 
   &:hover:not(:disabled) {
-    transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(244, 67, 54, 0.4);
   }
 }
 
 .btn-refresh {
+  @extend %btn-base, %btn-hover;
   background: $gray-100;
   color: $gray-700;
   border: 1px solid $gray-300;
@@ -326,7 +300,6 @@ $warning-light: #FFF3E0;
   &:hover:not(:disabled) {
     background: $gray-200;
     border-color: $gray-400;
-    transform: translateY(-1px);
   }
 }
 
@@ -357,37 +330,34 @@ $warning-light: #FFF3E0;
 }
 
 // Loading and Empty States
-.loading-state,
-.empty-state {
+.loading-state, .empty-state {
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 3rem 1rem;
   text-align: center;
+}
 
-  .loading-content,
-  .empty-content {
-    max-width: 300px;
+.loading-content, .empty-content {
+  max-width: 300px;
+}
 
-    .loading-spinner.large,
-    .empty-icon {
-      font-size: 3rem;
-      margin-bottom: 1rem;
-      display: block;
-    }
+.loading-spinner.large, .empty-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  display: block;
+}
 
-    h3 {
-      color: $gray-700;
-      margin-bottom: 0.5rem;
-      font-weight: 500;
-    }
+.loading-content h3, .empty-content h3 {
+  color: $gray-700;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
 
-    p {
-      color: $gray-500;
-      margin: 0;
-      font-size: 0.875rem;
-    }
-  }
+.loading-content p, .empty-content p {
+  color: $gray-500;
+  margin: 0;
+  font-size: 0.875rem;
 }
 
 // Admirals Grid
@@ -414,91 +384,90 @@ $warning-light: #FFF3E0;
     border-color: $gray-300;
   }
 
-  .admiral-info {
-    display: flex;
-    gap: 1rem;
-    margin-bottom: 1rem;
+}
 
-    .admiral-avatar {
-      flex-shrink: 0;
+.admiral-info {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
 
-      .avatar-image {
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        object-fit: cover;
-        border: 2px solid $white;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      }
+.admiral-avatar {
+  flex-shrink: 0;
+}
 
-      .avatar-placeholder {
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, $gray-300 0%, $gray-400 100%);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border: 2px solid $white;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+.avatar-image, .avatar-placeholder {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 2px solid $white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
 
-        .avatar-icon {
-          font-size: 1.5rem;
-          color: $white;
-        }
-      }
-    }
+.avatar-image {
+  object-fit: cover;
+}
 
-    .admiral-details {
-      flex: 1;
-      min-width: 0;
+.avatar-placeholder {
+  background: linear-gradient(135deg, $gray-300 0%, $gray-400 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-      .admiral-name {
-        font-size: 1.125rem;
-        font-weight: 600;
-        color: $gray-800;
-        margin-bottom: 0.25rem;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
+.avatar-icon {
+  font-size: 1.5rem;
+  color: $white;
+}
 
-      .admiral-email {
-        font-size: 0.875rem;
-        color: $gray-600;
-        margin-bottom: 0.75rem;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
+.admiral-details {
+  flex: 1;
+  min-width: 0;
+}
 
-      .admiral-badges {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.5rem;
-      }
-    }
-  }
+.admiral-name {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: $gray-800;
+  margin-bottom: 0.25rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
-  .admiral-actions {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
+.admiral-email {
+  font-size: 0.875rem;
+  color: $gray-600;
+  margin-bottom: 0.75rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
-    .demote-btn {
-      padding: 0.5rem 1rem;
-      font-size: 0.8125rem;
-    }
+.admiral-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
 
-    .current-user-label {
-      background: $magenta-violet;
-      color: $white;
-      padding: 0.5rem 1rem;
-      border-radius: 0.375rem;
-      font-weight: 500;
-      font-size: 0.8125rem;
-    }
-  }
+.admiral-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.demote-btn {
+  padding: 0.5rem 1rem;
+  font-size: 0.8125rem;
+}
+
+.current-user-label {
+  background: $magenta-violet;
+  color: $white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  font-size: 0.8125rem;
 }
 
 // Badge Styles
@@ -544,29 +513,20 @@ $warning-light: #FFF3E0;
     padding: 0.75rem;
   }
 
-  .control-section {
-    padding: 1.5rem;
-  }
-
-  .admirals-section {
+  .control-section, .admirals-section {
     padding: 1.5rem;
   }
 
   .admiral-card {
     padding: 1rem;
+  }
 
-    .admiral-info {
-      .admiral-avatar {
-        .avatar-image,
-        .avatar-placeholder {
-          width: 50px;
-          height: 50px;
-        }
+  .avatar-image, .avatar-placeholder {
+    width: 50px;
+    height: 50px;
+  }
 
-        .avatar-placeholder .avatar-icon {
-          font-size: 1.25rem;
-        }
-      }
-    }
+  .avatar-icon {
+    font-size: 1.25rem;
   }
 }
