@@ -1,0 +1,247 @@
+[
+  {
+    "id": "voyage-1",
+    "name": "Opening Waters - Morning Keynotes",
+    "date": "2025-02-15",
+    "islands": [
+      {
+        "id": "island-1",
+        "title": "Welcome Aboard - DevFest Dhow Opening",
+        "speaker": "Captain Sarah Johnson",
+        "speakerRole": "Lead Developer Advocate",
+        "speakerCompany": "Google",
+        "time": "09:00",
+        "duration": "45 min",
+        "venue": "Alpha Deck",
+        "sessionType": "Opening Waters",
+        "description": "Join us as we set sail on an incredible journey through the latest in tech and development. Get ready to navigate through exciting waters of innovation.",
+        "tags": ["Opening", "Welcome", "Community"],
+        "attended": false
+      },
+      {
+        "id": "island-2",
+        "title": "The Future of Developer Experience",
+        "speaker": "Dr. Amina Hassan",
+        "speakerRole": "Principal Engineer",
+        "speakerCompany": "Microsoft",
+        "time": "10:00",
+        "duration": "50 min",
+        "venue": "Alpha Deck",
+        "sessionType": "Opening Waters",
+        "description": "Explore how developer experience is evolving and what tools and practices will shape the future of software development.",
+        "tags": ["Developer Experience", "Future Tech", "Innovation"],
+        "attended": false
+      }
+    ]
+  },
+  {
+    "id": "voyage-2",
+    "name": "First Wave Breakouts - 12:00 PM",
+    "date": "2025-02-15",
+    "islands": [
+      {
+        "id": "island-3",
+        "title": "AI-Powered Navigation: Machine Learning in Production",
+        "speaker": "Dr. Amara Okafor",
+        "speakerRole": "ML Research Scientist",
+        "speakerCompany": "DeepMind",
+        "time": "12:00",
+        "duration": "40 min",
+        "venue": "Alpha Deck",
+        "sessionType": "Breakout",
+        "description": "Discover how to successfully deploy machine learning models in production environments and navigate the challenges of scaling AI systems.",
+        "tags": ["AI", "Machine Learning", "Production"],
+        "attended": false
+      },
+      {
+        "id": "island-4",
+        "title": "Cloud Harbor: Scaling Applications on Google Cloud",
+        "speaker": "Michael Chen",
+        "speakerRole": "Cloud Solutions Architect",
+        "speakerCompany": "Google Cloud",
+        "time": "12:00",
+        "duration": "40 min",
+        "venue": "Bravo Deck",
+        "sessionType": "Breakout",
+        "description": "Learn how to leverage Google Cloud Platform to build scalable, reliable applications that can weather any storm.",
+        "tags": ["Cloud", "Scaling", "Architecture"],
+        "attended": false
+      },
+      {
+        "id": "island-5",
+        "title": "Security Anchors: Protecting Your Digital Fleet",
+        "speaker": "Maria Rodriguez",
+        "speakerRole": "Security Engineer",
+        "speakerCompany": "GitHub",
+        "time": "12:00",
+        "duration": "40 min",
+        "venue": "Charlie Deck",
+        "sessionType": "Breakout",
+        "description": "Navigate the treacherous waters of cybersecurity with best practices for securing modern applications and infrastructure.",
+        "tags": ["Security", "Best Practices", "Infrastructure"],
+        "attended": false
+      },
+      {
+        "id": "island-6",
+        "title": "Mobile Tides: iOS Development Mastery",
+        "speaker": "James Kim",
+        "speakerRole": "Senior iOS Developer",
+        "speakerCompany": "Apple",
+        "time": "12:00",
+        "duration": "40 min",
+        "venue": "Delta Deck",
+        "sessionType": "Breakout",
+        "description": "Ride the mobile wave with advanced iOS development techniques and the latest Swift features.",
+        "tags": ["iOS", "Swift", "Mobile"],
+        "attended": false
+      }
+    ]
+  },
+  {
+    "id": "voyage-3",
+    "name": "Afternoon Expeditions - 2:00 PM",
+    "date": "2025-02-15",
+    "islands": [
+      {
+        "id": "island-7",
+        "title": "Flutter Winds: Cross-Platform Development",
+        "speaker": "Fatima Al-Rashid",
+        "speakerRole": "Mobile Development Lead",
+        "speakerCompany": "Spotify",
+        "time": "14:00",
+        "duration": "40 min",
+        "venue": "Alpha Deck",
+        "sessionType": "Breakout",
+        "description": "Set sail with Flutter and discover how to build beautiful, natively compiled applications for mobile, web, and desktop from a single codebase.",
+        "tags": ["Flutter", "Mobile", "Cross-Platform"],
+        "attended": false
+      },
+      {
+        "id": "island-8",
+        "title": "DevOps Currents: Streamlining Development Workflows",
+        "speaker": "James Peterson",
+        "speakerRole": "DevOps Engineer",
+        "speakerCompany": "GitHub",
+        "time": "14:00",
+        "duration": "40 min",
+        "venue": "Bravo Deck",
+        "sessionType": "Breakout",
+        "description": "Navigate through modern DevOps practices and learn how to create efficient CI/CD pipelines that keep your development ship sailing smoothly.",
+        "tags": ["DevOps", "CI/CD", "Automation"],
+        "attended": false
+      },
+      {
+        "id": "island-9",
+        "title": "Data Ocean: Analytics and Insights",
+        "speaker": "Dr. Chen Liu",
+        "speakerRole": "Data Scientist",
+        "speakerCompany": "Netflix",
+        "time": "14:00",
+        "duration": "40 min",
+        "venue": "Charlie Deck",
+        "sessionType": "Breakout",
+        "description": "Dive deep into the data ocean and learn how to extract meaningful insights that drive product decisions.",
+        "tags": ["Data Science", "Analytics", "Insights"],
+        "attended": false
+      },
+      {
+        "id": "island-10",
+        "title": "Design Compass: UX/UI Best Practices",
+        "speaker": "Sofia Martinez",
+        "speakerRole": "Principal Designer",
+        "speakerCompany": "Figma",
+        "time": "14:00",
+        "duration": "40 min",
+        "venue": "Delta Deck",
+        "sessionType": "Breakout",
+        "description": "Navigate the design seas with proven UX/UI methodologies that create exceptional user experiences.",
+        "tags": ["Design", "UX", "UI"],
+        "attended": false
+      }
+    ]
+  },
+  {
+    "id": "voyage-4",
+    "name": "Second Wave Expeditions - 2:50 PM",
+    "date": "2025-02-15",
+    "islands": [
+      {
+        "id": "island-11",
+        "title": "Web Horizons: Modern JavaScript Frameworks",
+        "speaker": "Alex Rivera",
+        "speakerRole": "Senior Frontend Engineer",
+        "speakerCompany": "Meta",
+        "time": "14:50",
+        "duration": "40 min",
+        "venue": "Alpha Deck",
+        "sessionType": "Breakout",
+        "description": "Navigate through the evolving landscape of modern JavaScript frameworks and discover the latest tools and techniques shaping frontend development.",
+        "tags": ["JavaScript", "Frontend", "Frameworks"],
+        "attended": false
+      },
+      {
+        "id": "island-12",
+        "title": "Blockchain Depths: Decentralized Applications",
+        "speaker": "Priya Sharma",
+        "speakerRole": "Blockchain Developer",
+        "speakerCompany": "Ethereum Foundation",
+        "time": "14:50",
+        "duration": "40 min",
+        "venue": "Bravo Deck",
+        "sessionType": "Breakout",
+        "description": "Dive into the deep waters of blockchain technology and learn how to build decentralized applications that sail beyond traditional boundaries.",
+        "tags": ["Blockchain", "Web3", "DApps"],
+        "attended": false
+      },
+      {
+        "id": "island-13",
+        "title": "Performance Storms: Optimization Techniques",
+        "speaker": "Marcus Thompson",
+        "speakerRole": "Performance Engineer",
+        "speakerCompany": "Cloudflare",
+        "time": "14:50",
+        "duration": "40 min",
+        "venue": "Charlie Deck",
+        "sessionType": "Breakout",
+        "description": "Weather the performance storms by mastering optimization techniques that keep your applications running smoothly even in rough digital seas.",
+        "tags": ["Performance", "Optimization", "Speed"],
+        "attended": false
+      },
+      {
+        "id": "island-14",
+        "title": "API Navigation: GraphQL & REST Mastery",
+        "speaker": "Elena Rodriguez",
+        "speakerRole": "API Architect",
+        "speakerCompany": "Shopify",
+        "time": "14:50",
+        "duration": "40 min",
+        "venue": "Delta Deck",
+        "sessionType": "Breakout",
+        "description": "Chart your course through API design patterns and discover how to create robust, scalable interfaces that connect digital islands seamlessly.",
+        "tags": ["GraphQL", "REST", "APIs"],
+        "attended": false
+      }
+    ]
+  },
+  {
+    "id": "voyage-5",
+    "name": "Final Voyage & Farewell",
+    "date": "2025-02-15",
+    "islands": [
+      {
+        "id": "island-15",
+        "title": "Closing Ceremony & Awards",
+        "speaker": "DevFest Organizing Team",
+        "speakerRole": "Event Organizers",
+        "speakerCompany": "GDG Pwani",
+        "time": "17:00",
+        "duration": "60 min",
+        "venue": "Alpha Deck",
+        "sessionType": "Closing Ceremony",
+        "description": "Join us for the grand finale as we celebrate the journey, announce winners, and chart the course for future adventures.",
+        "tags": ["Closing", "Awards", "Community"],
+        "attended": false
+      }
+    ]
+  }
+]

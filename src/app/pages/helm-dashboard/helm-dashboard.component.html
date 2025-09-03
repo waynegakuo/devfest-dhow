@@ -128,6 +128,18 @@
                   🔔 Starting Soon
                 </div>
               }
+
+              @if (isIslandOngoing(island)) {
+                <div class="ongoing-indicator">
+                  🔴 Ongoing
+                </div>
+              }
+
+              @if (isIslandComplete(island)) {
+                <div class="ended-indicator">
+                  ✅ Ended
+                </div>
+              }
             </div>
           </div>
         }

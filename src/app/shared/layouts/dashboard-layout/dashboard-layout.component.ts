@@ -5,7 +5,9 @@ import { NavigatorSidebarComponent } from '../../components/navigator-sidebar/na
 import { AuthService } from '../../../services/auth/auth.service';
 import { MyVoyagePlanService } from '../../../services/my-voyage-plan/my-voyage-plan.service';
 import { Voyage } from '../../../models/voyage.model';
+import { Deck, SessionType } from '../../../models/venue.model';
 import {NavigatorService} from '../../../services/navigator/navigator.service';
+import { VoyagesDataService } from '../../../services/voyages-data/voyages-data.service';
 
 @Component({
   selector: 'app-dashboard-layout',
@@ -18,6 +20,7 @@ export class DashboardLayoutComponent {
   private authService = inject(AuthService);
   private myVoyageService = inject(MyVoyagePlanService);
   private navigatorService = inject(NavigatorService);
+  private voyagesDataService = inject(VoyagesDataService);
 
   // Sidebar state management
   sidebarOpen = signal(false);
@@ -25,35 +28,14 @@ export class DashboardLayoutComponent {
   // Get navigator data
   readonly navigator = this.navigatorService.getNavigator();
 
-  // Mock voyages data - in real app this would come from a service
-  voyages = signal<Voyage[]>([
-    {
-      id: 'voyage-1',
-      name: 'Opening Waters',
-      date: '2025-02-15',
-      islands: [
-        {
-          id: 'island-1',
-          title: 'Welcome Aboard - DevFest Dhow Opening',
-          speaker: 'Captain Sarah Johnson',
-          speakerRole: 'Lead Developer Advocate',
-          speakerCompany: 'Google',
-          time: '09:00',
-          duration: '30 min',
-          venue: 'Main Deck',
-          description: 'Join us as we set sail on an incredible journey through the latest in tech and development.',
-          tags: ['Opening', 'Welcome', 'Community'],
-          attended: false
-        }
-      ]
-    }
-  ]);
+  // Use centralized voyages data service
+  voyages = this.voyagesDataService.voyages;
 
-  // Calculate progress
+  // Calculate progress from actual data
   readonly progress = signal({
-    totalIslands: 10,
-    attendedIslands: 3,
-    completionRate: 30
+    totalIslands: 11, // Updated to match actual island count
+    attendedIslands: 0,
+    completionRate: 0
   });
 
   // Toggle sidebar

@@ -39,9 +39,29 @@
                       <span class="venue">📍 {{ island.venue }}</span>
                     </div>
                     <p class="island-description">{{ island.description }}</p>
-                    <div class="island-tags">
-                      @for (tag of island.tags; track tag) {
-                        <span class="tag">{{ tag }}</span>
+                    <div class="island-footer">
+                      <div class="island-tags">
+                        @for (tag of island.tags; track tag) {
+                          <span class="tag">{{ tag }}</span>
+                        }
+                      </div>
+
+                      @if (isIslandOngoing(island)) {
+                        <div class="ongoing-status">
+                          <span class="ongoing-badge">
+                            <span class="ongoing-icon">●</span>
+                            <span class="ongoing-text">Ongoing</span>
+                          </span>
+                        </div>
+                      }
+
+                      @if (isIslandComplete(island)) {
+                        <div class="ended-status">
+                          <span class="ended-badge">
+                            <span class="ended-icon">✓</span>
+                            <span class="ended-text">Ended</span>
+                          </span>
+                        </div>
                       }
                     </div>
                   </div>
