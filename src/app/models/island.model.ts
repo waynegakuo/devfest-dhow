@@ -1,3 +1,5 @@
+import { Deck, SessionType } from './venue.model';
+
 export interface Island {
   id: string;
   title: string;
@@ -6,7 +8,8 @@ export interface Island {
   speakerCompany: string;
   time: string;
   duration: string;
-  venue: string;
+  venue: Deck;
+  sessionType: SessionType;
   description: string;
   tags: string[];
   attended: boolean;
