@@ -128,6 +128,12 @@
                   🔔 Starting Soon
                 </div>
               }
+
+              @if (isIslandComplete(island)) {
+                <div class="ended-indicator">
+                  ✅ Ended
+                </div>
+              }
             </div>
           </div>
         }

@@ -120,6 +120,24 @@ export class HelmDashboardComponent {
     return timeDiff > 0 && timeDiff <= 2 * 60 * 60 * 1000; // 2 hours in milliseconds
   }
 
+  // Check if island session has completed (time has passed)
+  isIslandComplete(island: Island): boolean {
+    const now = new Date();
+    const sessionTime = new Date();
+    const [hours, minutes] = island.time.split(':');
+    sessionTime.setHours(parseInt(hours), parseInt(minutes));
+
+    // Parse duration to add to session time (e.g., "40 min" -> 40)
+    const durationMatch = island.duration.match(/(\d+)/);
+    const durationMinutes = durationMatch ? parseInt(durationMatch[1]) : 0;
+
+    // Add session duration to get end time
+    sessionTime.setMinutes(sessionTime.getMinutes() + durationMinutes);
+
+    // Session is complete if current time is past the session end time
+    return now.getTime() > sessionTime.getTime();
+  }
+
   // Get voyage ID for a given island ID
   getVoyageForIsland(islandId: string): string {
     const voyage = this.voyages().find(voyage =>
