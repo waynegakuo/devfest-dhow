@@ -1,9 +1,11 @@
-import {Component, EventEmitter, Input, Output, signal, inject, OnDestroy, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, Output, signal, inject, OnDestroy, OnInit, computed} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, NavigationEnd } from '@angular/router';
 import { Island } from '../../../models/island.model';
 import { Voyage } from '../../../models/voyage.model';
 import { AuthService } from '../../../services/auth/auth.service';
+import { AdminService } from '../../../services/admin/admin.service';
+import { NavigatorService } from '../../../services/navigator/navigator.service';
 import {Subject, takeUntil, filter} from 'rxjs';
 
 export interface NavigationItem {
@@ -31,6 +33,8 @@ export interface OceanTerm {
 export class NavigatorSidebarComponent implements OnInit, OnDestroy{
   private router = inject(Router);
   private authService = inject(AuthService);
+  private adminService = inject(AdminService);
+  private navigatorService = inject(NavigatorService);
 
   // Subject for managing subscriptions
   private destroy$ = new Subject<void>();
@@ -56,6 +60,15 @@ export class NavigatorSidebarComponent implements OnInit, OnDestroy{
   private showTerminologySignal = signal<boolean>(false);
   readonly showTerminology = this.showTerminologySignal.asReadonly();
 
+  // Get current navigator data
+  readonly navigator = this.navigatorService.currentNavigator.asReadonly();
+
+  // Check if current user is admin
+  readonly isAdmin = computed(() => {
+    const nav = this.navigator();
+    return nav?.role === 'admin';
+  });
+
   // Navigation items configuration
   navigationItems: NavigationItem[] = [
     { id: 'helm', name: 'The Helm', icon: '⚓', description: 'Dashboard - Central hub and key information', route: '/dashboard/helm' },
@@ -67,6 +80,7 @@ export class NavigatorSidebarComponent implements OnInit, OnDestroy{
     { id: 'oracle', name: 'Ask the Oracle', icon: '🔮', description: 'AI Assistant - Gemini-powered chatbot', route: '/dashboard/ask-the-oracle' },
     { id: 'atlantis', name: 'The Quest for Atlantis', icon: '🏛️', description: 'AR Hunt - Augmented reality scavenger hunt', route: '/dashboard/quest-for-atlantis' },
     { id: 'profile', name: 'My Profile', icon: '👤', description: 'Profile - View and edit your navigator profile', route: '/dashboard/my-profile' },
+    { id: 'admin-roles', name: 'Admiral Command', icon: '👑', description: 'Admin - Manage navigator roles and permissions', route: '/dashboard/admin-role-assignment' },
     { id: 'logout', name: 'Log Out', icon: '🚪', description: 'Securely end your session', action: 'logout' }
   ];
 

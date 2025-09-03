@@ -56,6 +56,10 @@ export const routes: Routes = [
         path: 'stocking-the-galley',
         loadComponent: () => import('./pages/stocking-the-galley/stocking-the-galley.component').then(m => m.StockingTheGalleyComponent)
       },
+      {
+        path: 'admin-role-assignment',
+        loadComponent: () => import('./pages/admin-role-assignment/admin-role-assignment.component').then(m => m.AdminRoleAssignmentComponent)
+      },
       // {
       //   path: 'quest-for-atlantis',
       //   loadComponent: () => import('./pages/quest-for-atlantis/quest-for-atlantis.component').then(m => m.QuestForAtlantisComponent)

@@ -11,15 +11,17 @@
 
   <div class="sidebar-nav">
     @for (item of navigationItems; track item.id) {
-      <button
-        class="nav-item-btn"
-        [class.active]="activeNav() === item.id"
-        (click)="navigateToItem(item)"
-        [title]="item.description"
-      >
-        <span class="nav-icon">{{ item.icon }}</span>
-        <span class="nav-name">{{ item.name }}</span>
-      </button>
+      @if (item.id !== 'admin-roles' || isAdmin()) {
+        <button
+          class="nav-item-btn"
+          [class.active]="activeNav() === item.id"
+          (click)="navigateToItem(item)"
+          [title]="item.description"
+        >
+          <span class="nav-icon">{{ item.icon }}</span>
+          <span class="nav-name">{{ item.name }}</span>
+        </button>
+      }
     }
   </div>
 
