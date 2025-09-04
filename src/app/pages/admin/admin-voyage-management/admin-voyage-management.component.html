@@ -44,9 +44,12 @@
         </thead>
         <tbody>
           @for (voyage of voyages(); track voyage.id) {
+            <!-- Voyage Header Row -->
             <tr class="voyage-row">
               <td class="voyage-name">
-                <h4>{{ voyage.name }}</h4>
+                <div class="voyage-header">
+                  <h4>{{ voyage.name }}</h4>
+                </div>
               </td>
               <td class="voyage-date">{{ formatDate(voyage.date) }}</td>
               <td class="voyage-sessions">
@@ -54,8 +57,11 @@
               </td>
               <td class="voyage-actions">
                 <div class="action-buttons">
-                  <button class="btn-info btn-sm" (click)="manageIslands(voyage)" title="Manage Islands">
-                    🏝️
+                  <button
+                    class="btn-primary btn-sm"
+                    (click)="toggleVoyageExpansion(voyage.id)"
+                    [title]="isVoyageExpanded(voyage.id) ? 'Collapse Islands' : 'Expand Islands'">
+                    🏝️ {{ isVoyageExpanded(voyage.id) ? 'Close' : 'View' }}
                   </button>
                   <button class="btn-secondary btn-sm" (click)="editVoyage(voyage)" title="Edit Voyage">
                     ✏️
@@ -66,6 +72,62 @@
                 </div>
               </td>
             </tr>
+
+            <!-- Islands Accordion Content -->
+            @if (isVoyageExpanded(voyage.id)) {
+              <tr class="islands-accordion">
+                <td colspan="4" class="islands-container">
+                  <div class="islands-content">
+                    @if (voyage.islands && voyage.islands.length > 0) {
+                      <div class="islands-grid">
+                        @for (island of voyage.islands; track island.id) {
+                          <div class="island-card">
+                            <div class="island-header">
+                              <h5 class="island-title">{{ island.title }}</h5>
+                              <div class="island-actions">
+                                <button class="btn-secondary btn-xs" (click)="editIsland(island)" title="Edit Island">
+                                  ✏️
+                                </button>
+                                <button class="btn-danger btn-xs" (click)="deleteIsland(island)" title="Delete Island">
+                                  🗑️
+                                </button>
+                              </div>
+                            </div>
+                            <div class="island-details">
+                              <div class="island-speaker">
+                                <strong>{{ island.speaker }}</strong>
+                                <span class="speaker-role">{{ island.speakerRole }} - {{ island.speakerCompany }}</span>
+                              </div>
+                              <div class="island-meta">
+                                <span class="island-time">⏰ {{ island.time }} ({{ island.duration }})</span>
+                                <span class="island-venue">📍 {{ island.venue }}</span>
+                                <span class="island-type">🎯 {{ island.sessionType }}</span>
+                              </div>
+                              @if (island.description) {
+                                <p class="island-description">{{ island.description }}</p>
+                              }
+                              @if (island.tags && island.tags.length > 0) {
+                                <div class="island-tags">
+                                  @for (tag of island.tags; track tag) {
+                                    <span class="tag">{{ tag }}</span>
+                                  }
+                                </div>
+                              }
+                            </div>
+                          </div>
+                        }
+                      </div>
+                    } @else {
+                      <div class="empty-islands">
+                        <div class="empty-icon">🏝️</div>
+                        <p>No islands found for this voyage</p>
+                        <p class="empty-hint">Islands can be added through the admin dashboard</p>
+                      </div>
+                    }
+                  </div>
+                </td>
+              </tr>
+            }
           }
           @empty {
             <tr>
@@ -84,80 +146,6 @@
     </div>
   </div>
 
-  <!-- Islands Management Section -->
-  @if (selectedVoyageForIslands()) {
-    <div class="admin-table-section islands-management-section">
-      <div class="islands-header">
-        <div class="islands-title">
-          <h2>🏝️ Islands Management - {{ selectedVoyageForIslands()?.name }}</h2>
-          <p>Manage sessions (islands) for this voyage</p>
-        </div>
-        <div class="islands-actions">
-          <button class="btn-primary" (click)="createIsland()" [disabled]="loading()">
-            <span class="btn-icon">+</span>
-            Add Island
-          </button>
-          <button class="btn-secondary" (click)="closeIslandsManagement()">
-            Close
-          </button>
-        </div>
-      </div>
-
-      <!-- Islands Table -->
-      <div class="islands-table-container">
-        <table class="admin-table islands-table">
-          <thead>
-            <tr>
-              <th>Title</th>
-              <th>Speaker</th>
-              <th>Time</th>
-              <th>Venue</th>
-              <th>Type</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (island of voyageIslands(); track island.id) {
-              <tr class="island-row">
-                <td class="island-title">{{ island.title }}</td>
-                <td class="island-speaker">
-                  <div class="speaker-info">
-                    <div class="speaker-name">{{ island.speaker }}</div>
-                    <div class="speaker-details">{{ island.speakerRole }} - {{ island.speakerCompany }}</div>
-                  </div>
-                </td>
-                <td class="island-time">{{ island.time }} ({{ island.duration }})</td>
-                <td class="island-venue">{{ island.venue }}</td>
-                <td class="island-type">{{ island.sessionType }}</td>
-                <td class="island-actions">
-                  <div class="action-buttons">
-                    <button class="btn-secondary btn-sm" (click)="editIsland(island)" title="Edit Island">
-                      ✏️
-                    </button>
-                    <button class="btn-danger btn-sm" (click)="deleteIsland(island)" title="Delete Island">
-                      🗑️
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            }
-            @empty {
-              <tr>
-                <td colspan="6" class="empty-state">
-                  <div class="empty-content">
-                    <div class="empty-icon">🏝️</div>
-                    <h3>No Islands Found</h3>
-                    <p>Add islands (sessions) to this voyage.</p>
-                    <button class="btn-primary" (click)="createIsland()">Add First Island</button>
-                  </div>
-                </td>
-              </tr>
-            }
-          </tbody>
-        </table>
-      </div>
-    </div>
-  }
 
   <!-- Create Voyage Modal -->
   @if (showCreateModal()) {

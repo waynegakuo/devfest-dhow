@@ -20,7 +20,7 @@ import { Navigator, NavigatorRole } from '../../models/navigator.model';
 import { Voyage } from '../../models/voyage.model';
 import { Island } from '../../models/island.model';
 import { Deck, SessionType } from '../../models/venue.model';
-import { from, Observable, throwError, of } from 'rxjs';
+import { from, Observable, throwError, of, forkJoin } from 'rxjs';
 import { switchMap, map, catchError } from 'rxjs/operators';
 
 @Injectable({
@@ -74,8 +74,8 @@ export class AdminService {
   }
 
   /**
-   * Get all voyages from Firestore
-   * @returns Observable<Voyage[]> Array of all voyages
+   * Get all voyages from Firestore with their islands
+   * @returns Observable<Voyage[]> Array of all voyages with islands loaded
    */
   getAllVoyages(): Observable<Voyage[]> {
     try {
@@ -85,18 +85,41 @@ export class AdminService {
         const voyagesPromise = getDocs(voyagesQuery);
 
         return from(voyagesPromise).pipe(
-          map(snapshot => {
-            const voyages: Voyage[] = [];
+          switchMap(snapshot => {
+            const voyagePromises: Observable<Voyage>[] = [];
+
             snapshot.forEach(doc => {
               const data = doc.data() as any;
-              voyages.push({
-                id: doc.id,
-                name: data.name,
-                date: data.date,
-                islands: [] // Islands loaded separately
-              });
+              const voyageId = doc.id;
+
+              // Load islands for each voyage
+              const islandsPromise = this.getIslandsByVoyage(voyageId).pipe(
+                map(islands => ({
+                  id: voyageId,
+                  name: data.name,
+                  date: data.date,
+                  islands: islands
+                } as Voyage)),
+                catchError(error => {
+                  console.error(`❌ Error loading islands for voyage ${voyageId}:`, error);
+                  // Return voyage with empty islands array on error
+                  return of({
+                    id: voyageId,
+                    name: data.name,
+                    date: data.date,
+                    islands: []
+                  } as Voyage);
+                })
+              );
+
+              voyagePromises.push(islandsPromise);
             });
-            console.log('🌊 Loaded voyages:', voyages.length);
+
+            // Wait for all voyages with their islands to load using forkJoin
+            return voyagePromises.length > 0 ? forkJoin(voyagePromises) : of([]);
+          }),
+          map(voyages => {
+            console.log('🌊 Loaded voyages with islands:', voyages.length);
             return voyages;
           }),
           catchError(error => {

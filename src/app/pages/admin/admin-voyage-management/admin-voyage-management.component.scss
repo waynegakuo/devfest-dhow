@@ -36,11 +36,13 @@
   }
 
   // Voyage-specific content styling
-  .voyage-name h4 {
-    font-size: 1.125rem;
-    font-weight: 600;
-    color: $gray-900;
-    margin: 0;
+  .voyage-name {
+    h4 {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: $gray-900;
+      margin: 0;
+    }
   }
 
   .voyage-date,
@@ -54,62 +56,142 @@
     color: $gray-900;
   }
 
-  // Islands-specific content styling
-  .islands-management-section {
-    margin: 2rem 0;
+  // Accordion styles
+  .islands-accordion {
+    .islands-container {
+      padding: 0;
+      border-left: 3px solid $magenta-violet;
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    }
 
-    .islands-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      padding: 1.5rem 2rem;
-      border-bottom: 1px solid $gray-200;
-      background: $gray-50;
+    .islands-content {
+      padding: 1.5rem;
+      animation: slideDown 0.3s ease-out;
+    }
 
-      .islands-title {
-        h2 {
-          font-size: 1.5rem;
-          font-weight: 700;
-          color: $gray-900;
-          margin: 0 0 0.5rem 0;
-        }
+    .islands-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 1rem;
+    }
 
-        p {
-          color: $gray-600;
-          margin: 0;
-        }
+    .island-card {
+      background: white;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: all 0.2s ease;
+
+      &:hover {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        transform: translateY(-1px);
       }
 
-      .islands-actions {
+      .island-header {
         display: flex;
-        gap: 0.75rem;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 0.75rem;
+
+        .island-title {
+          font-size: 1rem;
+          font-weight: 600;
+          color: $gray-900;
+          margin: 0;
+          flex: 1;
+        }
+
+        .island-actions {
+          display: flex;
+          gap: 0.25rem;
+          margin-left: 0.5rem;
+        }
+      }
+
+      .island-details {
+        .island-speaker {
+          margin-bottom: 0.75rem;
+
+          strong {
+            display: block;
+            color: $gray-900;
+            font-weight: 600;
+          }
+
+          .speaker-role {
+            font-size: 0.875rem;
+            color: $gray-600;
+          }
+        }
+
+        .island-meta {
+          display: flex;
+          flex-direction: column;
+          gap: 0.25rem;
+          margin-bottom: 0.75rem;
+
+          span {
+            font-size: 0.875rem;
+            color: $gray-700;
+          }
+        }
+
+        .island-description {
+          font-size: 0.875rem;
+          color: $gray-600;
+          margin: 0.75rem 0;
+          line-height: 1.5;
+        }
+
+        .island-tags {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.5rem;
+          margin-top: 0.75rem;
+
+          .tag {
+            background-color: $magenta-violet;
+            color: white;
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 1rem;
+            font-weight: 500;
+          }
+        }
+      }
+    }
+
+    .empty-islands {
+      text-align: center;
+      padding: 2rem;
+      color: $gray-600;
+
+      .empty-icon {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+      }
+
+      p {
+        margin: 0.5rem 0 1rem 0;
+        font-size: 0.875rem;
       }
     }
   }
 
-  .island-title {
-    font-weight: 600;
-    color: $gray-900;
-  }
-
-  .speaker-info {
-    .speaker-name {
-      font-weight: 600;
-      color: $gray-900;
+  // Animation keyframes
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      max-height: 0;
+      transform: translateY(-10px);
     }
-
-    .speaker-details {
-      font-size: 0.875rem;
-      color: $gray-600;
+    to {
+      opacity: 1;
+      max-height: 1000px;
+      transform: translateY(0);
     }
   }
 
-  .island-time,
-  .island-venue,
-  .island-type {
-    font-size: 0.875rem;
-    color: $gray-700;
-  }
 
   @media (max-width: 768px) {
     padding: 1rem;
@@ -128,5 +210,34 @@
         justify-content: flex-start;
       }
     }
+
+    // Accordion responsive styles
+    .islands-accordion {
+      .islands-grid {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+      }
+
+      .island-card {
+        .island-header {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 0.5rem;
+
+          .island-actions {
+            margin-left: 0;
+          }
+        }
+
+        .island-details {
+          .island-meta {
+            span {
+              font-size: 0.8rem;
+            }
+          }
+        }
+      }
+    }
+
   }
 }

@@ -41,6 +41,9 @@ export class AdminVoyageManagementComponent implements OnInit, OnDestroy {
   readonly selectedVoyageForIslands = signal<Voyage | null>(null);
   readonly voyageIslands = signal<Island[]>([]);
 
+  // Accordion states
+  readonly expandedVoyages = signal<Set<string>>(new Set());
+
   // Island form data
   readonly islandForm = signal({
     title: '',
@@ -425,6 +428,64 @@ export class AdminVoyageManagementComponent implements OnInit, OnDestroy {
       ...form,
       tags: form.tags.filter(tag => tag !== tagToRemove)
     }));
+  }
+
+  /**
+   * ACCORDION FUNCTIONALITY
+   */
+
+  /**
+   * Toggle voyage accordion expansion
+   * @param voyageId The voyage ID to toggle
+   */
+  toggleVoyageExpansion(voyageId: string): void {
+    const currentExpanded = this.expandedVoyages();
+    const newExpanded = new Set(currentExpanded);
+
+    if (newExpanded.has(voyageId)) {
+      newExpanded.delete(voyageId);
+    } else {
+      newExpanded.add(voyageId);
+      // Load islands for this voyage if not already loaded
+      this.loadVoyageIslands(voyageId);
+    }
+
+    this.expandedVoyages.set(newExpanded);
+  }
+
+  /**
+   * Check if a voyage is expanded
+   * @param voyageId The voyage ID to check
+   */
+  isVoyageExpanded(voyageId: string): boolean {
+    return this.expandedVoyages().has(voyageId);
+  }
+
+  /**
+   * Load islands for a specific voyage (for accordion display)
+   * @param voyageId The voyage ID
+   */
+  loadVoyageIslands(voyageId: string): void {
+    const voyage = this.voyages().find(v => v.id === voyageId);
+    if (!voyage) return;
+
+    // If islands are already loaded in the voyage object, no need to fetch again
+    if (voyage.islands && voyage.islands.length > 0) return;
+
+    this.adminService.getIslandsByVoyage(voyageId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (islands) => {
+          // Update the voyage in the voyages array with loaded islands
+          const updatedVoyages = this.voyages().map(v =>
+            v.id === voyageId ? { ...v, islands } : v
+          );
+          this.voyages.set(updatedVoyages);
+        },
+        error: (error) => {
+          console.error('Failed to load voyage islands:', error);
+        }
+      });
   }
 
   // Format date for display
