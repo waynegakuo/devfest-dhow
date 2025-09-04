@@ -1,4 +1,4 @@
-import { Injectable, inject, signal } from '@angular/core';
+import {Injectable, inject, signal, runInInjectionContext, EnvironmentInjector} from '@angular/core';
 import {
   Firestore,
   collection,
@@ -27,6 +27,8 @@ import { switchMap, map, catchError } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class AdminService {
+  private environmentInjector = inject(EnvironmentInjector);
+
   private firestore = inject(Firestore);
 
   // Collection references
@@ -77,29 +79,33 @@ export class AdminService {
    */
   getAllVoyages(): Observable<Voyage[]> {
     try {
-      const voyagesQuery = query(this.voyagesCollection, orderBy('date'));
-      const voyagesPromise = getDocs(voyagesQuery);
+      return runInInjectionContext(this.environmentInjector, () => {
+        const voyagesQuery = query(this.voyagesCollection, orderBy('date'));
 
-      return from(voyagesPromise).pipe(
-        map(snapshot => {
-          const voyages: Voyage[] = [];
-          snapshot.forEach(doc => {
-            const data = doc.data() as any;
-            voyages.push({
-              id: doc.id,
-              name: data.name,
-              date: data.date,
-              islands: [] // Islands loaded separately
+        const voyagesPromise = getDocs(voyagesQuery);
+
+        return from(voyagesPromise).pipe(
+          map(snapshot => {
+            const voyages: Voyage[] = [];
+            snapshot.forEach(doc => {
+              const data = doc.data() as any;
+              voyages.push({
+                id: doc.id,
+                name: data.name,
+                date: data.date,
+                islands: [] // Islands loaded separately
+              });
             });
-          });
-          console.log('🌊 Loaded voyages:', voyages.length);
-          return voyages;
-        }),
-        catchError(error => {
-          console.error('❌ Error loading voyages:', error);
-          return throwError(() => new Error('Failed to load voyages: ' + error.message));
-        })
-      );
+            console.log('🌊 Loaded voyages:', voyages.length);
+            return voyages;
+          }),
+          catchError(error => {
+            console.error('❌ Error loading voyages:', error);
+            return throwError(() => new Error('Failed to load voyages: ' + error.message));
+          })
+        );
+      })
+
     } catch (error: any) {
       return throwError(() => new Error('Failed to load voyages: ' + error.message));
     }
@@ -261,39 +267,41 @@ export class AdminService {
    */
   getIslandsByVoyage(voyageId: string): Observable<Island[]> {
     try {
-      const voyageRef = doc(this.voyagesCollection, voyageId);
-      const islandsCollection = collection(voyageRef, 'islands');
-      const islandsQuery = query(islandsCollection, orderBy('time'));
-      const islandsPromise = getDocs(islandsQuery);
+      return runInInjectionContext(this.environmentInjector, () => {
+        const voyageRef = doc(this.voyagesCollection, voyageId);
+        const islandsCollection = collection(voyageRef, 'islands');
+        const islandsQuery = query(islandsCollection, orderBy('time'));
+        const islandsPromise = getDocs(islandsQuery);
 
-      return from(islandsPromise).pipe(
-        map(snapshot => {
-          const islands: Island[] = [];
-          snapshot.forEach(doc => {
-            const data = doc.data() as any;
-            islands.push({
-              id: doc.id,
-              title: data.title,
-              speaker: data.speaker,
-              speakerRole: data.speakerRole,
-              speakerCompany: data.speakerCompany,
-              time: data.time,
-              duration: data.duration,
-              venue: this.mapStringToDeck(data.venue),
-              sessionType: this.mapStringToSessionType(data.sessionType),
-              description: data.description,
-              tags: data.tags || [],
-              attended: data.attended || false
+        return from(islandsPromise).pipe(
+          map(snapshot => {
+            const islands: Island[] = [];
+            snapshot.forEach(doc => {
+              const data = doc.data() as any;
+              islands.push({
+                id: doc.id,
+                title: data.title,
+                speaker: data.speaker,
+                speakerRole: data.speakerRole,
+                speakerCompany: data.speakerCompany,
+                time: data.time,
+                duration: data.duration,
+                venue: this.mapStringToDeck(data.venue),
+                sessionType: this.mapStringToSessionType(data.sessionType),
+                description: data.description,
+                tags: data.tags || [],
+                attended: data.attended || false
+              });
             });
-          });
-          console.log('🏝️ Loaded islands for voyage:', voyageId, islands.length);
-          return islands;
-        }),
-        catchError(error => {
-          console.error('❌ Error loading islands:', error);
-          return throwError(() => new Error('Failed to load islands: ' + error.message));
-        })
-      );
+            console.log('🏝️ Loaded islands for voyage:', voyageId, islands.length);
+            return islands;
+          }),
+          catchError(error => {
+            console.error('❌ Error loading islands:', error);
+            return throwError(() => new Error('Failed to load islands: ' + error.message));
+          })
+        );
+      })
     } catch (error: any) {
       return throwError(() => new Error('Failed to load islands: ' + error.message));
     }
