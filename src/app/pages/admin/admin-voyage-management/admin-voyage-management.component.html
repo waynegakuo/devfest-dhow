@@ -30,6 +30,16 @@
     </div>
   }
 
+  <!-- Success State -->
+  @if (success()) {
+    <div class="success-state">
+      <div class="success-message">
+        <span class="success-icon">✅</span>
+        {{ success() }}
+      </div>
+    </div>
+  }
+
   <!-- Voyages Table -->
   <div class="admin-table-section">
     <div class="table-container">
@@ -85,7 +95,7 @@
                             <div class="island-header">
                               <h5 class="island-title">{{ island.title }}</h5>
                               <div class="island-actions">
-                                <button class="btn-secondary btn-xs" (click)="editIsland(island)" title="Edit Island">
+                                <button class="btn-secondary btn-xs" (click)="editIsland(island, voyage)" title="Edit Island">
                                   ✏️
                                 </button>
                                 <button class="btn-danger btn-xs" (click)="deleteIsland(island)" title="Delete Island">

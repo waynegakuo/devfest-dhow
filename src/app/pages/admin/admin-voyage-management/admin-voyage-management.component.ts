@@ -22,6 +22,7 @@ export class AdminVoyageManagementComponent implements OnInit, OnDestroy {
   readonly voyages = signal<Voyage[]>([]);
   readonly loading = signal(false);
   readonly error = signal<string | null>(null);
+  readonly success = signal<string | null>(null);
 
   // Modal and form states
   readonly showCreateModal = signal(false);
@@ -228,8 +229,9 @@ export class AdminVoyageManagementComponent implements OnInit, OnDestroy {
   }
 
   // Edit existing island
-  editIsland(island: Island): void {
+  editIsland(island: Island, voyage: Voyage): void {
     this.selectedIsland.set(island);
+    this.selectedVoyageForIslands.set(voyage); // Set the voyage context for island editing
     this.islandForm.set({
       title: island.title,
       speaker: island.speaker,
@@ -316,7 +318,12 @@ export class AdminVoyageManagementComponent implements OnInit, OnDestroy {
               this.showEditIslandModal.set(false);
               this.selectedIsland.set(null);
               this.resetIslandForm();
-              this.loadIslands(voyageId); // Reload islands
+              this.loadVoyages(); // Reload all voyages to refresh island data in accordion
+              this.loading.set(false);
+              this.error.set(null);
+              this.success.set('Island updated successfully!');
+              // Clear success message after 3 seconds
+              setTimeout(() => this.success.set(null), 3000);
             },
             error: (error) => {
               this.error.set(error.message);
