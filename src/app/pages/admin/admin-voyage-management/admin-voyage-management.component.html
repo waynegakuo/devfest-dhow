@@ -190,6 +190,199 @@
                 [(ngModel)]="voyageForm().date"
                 required>
             </div>
+
+            <!-- Islands Section -->
+            <div class="form-group">
+              <div class="islands-section">
+                <div class="islands-header">
+                  <label>Islands (Sessions) - Optional</label>
+                  <button
+                    type="button"
+                    class="btn-primary btn-sm"
+                    (click)="addIslandToVoyage()"
+                    [disabled]="showAddIslandToVoyage()">
+                    + Add Island
+                  </button>
+                </div>
+
+                <!-- List of islands to be created -->
+                @if (voyageIslandsToCreate().length > 0) {
+                  <div class="islands-preview">
+                    @for (island of voyageIslandsToCreate(); track $index) {
+                      <div class="island-preview-card">
+                        <div class="island-preview-content">
+                          <h5>{{ island.title }}</h5>
+                          <p class="island-preview-details">
+                            {{ island.speaker }} • {{ island.time }} • {{ island.venue }}
+                          </p>
+                        </div>
+                        <button
+                          type="button"
+                          class="btn-danger btn-xs"
+                          (click)="removeIslandFromVoyage($index)"
+                          title="Remove Island">
+                          🗑️
+                        </button>
+                      </div>
+                    }
+                  </div>
+                } @else {
+                  <p class="no-islands-text">No islands added yet. Click "Add Island" to create sessions for this voyage.</p>
+                }
+
+                <!-- Inline Island Creation Form -->
+                @if (showAddIslandToVoyage()) {
+                  <div class="inline-island-form">
+                    <h4>Add Island to Voyage</h4>
+                    <form class="island-form">
+                      <div class="form-row">
+                        <div class="form-group">
+                          <label for="newIslandTitle">Session Title *</label>
+                          <input
+                            type="text"
+                            id="newIslandTitle"
+                            name="newIslandTitle"
+                            class="form-control"
+                            [(ngModel)]="islandForm().title"
+                            placeholder="e.g., AI-Powered Navigation"
+                            required>
+                        </div>
+                        <div class="form-group">
+                          <label for="newIslandTime">Time *</label>
+                          <input
+                            type="time"
+                            id="newIslandTime"
+                            name="newIslandTime"
+                            class="form-control"
+                            [(ngModel)]="islandForm().time"
+                            required>
+                        </div>
+                      </div>
+
+                      <div class="form-row">
+                        <div class="form-group">
+                          <label for="newIslandSpeaker">Speaker *</label>
+                          <input
+                            type="text"
+                            id="newIslandSpeaker"
+                            name="newIslandSpeaker"
+                            class="form-control"
+                            [(ngModel)]="islandForm().speaker"
+                            placeholder="Speaker name"
+                            required>
+                        </div>
+                        <div class="form-group">
+                          <label for="newIslandDuration">Duration</label>
+                          <input
+                            type="text"
+                            id="newIslandDuration"
+                            name="newIslandDuration"
+                            class="form-control"
+                            [(ngModel)]="islandForm().duration"
+                            placeholder="e.g., 40 min">
+                        </div>
+                      </div>
+
+                      <div class="form-row">
+                        <div class="form-group">
+                          <label for="newIslandSpeakerRole">Speaker Role</label>
+                          <input
+                            type="text"
+                            id="newIslandSpeakerRole"
+                            name="newIslandSpeakerRole"
+                            class="form-control"
+                            [(ngModel)]="islandForm().speakerRole"
+                            placeholder="e.g., Senior Developer, CTO">
+                        </div>
+                        <div class="form-group">
+                          <label for="newIslandSpeakerCompany">Speaker Company</label>
+                          <input
+                            type="text"
+                            id="newIslandSpeakerCompany"
+                            name="newIslandSpeakerCompany"
+                            class="form-control"
+                            [(ngModel)]="islandForm().speakerCompany"
+                            placeholder="e.g., Google, Microsoft">
+                        </div>
+                      </div>
+
+                      <div class="form-row">
+                        <div class="form-group">
+                          <label for="newIslandVenue">Venue</label>
+                          <select
+                            id="newIslandVenue"
+                            name="newIslandVenue"
+                            class="form-control"
+                            [(ngModel)]="islandForm().venue">
+                            @for (deck of deckOptions; track deck) {
+                              <option [value]="deck">{{ deck }}</option>
+                            }
+                          </select>
+                        </div>
+                        <div class="form-group">
+                          <label for="newIslandType">Session Type</label>
+                          <select
+                            id="newIslandType"
+                            name="newIslandType"
+                            class="form-control"
+                            [(ngModel)]="islandForm().sessionType">
+                            @for (type of sessionTypeOptions; track type) {
+                              <option [value]="type">{{ type }}</option>
+                            }
+                          </select>
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label for="newIslandDescription">Description</label>
+                        <textarea
+                          id="newIslandDescription"
+                          name="newIslandDescription"
+                          class="form-control"
+                          rows="3"
+                          [(ngModel)]="islandForm().description"
+                          placeholder="Session description..."></textarea>
+                      </div>
+
+                      <div class="form-group">
+                        <label for="newIslandTags">Tags</label>
+                        <div class="tags-input-container">
+                          <div class="tags-list">
+                            @for (tag of islandForm().tags; track tag) {
+                              <span class="tag">
+                                {{ tag }}
+                                <button type="button" class="tag-remove" (click)="removeTag(tag)">×</button>
+                              </span>
+                            }
+                          </div>
+                          <input
+                            type="text"
+                            name="newTagInput"
+                            class="form-control"
+                            placeholder="Add tag and press Enter"
+                            (keydown)="addTag($event)">
+                        </div>
+                      </div>
+
+                      <div class="island-form-actions">
+                        <button
+                          type="button"
+                          class="btn-secondary btn-sm"
+                          (click)="cancelAddIslandToVoyage()">
+                          Cancel
+                        </button>
+                        <button
+                          type="button"
+                          class="btn-primary btn-sm"
+                          (click)="saveIslandForVoyage()">
+                          Add Island
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                }
+              </div>
+            </div>
           </form>
         </div>
 

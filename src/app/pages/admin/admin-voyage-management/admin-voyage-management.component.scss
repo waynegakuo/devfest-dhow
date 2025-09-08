@@ -240,4 +240,93 @@
     }
 
   }
+
+  // Islands Section for Voyage Creation
+  .islands-section {
+    margin-top: 1.5rem;
+
+    .islands-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+
+      label {
+        font-weight: 600;
+        color: $gray-900;
+      }
+    }
+
+    .islands-preview {
+      margin-bottom: 1rem;
+
+      .island-preview-card {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: $gray-50;
+        border: 1px solid $gray-200;
+        border-radius: 0.5rem;
+        padding: 0.75rem 1rem;
+        margin-bottom: 0.5rem;
+        transition: all 0.2s ease;
+
+        &:hover {
+          background: $gray-100;
+          border-color: $gray-300;
+        }
+
+        .island-preview-content {
+          flex: 1;
+
+          h5 {
+            margin: 0 0 0.25rem 0;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: $gray-900;
+          }
+
+          .island-preview-details {
+            margin: 0;
+            font-size: 0.75rem;
+            color: $gray-600;
+          }
+        }
+      }
+    }
+
+    .no-islands-text {
+      color: $gray-500;
+      font-style: italic;
+      text-align: center;
+      padding: 1rem;
+      background: $gray-50;
+      border-radius: 0.5rem;
+      margin: 1rem 0;
+    }
+
+    .inline-island-form {
+      background: $white;
+      border: 2px solid $magenta-violet;
+      border-radius: 0.5rem;
+      padding: 1.5rem;
+      margin-top: 1rem;
+
+      h4 {
+        margin: 0 0 1rem 0;
+        color: $magenta-violet;
+        font-size: 1rem;
+        font-weight: 600;
+      }
+
+      .island-form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.5rem;
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid $gray-200;
+      }
+    }
+  }
 }

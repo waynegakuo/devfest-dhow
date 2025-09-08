@@ -35,6 +35,10 @@ export class AdminVoyageManagementComponent implements OnInit, OnDestroy {
     date: ''
   });
 
+  // Islands for new voyage creation
+  readonly voyageIslandsToCreate = signal<Omit<Island, 'id'>[]>([]);
+  readonly showAddIslandToVoyage = signal(false);
+
   // Island management states
   readonly showCreateIslandModal = signal(false);
   readonly showEditIslandModal = signal(false);
@@ -128,25 +132,52 @@ export class AdminVoyageManagementComponent implements OnInit, OnDestroy {
     this.error.set(null);
 
     if (this.showCreateModal()) {
-      // Create new voyage
-      this.adminService.createVoyage({
-        name: form.name.trim(),
-        date: form.date,
-        islands: []
-      })
-        .pipe(takeUntil(this.destroy$))
-        .subscribe({
-          next: (voyageId) => {
-            console.log('Voyage created with ID:', voyageId);
-            this.showCreateModal.set(false);
-            this.resetVoyageForm();
-            this.loadVoyages(); // Reload data
-          },
-          error: (error) => {
-            this.error.set(error.message);
-            this.loading.set(false);
-          }
-        });
+      // Create new voyage with islands if any are present
+      const islandsToCreate = this.voyageIslandsToCreate();
+
+      if (islandsToCreate.length > 0) {
+        // Use new method to create voyage with islands
+        this.adminService.createVoyageWithIslands({
+          name: form.name.trim(),
+          date: form.date,
+          islands: []
+        }, islandsToCreate)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (voyageId) => {
+              console.log('Voyage with islands created with ID:', voyageId);
+              this.success.set(`Voyage created successfully with ${islandsToCreate.length} islands!`);
+              this.showCreateModal.set(false);
+              this.resetVoyageForm();
+              this.loadVoyages(); // Reload data
+            },
+            error: (error) => {
+              this.error.set(error.message);
+              this.loading.set(false);
+            }
+          });
+      } else {
+        // Create voyage without islands (existing behavior)
+        this.adminService.createVoyage({
+          name: form.name.trim(),
+          date: form.date,
+          islands: []
+        })
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (voyageId) => {
+              console.log('Voyage created with ID:', voyageId);
+              this.success.set('Voyage created successfully!');
+              this.showCreateModal.set(false);
+              this.resetVoyageForm();
+              this.loadVoyages(); // Reload data
+            },
+            error: (error) => {
+              this.error.set(error.message);
+              this.loading.set(false);
+            }
+          });
+      }
 
     } else if (this.showEditModal()) {
       // Update existing voyage
@@ -389,6 +420,61 @@ export class AdminVoyageManagementComponent implements OnInit, OnDestroy {
       name: '',
       date: ''
     });
+    this.voyageIslandsToCreate.set([]);
+    this.showAddIslandToVoyage.set(false);
+  }
+
+  // Add island to voyage creation
+  addIslandToVoyage(): void {
+    this.resetIslandForm();
+    this.showAddIslandToVoyage.set(true);
+  }
+
+  // Save island for voyage creation
+  saveIslandForVoyage(): void {
+    const form = this.islandForm();
+
+    if (!form.title.trim() || !form.speaker.trim() || !form.time) {
+      this.error.set('Please fill in all required fields');
+      return;
+    }
+
+    const newIsland: Omit<Island, 'id'> = {
+      title: form.title.trim(),
+      speaker: form.speaker.trim(),
+      speakerRole: form.speakerRole.trim(),
+      speakerCompany: form.speakerCompany.trim(),
+      time: form.time,
+      duration: form.duration,
+      venue: form.venue,
+      sessionType: form.sessionType,
+      description: form.description.trim(),
+      tags: form.tags,
+      attended: form.attended
+    };
+
+    // Add to the list of islands to create
+    const currentIslands = this.voyageIslandsToCreate();
+    this.voyageIslandsToCreate.set([...currentIslands, newIsland]);
+
+    // Reset form and hide island creation
+    this.resetIslandForm();
+    this.showAddIslandToVoyage.set(false);
+    this.success.set('Island added to voyage!');
+    setTimeout(() => this.success.set(null), 2000);
+  }
+
+  // Remove island from voyage creation
+  removeIslandFromVoyage(index: number): void {
+    const currentIslands = this.voyageIslandsToCreate();
+    const updatedIslands = currentIslands.filter((_, i) => i !== index);
+    this.voyageIslandsToCreate.set(updatedIslands);
+  }
+
+  // Cancel adding island to voyage
+  cancelAddIslandToVoyage(): void {
+    this.showAddIslandToVoyage.set(false);
+    this.resetIslandForm();
   }
 
   // Reset island form

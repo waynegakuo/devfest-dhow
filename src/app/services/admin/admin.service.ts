@@ -74,6 +74,72 @@ export class AdminService {
   }
 
   /**
+   * Create a new voyage with islands in a single transaction
+   * @param voyage Voyage data (without ID, will be auto-generated)
+   * @param islands Array of island data to create with the voyage
+   * @returns Observable<string> The created voyage ID
+   */
+  createVoyageWithIslands(voyage: Omit<Voyage, 'id'>, islands: Omit<Island, 'id'>[]): Observable<string> {
+    try {
+      const voyageData = {
+        name: voyage.name,
+        date: voyage.date
+      };
+
+      // First create the voyage
+      const voyagePromise = addDoc(this.voyagesCollection, voyageData);
+
+      return from(voyagePromise).pipe(
+        switchMap(voyageDocRef => {
+          const voyageId = voyageDocRef.id;
+          console.log('🚢 Voyage created with ID:', voyageId);
+
+          // If no islands to create, return voyage ID immediately
+          if (!islands || islands.length === 0) {
+            return of(voyageId);
+          }
+
+          // Create islands for the voyage using batch operations
+          const batch = writeBatch(this.firestore);
+          const islandsCollection = collection(voyageDocRef, 'islands');
+
+          islands.forEach(island => {
+            const islandRef = doc(islandsCollection);
+            const islandData = {
+              title: island.title,
+              speaker: island.speaker,
+              speakerRole: island.speakerRole,
+              speakerCompany: island.speakerCompany,
+              time: island.time,
+              duration: island.duration,
+              venue: island.venue,
+              sessionType: island.sessionType,
+              description: island.description,
+              tags: island.tags,
+              attended: island.attended
+            };
+            batch.set(islandRef, islandData);
+          });
+
+          // Commit batch operation for islands
+          return from(batch.commit()).pipe(
+            map(() => {
+              console.log(`🏝️ Created ${islands.length} islands for voyage ${voyageId}`);
+              return voyageId;
+            })
+          );
+        }),
+        catchError(error => {
+          console.error('❌ Error creating voyage with islands:', error);
+          return throwError(() => new Error('Failed to create voyage with islands: ' + error.message));
+        })
+      );
+    } catch (error: any) {
+      return throwError(() => new Error('Failed to create voyage with islands: ' + error.message));
+    }
+  }
+
+  /**
    * Get all voyages from Firestore with their islands
    * @returns Observable<Voyage[]> Array of all voyages with islands loaded
    */
