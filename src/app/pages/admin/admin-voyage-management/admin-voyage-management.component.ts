@@ -6,16 +6,19 @@ import { Voyage } from '../../../models/voyage.model';
 import { Island } from '../../../models/island.model';
 import { Deck, SessionType } from '../../../models/venue.model';
 import { AdminService } from '../../../services/admin/admin.service';
+import { ToastService } from '../../../services/toast/toast.service';
+import { ToastContainerComponent } from '../../../shared/components/toast-container/toast-container.component';
 
 @Component({
   selector: 'app-admin-voyage-management',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ToastContainerComponent],
   templateUrl: './admin-voyage-management.component.html',
   styleUrl: './admin-voyage-management.component.scss'
 })
 export class AdminVoyageManagementComponent implements OnInit, OnDestroy {
   private adminService = inject(AdminService);
+  private toastService = inject(ToastService);
   private destroy$ = new Subject<void>();
 
   // Voyages data from Firebase
@@ -146,10 +149,11 @@ export class AdminVoyageManagementComponent implements OnInit, OnDestroy {
           .subscribe({
             next: (voyageId) => {
               console.log('Voyage with islands created with ID:', voyageId);
-              this.success.set(`Voyage created successfully with ${islandsToCreate.length} islands!`);
+              this.toastService.showSuccess('Voyage created successfully!', `Your voyage group with ${islandsToCreate.length} sessions is ready to sail.`);
               this.showCreateModal.set(false);
               this.resetVoyageForm();
               this.loadVoyages(); // Reload data
+              this.loading.set(false);
             },
             error: (error) => {
               this.error.set(error.message);
@@ -167,10 +171,11 @@ export class AdminVoyageManagementComponent implements OnInit, OnDestroy {
           .subscribe({
             next: (voyageId) => {
               console.log('Voyage created with ID:', voyageId);
-              this.success.set('Voyage created successfully!');
+              this.toastService.showSuccess('Voyage created successfully!', 'Your new voyage group is ready for sessions.');
               this.showCreateModal.set(false);
               this.resetVoyageForm();
               this.loadVoyages(); // Reload data
+              this.loading.set(false);
             },
             error: (error) => {
               this.error.set(error.message);
@@ -194,6 +199,8 @@ export class AdminVoyageManagementComponent implements OnInit, OnDestroy {
               this.selectedVoyage.set(null);
               this.resetVoyageForm();
               this.loadVoyages(); // Reload data
+              this.loading.set(false);
+              this.toastService.showSuccess('Voyage updated successfully!', 'Your voyage group changes have been saved.');
             },
             error: (error) => {
               this.error.set(error.message);
@@ -215,6 +222,8 @@ export class AdminVoyageManagementComponent implements OnInit, OnDestroy {
         .subscribe({
           next: () => {
             this.loadVoyages(); // Reload data
+            this.loading.set(false);
+            this.toastService.showSuccess('Voyage deleted successfully!', 'The voyage group and all its sessions have been removed.');
           },
           error: (error) => {
             this.error.set(error.message);
@@ -254,8 +263,11 @@ export class AdminVoyageManagementComponent implements OnInit, OnDestroy {
   }
 
   // Create new island
-  createIsland(): void {
+  createIsland(voyage?: Voyage): void {
     this.resetIslandForm();
+    if (voyage) {
+      this.selectedVoyageForIslands.set(voyage); // Set the voyage context for island creation
+    }
     this.showCreateIslandModal.set(true);
   }
 
@@ -318,7 +330,10 @@ export class AdminVoyageManagementComponent implements OnInit, OnDestroy {
             console.log('Island created with ID:', islandId);
             this.showCreateIslandModal.set(false);
             this.resetIslandForm();
-            this.loadIslands(voyageId); // Reload islands
+            this.loadVoyages(); // Reload all voyages to refresh island data in accordion
+            this.loading.set(false);
+            this.error.set(null);
+            this.toastService.showSuccess('Island created successfully!', 'Your new session has been added to the voyage.');
           },
           error: (error) => {
             this.error.set(error.message);
@@ -352,9 +367,7 @@ export class AdminVoyageManagementComponent implements OnInit, OnDestroy {
               this.loadVoyages(); // Reload all voyages to refresh island data in accordion
               this.loading.set(false);
               this.error.set(null);
-              this.success.set('Island updated successfully!');
-              // Clear success message after 3 seconds
-              setTimeout(() => this.success.set(null), 3000);
+              this.toastService.showSuccess('Island updated successfully!', 'Your session changes have been saved.');
             },
             error: (error) => {
               this.error.set(error.message);
@@ -366,8 +379,8 @@ export class AdminVoyageManagementComponent implements OnInit, OnDestroy {
   }
 
   // Delete island
-  deleteIsland(island: Island): void {
-    const voyageId = this.selectedVoyageForIslands()?.id;
+  deleteIsland(island: Island, voyage: Voyage): void {
+    const voyageId = voyage.id;
     if (!voyageId) return;
 
     if (confirm(`Are you sure you want to delete the island "${island.title}"? This action cannot be undone.`)) {
@@ -378,7 +391,10 @@ export class AdminVoyageManagementComponent implements OnInit, OnDestroy {
         .pipe(takeUntil(this.destroy$))
         .subscribe({
           next: () => {
-            this.loadIslands(voyageId); // Reload islands
+            this.loadVoyages(); // Reload all voyages to refresh island data in accordion
+            this.loading.set(false);
+            this.error.set(null);
+            this.toastService.showSuccess('Island deleted successfully!', 'The session has been removed from the voyage.');
           },
           error: (error) => {
             this.error.set(error.message);
@@ -460,8 +476,7 @@ export class AdminVoyageManagementComponent implements OnInit, OnDestroy {
     // Reset form and hide island creation
     this.resetIslandForm();
     this.showAddIslandToVoyage.set(false);
-    this.success.set('Island added to voyage!');
-    setTimeout(() => this.success.set(null), 2000);
+    this.toastService.showSuccess('Island added to voyage!', 'Session has been queued for creation.');
   }
 
   // Remove island from voyage creation

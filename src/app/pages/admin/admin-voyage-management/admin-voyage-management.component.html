@@ -30,15 +30,8 @@
     </div>
   }
 
-  <!-- Success State -->
-  @if (success()) {
-    <div class="success-state">
-      <div class="success-message">
-        <span class="success-icon">✅</span>
-        {{ success() }}
-      </div>
-    </div>
-  }
+  <!-- Toast Container -->
+  <app-toast-container></app-toast-container>
 
   <!-- Voyages Table -->
   <div class="admin-table-section">
@@ -98,7 +91,7 @@
                                 <button class="btn-secondary btn-xs" (click)="editIsland(island, voyage)" title="Edit Island">
                                   ✏️
                                 </button>
-                                <button class="btn-danger btn-xs" (click)="deleteIsland(island)" title="Delete Island">
+                                <button class="btn-danger btn-xs" (click)="deleteIsland(island, voyage)" title="Delete Island">
                                   🗑️
                                 </button>
                               </div>
@@ -127,11 +120,22 @@
                           </div>
                         }
                       </div>
+                      <!-- Add Another Island Button -->
+                      <div class="add-island-action">
+                        <button class="btn-primary btn-sm add-island-btn" (click)="createIsland(voyage)" title="Add Another Island">
+                          <span class="btn-icon">+</span>
+                          Add Another Island
+                        </button>
+                      </div>
                     } @else {
                       <div class="empty-islands">
                         <div class="empty-icon">🏝️</div>
                         <p>No islands found for this voyage</p>
                         <p class="empty-hint">Islands can be added through the admin dashboard</p>
+                        <button class="btn-primary btn-sm" (click)="createIsland(voyage)" title="Add Island">
+                          <span class="btn-icon">+</span>
+                          Add First Island
+                        </button>
                       </div>
                     }
                   </div>
