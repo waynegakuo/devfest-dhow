@@ -1,37 +1,37 @@
-<div class="admin-island-coordination">
+<div class="admin-page-container">
   <!-- Header Section -->
-  <div class="page-header">
-    <div class="header-content">
-      <h1 class="page-title">🏝️ Island Coordination</h1>
-      <p class="page-subtitle">Manage all sessions across your DevFest voyage fleet</p>
+  <div class="admin-page-header">
+    <div class="admin-header-content">
+      <h1 class="admin-page-title">🏝️ Island Coordination</h1>
+      <p class="admin-page-subtitle">Manage all sessions across your DevFest voyage fleet</p>
     </div>
-    <button class="btn-primary create-btn" (click)="createIsland()" [disabled]="isLoading()">
-      <span class="btn-icon">+</span>
+    <button class="btn-primary admin-create-btn" (click)="createIsland()" [disabled]="isLoading()">
+      <span class="admin-btn-icon">+</span>
       Create New Island Session
     </button>
   </div>
 
   <!-- Filters and Search Section -->
-  <div class="filters-section">
-    <div class="search-container">
-      <div class="search-input-wrapper">
-        <span class="search-icon">🔍</span>
+  <div class="admin-filters-section">
+    <div class="admin-search-container">
+      <div class="admin-search-input-wrapper">
+        <span class="admin-search-icon">🔍</span>
         <input
           type="text"
           placeholder="Search islands by title, speaker, or tags..."
-          class="search-input"
+          class="admin-search-input"
           [value]="searchTerm()"
           (input)="onSearchChange($event)"
         />
       </div>
     </div>
 
-    <div class="filter-controls">
-      <div class="filter-group">
+    <div class="admin-filter-controls">
+      <div class="admin-filter-group">
         <label for="voyage-filter">Voyage:</label>
         <select
           id="voyage-filter"
-          class="filter-select"
+          class="admin-filter-select"
           [value]="selectedVoyageFilter()"
           (change)="onVoyageFilterChange($event)"
         >
@@ -42,11 +42,11 @@
         </select>
       </div>
 
-      <div class="filter-group">
+      <div class="admin-filter-group">
         <label for="session-type-filter">Session Type:</label>
         <select
           id="session-type-filter"
-          class="filter-select"
+          class="admin-filter-select"
           [value]="selectedSessionTypeFilter()"
           (change)="onSessionTypeFilterChange($event)"
         >
@@ -57,11 +57,11 @@
         </select>
       </div>
 
-      <div class="filter-group">
+      <div class="admin-filter-group">
         <label for="venue-filter">Venue:</label>
         <select
           id="venue-filter"
-          class="filter-select"
+          class="admin-filter-select"
           [value]="selectedVenueFilter()"
           (change)="onVenueFilterChange($event)"
         >
@@ -76,8 +76,8 @@
 
   <!-- Loading State -->
   @if (isLoading()) {
-    <div class="loading-state">
-      <div class="loading-spinner"></div>
+    <div class="admin-loading-state">
+      <div class="admin-loading-spinner"></div>
       <p>Loading island coordinates...</p>
     </div>
   }
@@ -90,15 +90,15 @@
       </div>
 
       @if (filteredIslands().length > 0) {
-        <div class="islands-grid">
+        <div class="admin-grid">
           @for (island of filteredIslands(); track island.id) {
-            <div class="island-card">
-              <div class="island-header">
-                <div class="island-title-section">
-                  <h3 class="island-title">{{ island.title }}</h3>
+            <div class="admin-card">
+              <div class="admin-card-header">
+                <div class="admin-card-title-section">
+                  <h3 class="admin-card-title">{{ island.title }}</h3>
                   <div class="voyage-badge">{{ island.voyageName }}</div>
                 </div>
-                <div class="island-actions">
+                <div class="admin-card-actions">
                   <button class="btn-secondary btn-sm" (click)="editIsland(island)" title="Edit Island">
                     ✏️
                   </button>
@@ -147,8 +147,8 @@
           }
         </div>
       } @else {
-        <div class="empty-state">
-          <div class="empty-icon">🏝️</div>
+        <div class="admin-empty-state">
+          <div class="admin-empty-icon">🏝️</div>
           <h3>No islands found</h3>
           <p>Try adjusting your filters or create a new island session.</p>
           <button class="btn-primary" (click)="createIsland()">Create New Island</button>
@@ -163,18 +163,18 @@
 
 <!-- Island Modal -->
 @if (showIslandModal()) {
-  <div class="modal-overlay" (click)="cancelIslandModal()">
-    <div class="modal-content island-modal" (click)="$event.stopPropagation()">
-      <div class="modal-header">
-        <h2 class="modal-title">
+  <div class="admin-modal-overlay" (click)="cancelIslandModal()">
+    <div class="admin-modal-content island-modal" (click)="$event.stopPropagation()">
+      <div class="admin-modal-header">
+        <h2 class="admin-modal-title">
           {{ isEditMode() ? '✏️ Edit Island Session' : '🏝️ Create New Island Session' }}
         </h2>
-        <button class="modal-close" (click)="cancelIslandModal()" title="Close Modal">
+        <button class="admin-modal-close" (click)="cancelIslandModal()" title="Close Modal">
           ✕
         </button>
       </div>
 
-      <div class="modal-body">
+      <div class="admin-modal-body">
         <form class="island-form">
           <!-- Voyage Selection -->
           @if (!isEditMode()) {
@@ -346,7 +346,7 @@
         </form>
       </div>
 
-      <div class="modal-footer">
+      <div class="admin-modal-footer">
         <button class="btn-secondary" (click)="cancelIslandModal()">Cancel</button>
         <button class="btn-primary" (click)="saveIsland()">
           {{ isEditMode() ? 'Update Island' : 'Create Island' }}
