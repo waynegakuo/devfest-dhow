@@ -22,8 +22,9 @@
  * high-readability requirements.
  */
 
-// Import design system variables
+// Import design system variables and color functions
 @use 'styles/variables' as *;
+@use 'sass:color';
 
 // Reset and base styles
 * {
@@ -719,7 +720,7 @@ body {
   }
 }
 
-// Tags component
+// Enhanced Tags component with improved styling
 .tags-input-container {
   .tags-list {
     display: flex;
@@ -730,26 +731,65 @@ body {
     .tag {
       display: inline-flex;
       align-items: center;
-      background: $magenta-violet;
+      background: linear-gradient(135deg, $magenta-violet 0%, color.adjust($magenta-violet, $lightness: -10%) 100%);
       color: $white;
-      padding: 0.25rem 0.75rem;
-      border-radius: 1rem;
-      font-size: 0.875rem;
-      gap: 0.5rem;
+      padding: 0.375rem 0.75rem;
+      border-radius: 1.5rem;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      gap: 0.375rem;
+      box-shadow: 0 2px 4px rgba(156, 39, 176, 0.2);
+      transition: all 0.2s ease;
+      border: 1px solid rgba(255, 255, 255, 0.1);
 
-      .tag-remove {
-        background: none;
-        border: none;
-        color: $white;
-        cursor: pointer;
-        font-size: 1rem;
-        padding: 0;
-        line-height: 1;
+      &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(156, 39, 176, 0.3);
+      }
 
-        &:hover {
-          opacity: 0.8;
+      &.editable {
+        padding-right: 0.5rem;
+
+        .tag-remove {
+          background: rgba(255, 255, 255, 0.2);
+          border: none;
+          color: $white;
+          cursor: pointer;
+          font-size: 0.875rem;
+          padding: 0;
+          margin-left: 0.25rem;
+          border-radius: 50%;
+          width: 1.125rem;
+          height: 1.125rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: all 0.2s ease;
+          line-height: 1;
+
+          &:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+          }
         }
       }
+    }
+  }
+
+  .form-input {
+    border: 2px solid $gray-200;
+    border-radius: 0.5rem;
+    padding: 0.75rem;
+    transition: all 0.2s ease;
+
+    &:focus {
+      border-color: $magenta-violet;
+      box-shadow: 0 0 0 3px rgba(156, 39, 176, 0.1);
+    }
+
+    &::placeholder {
+      color: $gray-400;
+      font-style: italic;
     }
   }
 }
@@ -943,6 +983,40 @@ body {
     outline: 2px solid $ocean-blue;
     outline-offset: 2px;
     border-color: $ocean-blue;
+  }
+}
+
+// Enhanced textarea with better styling
+.form-textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid $gray-200;
+  border-radius: 0.5rem;
+  font-family: inherit;
+  color: $gray-700;
+  font-size: 1rem;
+  line-height: 1.5;
+  resize: vertical;
+  min-height: 120px;
+  transition: all 0.2s ease;
+  background-color: $gray-50;
+  box-sizing: border-box;
+
+  &:focus {
+    outline: none;
+    border-color: $magenta-violet;
+    box-shadow: 0 0 0 3px rgba(156, 39, 176, 0.1);
+    background-color: $white;
+  }
+
+  &::placeholder {
+    color: $gray-400;
+    font-style: italic;
+  }
+
+  &:hover:not(:focus) {
+    border-color: $gray-300;
+    background-color: $white;
   }
 }
 

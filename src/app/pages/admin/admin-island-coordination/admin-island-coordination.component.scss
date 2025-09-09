@@ -1,0 +1,511 @@
+@use '../../../../styles/variables' as *;
+
+.admin-island-coordination {
+  padding: 1.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+    gap: 1rem;
+
+    .header-content {
+      flex: 1;
+
+      .page-title {
+        font-size: 2rem;
+        font-weight: 800;
+        color: $gray-900;
+        margin: 0 0 0.5rem 0;
+      }
+
+      .page-subtitle {
+        color: $gray-600;
+        margin: 0;
+      }
+    }
+
+    .create-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      white-space: nowrap;
+
+      .btn-icon {
+        font-size: 1.125rem;
+        font-weight: bold;
+      }
+    }
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      align-items: stretch;
+
+      .create-btn {
+        align-self: flex-start;
+      }
+    }
+  }
+
+  // Filters Section
+  .filters-section {
+    background: white;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    border: 1px solid $gray-200;
+
+    .search-container {
+      margin-bottom: 1.5rem;
+
+      .search-input-wrapper {
+        position: relative;
+        max-width: 500px;
+
+        .search-icon {
+          position: absolute;
+          left: 1rem;
+          top: 50%;
+          transform: translateY(-50%);
+          color: $gray-400;
+          font-size: 1rem;
+        }
+
+        .search-input {
+          width: 100%;
+          padding: 0.75rem 1rem 0.75rem 2.5rem;
+          border: 2px solid $gray-200;
+          border-radius: 0.5rem;
+          font-size: 1rem;
+          transition: all 0.2s ease;
+
+          &:focus {
+            outline: none;
+            border-color: $magenta-violet;
+            box-shadow: 0 0 0 3px rgba(156, 39, 176, 0.1);
+          }
+
+          &::placeholder {
+            color: $gray-400;
+          }
+        }
+      }
+    }
+
+    .filter-controls {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+
+      .filter-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        label {
+          font-weight: 600;
+          color: $gray-700;
+          font-size: 0.875rem;
+        }
+
+        .filter-select {
+          padding: 0.5rem 0.75rem;
+          border: 2px solid $gray-200;
+          border-radius: 0.5rem;
+          font-size: 0.875rem;
+          background: white;
+          transition: border-color 0.2s ease;
+
+          &:focus {
+            outline: none;
+            border-color: $magenta-violet;
+            box-shadow: 0 0 0 3px rgba(156, 39, 176, 0.1);
+          }
+        }
+      }
+    }
+  }
+
+  // Loading State
+  .loading-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+    text-align: center;
+
+    .loading-spinner {
+      width: 3rem;
+      height: 3rem;
+      border: 3px solid $gray-200;
+      border-top: 3px solid $magenta-violet;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      color: $gray-600;
+      font-size: 1.125rem;
+      margin: 0;
+    }
+  }
+
+  // Islands Section
+  .islands-section {
+    .results-info {
+      margin-bottom: 1rem;
+
+      p {
+        color: $gray-600;
+        font-size: 0.875rem;
+        margin: 0;
+      }
+    }
+
+    .islands-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .island-card {
+      background: white;
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      border: 1px solid $gray-200;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, $magenta-violet 0%, $ocean-blue 100%);
+      }
+
+      &:hover {
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        transform: translateY(-2px);
+      }
+
+      .island-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 1rem;
+        gap: 1rem;
+
+        .island-title-section {
+          flex: 1;
+
+          .island-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: $gray-900;
+            margin: 0 0 0.5rem 0;
+            line-height: 1.3;
+          }
+
+          .voyage-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, $magenta-violet 0%, $ocean-blue 100%);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+          }
+        }
+
+        .island-actions {
+          display: flex;
+          gap: 0.5rem;
+          flex-shrink: 0;
+        }
+      }
+
+      .island-content {
+        .speaker-info {
+          margin-bottom: 1rem;
+
+          .speaker-name {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: $gray-900;
+            margin-bottom: 0.25rem;
+          }
+
+          .speaker-details {
+            color: $gray-600;
+            font-size: 0.875rem;
+          }
+        }
+
+        .session-meta {
+          display: grid;
+          gap: 0.5rem;
+          margin-bottom: 1rem;
+
+          .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: $gray-700;
+
+            .meta-icon {
+              font-size: 1rem;
+              width: 1.25rem;
+              flex-shrink: 0;
+            }
+          }
+        }
+
+        .island-description {
+          color: $gray-700;
+          font-size: 0.875rem;
+          line-height: 1.5;
+          margin-bottom: 1rem;
+          display: -webkit-box;
+          -webkit-line-clamp: 3;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+
+        .island-tags {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.5rem;
+
+          .tag {
+            background: $gray-100;
+            color: $gray-700;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+          }
+        }
+      }
+    }
+
+    // Empty State
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem 2rem;
+      text-align: center;
+
+      .empty-icon {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        opacity: 0.5;
+      }
+
+      h3 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: $gray-900;
+        margin: 0 0 0.5rem 0;
+      }
+
+      p {
+        color: $gray-600;
+        margin: 0 0 2rem 0;
+        max-width: 400px;
+      }
+    }
+  }
+
+  // Modal Styles
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(4px);
+
+    .modal-content {
+      background: white;
+      border-radius: 0.75rem;
+      max-width: 600px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+      .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.5rem 1.5rem 0 1.5rem;
+        border-bottom: 1px solid $gray-200;
+        margin-bottom: 1.5rem;
+
+        .modal-title {
+          font-size: 1.5rem;
+          font-weight: 700;
+          color: $gray-900;
+          margin: 0;
+        }
+
+        .modal-close {
+          background: none;
+          border: none;
+          font-size: 1.5rem;
+          color: $gray-400;
+          cursor: pointer;
+          padding: 0.25rem;
+          border-radius: 0.25rem;
+          transition: color 0.2s ease;
+
+          &:hover {
+            color: $gray-600;
+          }
+        }
+      }
+
+      .modal-body {
+        padding: 0 1.5rem;
+
+        .island-form {
+          .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+
+            @media (max-width: 640px) {
+              grid-template-columns: 1fr;
+            }
+          }
+
+          .form-group {
+            margin-bottom: 1rem;
+
+            .form-label {
+              display: block;
+              font-weight: 600;
+              color: $gray-700;
+              margin-bottom: 0.5rem;
+              font-size: 0.875rem;
+
+              &.required::after {
+                content: ' *';
+                color: $error-red;
+              }
+            }
+
+            .form-input {
+              width: 100%;
+              padding: 0.75rem;
+              border: 2px solid $gray-200;
+              border-radius: 0.5rem;
+              font-size: 1rem;
+              transition: all 0.2s ease;
+              box-sizing: border-box;
+
+              &:focus {
+                outline: none;
+                border-color: $magenta-violet;
+                box-shadow: 0 0 0 3px rgba(156, 39, 176, 0.1);
+              }
+
+              &::placeholder {
+                color: $gray-400;
+              }
+            }
+
+            .form-hint {
+              display: block;
+              font-size: 0.75rem;
+              color: $gray-500;
+              margin-top: 0.25rem;
+            }
+          }
+
+        }
+      }
+
+      .modal-footer {
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
+        padding: 1.5rem;
+        border-top: 1px solid $gray-200;
+        margin-top: 1.5rem;
+      }
+    }
+  }
+
+  // Animations
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  // Responsive Design
+  @media (max-width: 768px) {
+    padding: 1rem;
+
+    .islands-section .islands-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .filters-section .filter-controls {
+      grid-template-columns: 1fr;
+    }
+
+    .modal-overlay .modal-content {
+      width: 95%;
+      margin: 1rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .island-card {
+      padding: 1rem;
+
+      .island-header {
+        flex-direction: column;
+        gap: 0.75rem;
+
+        .island-actions {
+          align-self: flex-end;
+        }
+      }
+    }
+  }
+}

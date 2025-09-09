@@ -1,0 +1,357 @@
+<div class="admin-island-coordination">
+  <!-- Header Section -->
+  <div class="page-header">
+    <div class="header-content">
+      <h1 class="page-title">🏝️ Island Coordination</h1>
+      <p class="page-subtitle">Manage all sessions across your DevFest voyage fleet</p>
+    </div>
+    <button class="btn-primary create-btn" (click)="createIsland()" [disabled]="isLoading()">
+      <span class="btn-icon">+</span>
+      Create New Island Session
+    </button>
+  </div>
+
+  <!-- Filters and Search Section -->
+  <div class="filters-section">
+    <div class="search-container">
+      <div class="search-input-wrapper">
+        <span class="search-icon">🔍</span>
+        <input
+          type="text"
+          placeholder="Search islands by title, speaker, or tags..."
+          class="search-input"
+          [value]="searchTerm()"
+          (input)="onSearchChange($event)"
+        />
+      </div>
+    </div>
+
+    <div class="filter-controls">
+      <div class="filter-group">
+        <label for="voyage-filter">Voyage:</label>
+        <select
+          id="voyage-filter"
+          class="filter-select"
+          [value]="selectedVoyageFilter()"
+          (change)="onVoyageFilterChange($event)"
+        >
+          <option value="all">All Voyages</option>
+          @for (voyage of voyages(); track voyage.id) {
+            <option [value]="voyage.id">{{ voyage.name }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label for="session-type-filter">Session Type:</label>
+        <select
+          id="session-type-filter"
+          class="filter-select"
+          [value]="selectedSessionTypeFilter()"
+          (change)="onSessionTypeFilterChange($event)"
+        >
+          <option value="all">All Types</option>
+          @for (type of sessionTypes; track type) {
+            <option [value]="type">{{ formatSessionType(type) }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label for="venue-filter">Venue:</label>
+        <select
+          id="venue-filter"
+          class="filter-select"
+          [value]="selectedVenueFilter()"
+          (change)="onVenueFilterChange($event)"
+        >
+          <option value="all">All Venues</option>
+          @for (venue of venues; track venue) {
+            <option [value]="venue">{{ formatVenue(venue) }}</option>
+          }
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  @if (isLoading()) {
+    <div class="loading-state">
+      <div class="loading-spinner"></div>
+      <p>Loading island coordinates...</p>
+    </div>
+  }
+
+  <!-- Islands Grid -->
+  @if (!isLoading()) {
+    <div class="islands-section">
+      <div class="results-info">
+        <p>{{ filteredIslands().length }} islands found</p>
+      </div>
+
+      @if (filteredIslands().length > 0) {
+        <div class="islands-grid">
+          @for (island of filteredIslands(); track island.id) {
+            <div class="island-card">
+              <div class="island-header">
+                <div class="island-title-section">
+                  <h3 class="island-title">{{ island.title }}</h3>
+                  <div class="voyage-badge">{{ island.voyageName }}</div>
+                </div>
+                <div class="island-actions">
+                  <button class="btn-secondary btn-sm" (click)="editIsland(island)" title="Edit Island">
+                    ✏️
+                  </button>
+                  <button class="btn-danger btn-sm" (click)="deleteIsland(island)" title="Delete Island">
+                    🗑️
+                  </button>
+                </div>
+              </div>
+
+              <div class="island-content">
+                <div class="speaker-info">
+                  <div class="speaker-name">{{ island.speaker }}</div>
+                  <div class="speaker-details">{{ island.speakerRole }} - {{ island.speakerCompany }}</div>
+                </div>
+
+                <div class="session-meta">
+                  <div class="meta-item">
+                    <span class="meta-icon">⏰</span>
+                    <span>{{ island.time }} ({{ island.duration }})</span>
+                  </div>
+                  <div class="meta-item">
+                    <span class="meta-icon">📍</span>
+                    <span>{{ formatVenue(island.venue) }}</span>
+                  </div>
+                  <div class="meta-item">
+                    <span class="meta-icon">🎯</span>
+                    <span>{{ formatSessionType(island.sessionType) }}</span>
+                  </div>
+                </div>
+
+                @if (island.description) {
+                  <div class="island-description">
+                    {{ island.description }}
+                  </div>
+                }
+
+                @if (island.tags && island.tags.length > 0) {
+                  <div class="island-tags">
+                    @for (tag of island.tags; track tag) {
+                      <span class="tag">{{ tag }}</span>
+                    }
+                  </div>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      } @else {
+        <div class="empty-state">
+          <div class="empty-icon">🏝️</div>
+          <h3>No islands found</h3>
+          <p>Try adjusting your filters or create a new island session.</p>
+          <button class="btn-primary" (click)="createIsland()">Create New Island</button>
+        </div>
+      }
+    </div>
+  }
+
+  <!-- Toast Container -->
+  <app-toast-container></app-toast-container>
+</div>
+
+<!-- Island Modal -->
+@if (showIslandModal()) {
+  <div class="modal-overlay" (click)="cancelIslandModal()">
+    <div class="modal-content island-modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2 class="modal-title">
+          {{ isEditMode() ? '✏️ Edit Island Session' : '🏝️ Create New Island Session' }}
+        </h2>
+        <button class="modal-close" (click)="cancelIslandModal()" title="Close Modal">
+          ✕
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <form class="island-form">
+          <!-- Voyage Selection -->
+          @if (!isEditMode()) {
+            <div class="form-group">
+              <label for="voyage-select" class="form-label required">Voyage:</label>
+              <select
+                id="voyage-select"
+                class="form-input"
+                [value]="currentIsland().voyageId || ''"
+                (change)="onVoyageIdChange($event)"
+                required
+              >
+                <option value="">Select a voyage</option>
+                @for (voyage of voyages(); track voyage.id) {
+                  <option [value]="voyage.id">{{ voyage.name }}</option>
+                }
+              </select>
+            </div>
+          }
+
+          <!-- Basic Information -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="island-title" class="form-label required">Session Title:</label>
+              <input
+                type="text"
+                id="island-title"
+                class="form-input"
+                placeholder="Enter session title"
+                [value]="currentIsland().title || ''"
+                (input)="onIslandFormChange('title', $event.target.value)"
+                required
+              />
+            </div>
+          </div>
+
+          <!-- Speaker Information -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="speaker-name" class="form-label required">Speaker Name:</label>
+              <input
+                type="text"
+                id="speaker-name"
+                class="form-input"
+                placeholder="Enter speaker name"
+                [value]="currentIsland().speaker || ''"
+                (input)="onIslandFormChange('speaker', $event.target.value)"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="speaker-role" class="form-label">Speaker Role:</label>
+              <input
+                type="text"
+                id="speaker-role"
+                class="form-input"
+                placeholder="e.g., Senior Developer"
+                [value]="currentIsland().speakerRole || ''"
+                (input)="onIslandFormChange('speakerRole', $event.target.value)"
+              />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="speaker-company" class="form-label">Company:</label>
+              <input
+                type="text"
+                id="speaker-company"
+                class="form-input"
+                placeholder="Enter company name"
+                [value]="currentIsland().speakerCompany || ''"
+                (input)="onIslandFormChange('speakerCompany', $event.target.value)"
+              />
+            </div>
+          </div>
+
+          <!-- Session Details -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="session-time" class="form-label">Time:</label>
+              <input
+                type="time"
+                id="session-time"
+                class="form-input"
+                [value]="currentIsland().time || ''"
+                (input)="onIslandFormChange('time', $event.target.value)"
+              />
+            </div>
+            <div class="form-group">
+              <label for="session-duration" class="form-label">Duration:</label>
+              <input
+                type="text"
+                id="session-duration"
+                class="form-input"
+                placeholder="e.g., 45 min"
+                [value]="currentIsland().duration || ''"
+                (input)="onIslandFormChange('duration', $event.target.value)"
+              />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="session-venue" class="form-label">Venue:</label>
+              <select
+                id="session-venue"
+                class="form-input"
+                [value]="currentIsland().venue || ''"
+                (change)="onVenueChange($event)"
+              >
+                @for (venue of venues; track venue) {
+                  <option [value]="venue">{{ formatVenue(venue) }}</option>
+                }
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="session-type" class="form-label">Session Type:</label>
+              <select
+                id="session-type"
+                class="form-input"
+                [value]="currentIsland().sessionType || ''"
+                (change)="onSessionTypeChange($event)"
+              >
+                @for (type of sessionTypes; track type) {
+                  <option [value]="type">{{ formatSessionType(type) }}</option>
+                }
+              </select>
+            </div>
+          </div>
+
+          <!-- Description -->
+          <div class="form-group">
+            <label for="session-description" class="form-label">Description:</label>
+            <textarea
+              id="session-description"
+              class="form-textarea"
+              placeholder="Enter session description"
+              rows="4"
+              [value]="currentIsland().description || ''"
+              (input)="onDescriptionChange($event)"
+            ></textarea>
+          </div>
+
+          <!-- Tags -->
+          <div class="form-group">
+            <label for="session-tags" class="form-label">Tags:</label>
+            <div class="tags-input-container">
+              @if (currentIsland().tags && currentIsland().tags!.length > 0) {
+                <div class="tags-list">
+                  @for (tag of currentIsland().tags!; track tag) {
+                    <span class="tag editable">
+                      {{ tag }}
+                      <button type="button" class="tag-remove" (click)="removeTag(tag)">×</button>
+                    </span>
+                  }
+                </div>
+              }
+              <input
+                type="text"
+                id="session-tags"
+                class="form-input"
+                placeholder="Type a tag and press Enter to add"
+                (keydown)="addTag($event)"
+              />
+            </div>
+            <small class="form-hint">Press Enter to add tags</small>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-secondary" (click)="cancelIslandModal()">Cancel</button>
+        <button class="btn-primary" (click)="saveIsland()">
+          {{ isEditMode() ? 'Update Island' : 'Create Island' }}
+        </button>
+      </div>
+    </div>
+  </div>
+}

@@ -27,7 +27,8 @@ export class AdminDashboardLayoutComponent {
   adminNavigationItems: NavigationItem[] = [
     { id: 'admin-helm', name: 'Admiral\'s Helm', icon: '⚓', description: 'Admin Dashboard - Central command for voyage management', route: '/admin/helm' },
     { id: 'voyage-management', name: 'Fleet Management', icon: '🚢', description: 'Voyage Management - Create, edit and manage voyages', route: '/admin/voyages' },
-    { id: 'session-management', name: 'Island Coordination', icon: '🏝️', description: 'Session Management - Manage conference sessions', route: '/admin/sessions' },
+    { id: 'island-coordination', name: 'Island Coordination', icon: '🏝️', description: 'Island Coordination - Manage all conference sessions across voyages', route: '/admin/islands' },
+    { id: 'session-management', name: 'Session Management', icon: '📅', description: 'Session Management - Manage conference sessions', route: '/admin/sessions' },
     { id: 'navigator-management', name: 'Navigator Registry', icon: '🧭', description: 'Navigator Management - View and manage attendees', route: '/admin/navigators' },
     { id: 'analytics', name: 'Fleet Analytics', icon: '📊', description: 'Analytics - Voyage and session insights', route: '/admin/analytics' },
     { id: 'settings', name: 'Ship Configuration', icon: '⚙️', description: 'Settings - System configuration and preferences', route: '/admin/settings' },

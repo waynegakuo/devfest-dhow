@@ -109,6 +109,10 @@ export const routes: Routes = [
       {
         path: 'role-assignment',
         loadComponent: () => import('./pages/admin/admin-role-assignment/admin-role-assignment.component').then(m => m.AdminRoleAssignmentComponent)
+      },
+      {
+        path: 'islands',
+        loadComponent: () => import('./pages/admin/admin-island-coordination/admin-island-coordination.component').then(m => m.AdminIslandCoordinationComponent)
       }
     ]
   },
