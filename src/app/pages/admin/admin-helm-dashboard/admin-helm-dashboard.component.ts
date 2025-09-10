@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { NavigatorService } from '../../../services/navigator/navigator.service';
 import { AdminService } from '../../../services/admin/admin.service';
+import { VoyagesDataService } from '../../../services/voyages-data/voyages-data.service';
 
 interface AdminQuickAction {
   id: string;
@@ -23,17 +24,18 @@ interface AdminQuickAction {
 export class AdminHelmDashboardComponent {
   private navigatorService = inject(NavigatorService);
   private adminService = inject(AdminService);
+  private voyagesDataService = inject(VoyagesDataService);
 
   // Get navigator data
   readonly navigator = this.navigatorService.currentNavigator.asReadonly();
 
-  // Admin statistics (placeholder for future implementation)
-  readonly adminStats = signal({
-    totalVoyages: 0,
-    totalSessions: 0,
-    totalNavigators: 0,
-    activeRegistrations: 0
-  });
+  // Admin statistics with real-time voyages and islands data
+  readonly adminStats = computed(() => ({
+    totalVoyages: this.voyagesDataService.voyages().length,
+    totalSessions: this.voyagesDataService.allIslands().length,
+    totalNavigators: 0, // Keep at zero as specified
+    activeRegistrations: 0 // Keep at zero as specified
+  }));
 
   // Quick action cards for admin dashboard
   quickActions: AdminQuickAction[] = [
