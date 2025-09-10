@@ -9,7 +9,7 @@ $warning-light: #FFF3E0;
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
-  font-family: 'Google Sans', sans-serif;
+  font-family: $font-family-primary; // Use Architects Daughter font consistently
   background: linear-gradient(135deg, $gray-50 0%, $white 100%);
   min-height: 100vh;
 
@@ -172,7 +172,26 @@ $warning-light: #FFF3E0;
 }
 
 // Form styles are now handled by global unified form styles in _forms.scss
-// This component uses the global form classes: .input-group, .input-label, .input-wrapper, .email-input
+// This component uses the global form classes: .input-group, .form-label, .input-wrapper, .form-input
+
+// Component-specific form overrides to prevent button text wrapping
+.input-wrapper {
+  .form-input {
+    // Reduce input width to give more space for buttons
+    max-width: 250px;
+    flex: 0 1 300px; // Don't grow, can shrink, base width 250px
+
+    @media (max-width: 768px) {
+      max-width: 250px;
+      flex: 0 1 250px;
+    }
+
+    @media (max-width: 480px) {
+      max-width: none;
+      flex: 1; // Full width on very small screens
+    }
+  }
+}
 
 // Button Styles
 %btn-base {

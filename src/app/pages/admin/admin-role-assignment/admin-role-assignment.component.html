@@ -36,12 +36,12 @@
 
       <div class="form-container">
         <div class="input-group">
-          <label for="assignEmail" class="input-label">Navigator Email Address</label>
+          <label for="assignEmail" class="form-label">Navigator Email Address</label>
           <div class="input-wrapper">
             <input
               id="assignEmail"
               type="email"
-              class="email-input"
+              class="form-input"
               placeholder="navigator@devfest.com"
               [value]="emailToAssign()"
               (input)="updateAssignEmail($event)"
@@ -79,12 +79,12 @@
 
       <div class="form-container">
         <div class="input-group">
-          <label for="removeEmail" class="input-label">Admiral Email Address</label>
+          <label for="removeEmail" class="form-label">Admiral Email Address</label>
           <div class="input-wrapper">
             <input
               id="removeEmail"
               type="email"
-              class="email-input"
+              class="form-input"
               placeholder="admiral@devfest.com"
               [value]="emailToRemove()"
               (input)="updateRemoveEmail($event)"

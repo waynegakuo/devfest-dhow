@@ -4,6 +4,7 @@
 // Unified form styling for all DevFest Dhow components
 // Based on "Create New Island" section styling pattern
 
+@use 'sass:color';
 @use './variables' as *;
 
 // Form container and layout
@@ -337,7 +338,7 @@
       background: $gray-400;
 
       &:checked {
-        background: darken($magenta-violet, 10%);
+        background: color.adjust($magenta-violet, $lightness: -10%);
       }
     }
   }
