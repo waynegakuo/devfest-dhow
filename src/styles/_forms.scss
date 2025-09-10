@@ -287,6 +287,62 @@
   }
 }
 
+// Toggle switch styling (for ocean-themed toggle buttons)
+.form-toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+
+  input[type="checkbox"] {
+    appearance: none;
+    width: 44px;
+    height: 24px;
+    background: $gray-300;
+    border-radius: 12px;
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border: none;
+    outline: none;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 20px;
+      height: 20px;
+      background: $white;
+      border-radius: 50%;
+      transition: transform 0.3s ease;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    &:checked {
+      background: $magenta-violet;
+
+      &::before {
+        transform: translateX(20px);
+      }
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 3px rgba(156, 39, 176, 0.1);
+    }
+
+    &:hover {
+      background: $gray-400;
+
+      &:checked {
+        background: darken($magenta-violet, 10%);
+      }
+    }
+  }
+}
+
 // File input styling
 .form-file {
   .file-input {

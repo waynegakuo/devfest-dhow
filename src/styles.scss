@@ -296,6 +296,22 @@ body {
   -webkit-text-fill-color: transparent;
   background-clip: text;
   font-weight: 700;
+
+  // Preserve emoji colors by making them visible again
+  // This targets emoji characters and restores their natural colors
+  span:first-child,
+  &::before {
+    -webkit-text-fill-color: initial;
+    background: none;
+    background-clip: initial;
+  }
+}
+
+// Utility class to wrap emojis and preserve their colors
+.emoji {
+  -webkit-text-fill-color: initial !important;
+  background: none !important;
+  background-clip: initial !important;
 }
 
 // Button variants
