@@ -185,6 +185,110 @@ body {
   }
 }
 
+// Common admin components styles
+.stat-card {
+  background: white;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1);
+  }
+
+  .stat-icon {
+    font-size: 2.5rem;
+    opacity: 0.9;
+  }
+
+  .stat-content {
+    flex: 1;
+  }
+
+  .stat-value {
+    font-size: 2.25rem;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 0.25rem;
+  }
+
+  .stat-label {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+
+  // Ocean-themed card colors
+  &.ocean-blue {
+    background: linear-gradient(135deg, #1565C0 0%, #1e40af 100%);
+  }
+
+  &.wave-teal {
+    background: linear-gradient(135deg, #00ACC1 0%, #0891b2 100%);
+  }
+
+  &.coral-orange {
+    background: linear-gradient(135deg, #FF7043 0%, #ea580c 100%);
+  }
+
+  &.magenta-violet {
+    background: linear-gradient(135deg, #9c27b0 0%, #7c2d92 100%);
+  }
+}
+
+.loading-spinner {
+  width: 3rem;
+  height: 3rem;
+  border: 3px solid rgba(21, 101, 192, 0.2);
+  border-top: 3px solid #1565C0;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.analytics-card {
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  transition: all 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1);
+  }
+
+  .card-header {
+    padding: 1.5rem 1.5rem 1rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+
+    .card-title {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: #1e293b;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+  }
+
+  .card-content {
+    padding: 1.5rem;
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 // Gradient text for ocean theme
 .ocean-gradient-text {
   background: linear-gradient(135deg, $ocean-blue, $wave-teal);
