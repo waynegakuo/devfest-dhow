@@ -201,6 +201,7 @@ $warning-light: #FFF3E0;
   padding: 0.75rem 1.5rem;
   border: none;
   border-radius: 0.5rem;
+  font-family: $font-family-primary;
   font-weight: 500;
   font-size: 0.875rem;
   cursor: pointer;
@@ -378,6 +379,9 @@ $warning-light: #FFF3E0;
 
 .avatar-image {
   object-fit: cover;
+  // Ensure proper sizing and prevent squeezed appearance
+  min-width: 60px;
+  min-height: 60px;
 }
 
 .avatar-placeholder {
@@ -385,11 +389,18 @@ $warning-light: #FFF3E0;
   display: flex;
   align-items: center;
   justify-content: center;
+  // Ensure proper sizing and prevent squeezed appearance
+  min-width: 60px;
+  min-height: 60px;
 }
 
 .avatar-icon {
-  font-size: 1.5rem;
+  font-size: 2rem; // Increased from 1.5rem for better visibility
   color: $white;
+  line-height: 1; // Prevent line-height from affecting centering
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .admiral-details {
