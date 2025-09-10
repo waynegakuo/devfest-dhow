@@ -773,6 +773,30 @@ body {
           }
         }
       }
+
+      // Style for tag-remove buttons in all tags, not just editable ones
+      .tag-remove {
+        background: rgba(255, 255, 255, 0.2);
+        border: none;
+        color: $white;
+        cursor: pointer;
+        font-size: 0.875rem;
+        padding: 0;
+        margin-left: 0.25rem;
+        border-radius: 50%;
+        width: 1.125rem;
+        height: 1.125rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+        line-height: 1;
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.3);
+          transform: scale(1.1);
+        }
+      }
     }
   }
 
