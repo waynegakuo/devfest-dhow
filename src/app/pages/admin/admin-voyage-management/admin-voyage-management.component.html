@@ -173,24 +173,24 @@
         <div class="modal-body">
           <form class="voyage-form">
             <div class="form-group">
-              <label for="voyageName">Voyage Group Name</label>
+              <label class=form-label for="voyageName" class="form-label">Voyage Group Name</label>
               <input
                 type="text"
                 id="voyageName"
                 name="voyageName"
-                class="form-control"
+                class="form-input"
                 [(ngModel)]="voyageForm().name"
                 placeholder="e.g., Opening Waters - Morning Keynotes"
                 required>
             </div>
 
             <div class="form-group">
-              <label for="voyageDate">Date</label>
+              <label class=form-label for="voyageDate" class="form-label">Date</label>
               <input
                 type="date"
                 id="voyageDate"
                 name="voyageDate"
-                class="form-control"
+                class="form-input"
                 [(ngModel)]="voyageForm().date"
                 required>
             </div>
@@ -241,23 +241,23 @@
                     <form class="island-form">
                       <div class="form-row">
                         <div class="form-group">
-                          <label for="newIslandTitle">Session Title *</label>
+                          <label class=form-label for="newIslandTitle" class="form-label">Session Title *</label>
                           <input
                             type="text"
                             id="newIslandTitle"
                             name="newIslandTitle"
-                            class="form-control"
+                            class="form-input"
                             [(ngModel)]="islandForm().title"
                             placeholder="e.g., AI-Powered Navigation"
                             required>
                         </div>
                         <div class="form-group">
-                          <label for="newIslandTime">Time *</label>
+                          <label class=form-label for="newIslandTime" class="form-label">Time *</label>
                           <input
                             type="time"
                             id="newIslandTime"
                             name="newIslandTime"
-                            class="form-control"
+                            class="form-input"
                             [(ngModel)]="islandForm().time"
                             required>
                         </div>
@@ -265,23 +265,23 @@
 
                       <div class="form-row">
                         <div class="form-group">
-                          <label for="newIslandSpeaker">Speaker *</label>
+                          <label class=form-label for="newIslandSpeaker" class="form-label">Speaker *</label>
                           <input
                             type="text"
                             id="newIslandSpeaker"
                             name="newIslandSpeaker"
-                            class="form-control"
+                            class="form-input"
                             [(ngModel)]="islandForm().speaker"
                             placeholder="Speaker name"
                             required>
                         </div>
                         <div class="form-group">
-                          <label for="newIslandDuration">Duration</label>
+                          <label class=form-label for="newIslandDuration" class="form-label">Duration</label>
                           <input
                             type="text"
                             id="newIslandDuration"
                             name="newIslandDuration"
-                            class="form-control"
+                            class="form-input"
                             [(ngModel)]="islandForm().duration"
                             placeholder="e.g., 40 min">
                         </div>
@@ -289,22 +289,22 @@
 
                       <div class="form-row">
                         <div class="form-group">
-                          <label for="newIslandSpeakerRole">Speaker Role</label>
+                          <label class=form-label for="newIslandSpeakerRole" class="form-label">Speaker Role</label>
                           <input
                             type="text"
                             id="newIslandSpeakerRole"
                             name="newIslandSpeakerRole"
-                            class="form-control"
+                            class="form-input"
                             [(ngModel)]="islandForm().speakerRole"
                             placeholder="e.g., Senior Developer, CTO">
                         </div>
                         <div class="form-group">
-                          <label for="newIslandSpeakerCompany">Speaker Company</label>
+                          <label class=form-label for="newIslandSpeakerCompany" class="form-label">Speaker Company</label>
                           <input
                             type="text"
                             id="newIslandSpeakerCompany"
                             name="newIslandSpeakerCompany"
-                            class="form-control"
+                            class="form-input"
                             [(ngModel)]="islandForm().speakerCompany"
                             placeholder="e.g., Google, Microsoft">
                         </div>
@@ -312,11 +312,11 @@
 
                       <div class="form-row">
                         <div class="form-group">
-                          <label for="newIslandVenue">Venue</label>
+                          <label class=form-label for="newIslandVenue" class="form-label">Venue</label>
                           <select
                             id="newIslandVenue"
                             name="newIslandVenue"
-                            class="form-control"
+                            class="form-input"
                             [(ngModel)]="islandForm().venue">
                             @for (deck of deckOptions; track deck) {
                               <option [value]="deck">{{ deck }}</option>
@@ -324,11 +324,11 @@
                           </select>
                         </div>
                         <div class="form-group">
-                          <label for="newIslandType">Session Type</label>
+                          <label class=form-label for="newIslandType" class="form-label">Session Type</label>
                           <select
                             id="newIslandType"
                             name="newIslandType"
-                            class="form-control"
+                            class="form-input"
                             [(ngModel)]="islandForm().sessionType">
                             @for (type of sessionTypeOptions; track type) {
                               <option [value]="type">{{ type }}</option>
@@ -338,18 +338,18 @@
                       </div>
 
                       <div class="form-group">
-                        <label for="newIslandDescription">Description</label>
+                        <label class=form-label for="newIslandDescription" class="form-label">Description</label>
                         <textarea
                           id="newIslandDescription"
                           name="newIslandDescription"
-                          class="form-control"
+                          class="form-textarea"
                           rows="3"
                           [(ngModel)]="islandForm().description"
                           placeholder="Session description..."></textarea>
                       </div>
 
                       <div class="form-group">
-                        <label for="newIslandTags">Tags</label>
+                        <label class=form-label for="newIslandTags" class="form-label">Tags</label>
                         <div class="tags-input-container">
                           <div class="tags-list">
                             @for (tag of islandForm().tags; track tag) {
@@ -362,7 +362,7 @@
                           <input
                             type="text"
                             name="newTagInput"
-                            class="form-control"
+                            class="form-input"
                             placeholder="Add tag and press Enter"
                             (keydown)="addTag($event)">
                         </div>
@@ -415,24 +415,24 @@
         <div class="modal-body">
           <form class="voyage-form">
             <div class="form-group">
-              <label for="editVoyageName">Voyage Group Name</label>
+              <label class=form-label for="editVoyageName" class="form-label">Voyage Group Name</label>
               <input
                 type="text"
                 id="editVoyageName"
                 name="editVoyageName"
-                class="form-control"
+                class="form-input"
                 [(ngModel)]="voyageForm().name"
                 placeholder="e.g., Opening Waters - Morning Keynotes"
                 required>
             </div>
 
             <div class="form-group">
-              <label for="editVoyageDate">Date</label>
+              <label class=form-label for="editVoyageDate" class="form-label">Date</label>
               <input
                 type="date"
                 id="editVoyageDate"
                 name="editVoyageDate"
-                class="form-control"
+                class="form-input"
                 [(ngModel)]="voyageForm().date"
                 required>
             </div>
@@ -465,7 +465,7 @@
           <form class="island-form">
             <div class="form-row">
               <div class="form-group">
-                <label for="islandTitle">Session Title *</label>
+                <label class=form-label for="islandTitle">Session Title *</label>
                 <input
                   type="text"
                   id="islandTitle"
@@ -477,7 +477,7 @@
               </div>
 
               <div class="form-group">
-                <label for="islandTime">Time *</label>
+                <label class=form-label for="islandTime">Time *</label>
                 <input
                   type="time"
                   id="islandTime"
@@ -490,7 +490,7 @@
 
             <div class="form-row">
               <div class="form-group">
-                <label for="islandSpeaker">Speaker *</label>
+                <label class=form-label for="islandSpeaker">Speaker *</label>
                 <input
                   type="text"
                   id="islandSpeaker"
@@ -502,7 +502,7 @@
               </div>
 
               <div class="form-group">
-                <label for="islandDuration">Duration</label>
+                <label class=form-label for="islandDuration">Duration</label>
                 <input
                   type="text"
                   id="islandDuration"
@@ -515,7 +515,7 @@
 
             <div class="form-row">
               <div class="form-group">
-                <label for="islandRole">Speaker Role</label>
+                <label class=form-label for="islandRole">Speaker Role</label>
                 <input
                   type="text"
                   id="islandRole"
@@ -526,7 +526,7 @@
               </div>
 
               <div class="form-group">
-                <label for="islandCompany">Company</label>
+                <label class=form-label for="islandCompany">Company</label>
                 <input
                   type="text"
                   id="islandCompany"
@@ -539,7 +539,7 @@
 
             <div class="form-row">
               <div class="form-group">
-                <label for="islandVenue">Venue</label>
+                <label class=form-label for="islandVenue">Venue</label>
                 <select
                   id="islandVenue"
                   name="islandVenue"
@@ -552,7 +552,7 @@
               </div>
 
               <div class="form-group">
-                <label for="islandType">Session Type</label>
+                <label class=form-label for="islandType">Session Type</label>
                 <select
                   id="islandType"
                   name="islandType"
@@ -566,7 +566,7 @@
             </div>
 
             <div class="form-group">
-              <label for="islandDescription">Description</label>
+              <label class=form-label for="islandDescription">Description</label>
               <textarea
                 id="islandDescription"
                 name="islandDescription"
@@ -577,7 +577,7 @@
             </div>
 
             <div class="form-group">
-              <label for="islandTags">Tags</label>
+              <label class=form-label for="islandTags">Tags</label>
               <div class="tags-input-container">
                 <div class="tags-list">
                   @for (tag of islandForm().tags; track tag) {
@@ -624,7 +624,7 @@
           <form class="island-form">
             <div class="form-row">
               <div class="form-group">
-                <label for="editIslandTitle">Session Title *</label>
+                <label class=form-label for="editIslandTitle">Session Title *</label>
                 <input
                   type="text"
                   id="editIslandTitle"
@@ -636,7 +636,7 @@
               </div>
 
               <div class="form-group">
-                <label for="editIslandTime">Time *</label>
+                <label class=form-label for="editIslandTime">Time *</label>
                 <input
                   type="time"
                   id="editIslandTime"
@@ -649,7 +649,7 @@
 
             <div class="form-row">
               <div class="form-group">
-                <label for="editIslandSpeaker">Speaker *</label>
+                <label class=form-label for="editIslandSpeaker">Speaker *</label>
                 <input
                   type="text"
                   id="editIslandSpeaker"
@@ -661,7 +661,7 @@
               </div>
 
               <div class="form-group">
-                <label for="editIslandDuration">Duration</label>
+                <label class=form-label for="editIslandDuration">Duration</label>
                 <input
                   type="text"
                   id="editIslandDuration"
@@ -674,7 +674,7 @@
 
             <div class="form-row">
               <div class="form-group">
-                <label for="editIslandRole">Speaker Role</label>
+                <label class=form-label for="editIslandRole">Speaker Role</label>
                 <input
                   type="text"
                   id="editIslandRole"
@@ -685,7 +685,7 @@
               </div>
 
               <div class="form-group">
-                <label for="editIslandCompany">Company</label>
+                <label class=form-label for="editIslandCompany">Company</label>
                 <input
                   type="text"
                   id="editIslandCompany"
@@ -698,7 +698,7 @@
 
             <div class="form-row">
               <div class="form-group">
-                <label for="editIslandVenue">Venue</label>
+                <label class=form-label for="editIslandVenue">Venue</label>
                 <select
                   id="editIslandVenue"
                   name="editIslandVenue"
@@ -711,7 +711,7 @@
               </div>
 
               <div class="form-group">
-                <label for="editIslandType">Session Type</label>
+                <label class=form-label for="editIslandType">Session Type</label>
                 <select
                   id="editIslandType"
                   name="editIslandType"
@@ -725,7 +725,7 @@
             </div>
 
             <div class="form-group">
-              <label for="editIslandDescription">Description</label>
+              <label class=form-label for="editIslandDescription">Description</label>
               <textarea
                 id="editIslandDescription"
                 name="editIslandDescription"
@@ -736,7 +736,7 @@
             </div>
 
             <div class="form-group">
-              <label for="editIslandTags">Tags</label>
+              <label class=form-label for="editIslandTags">Tags</label>
               <div class="tags-input-container">
                 <div class="tags-list">
                   @for (tag of islandForm().tags; track tag) {

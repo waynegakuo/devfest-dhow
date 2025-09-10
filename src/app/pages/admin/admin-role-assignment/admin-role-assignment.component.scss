@@ -171,55 +171,8 @@ $warning-light: #FFF3E0;
   }
 }
 
-// Form Elements
-.form-container {
-  .input-group {
-    margin-bottom: 1rem;
-
-    .input-label {
-      display: block;
-      font-weight: 500;
-      color: $gray-700;
-      margin-bottom: 0.5rem;
-      font-size: 0.875rem;
-    }
-
-    .input-wrapper {
-      display: flex;
-      gap: 0.75rem;
-
-      @media (max-width: 640px) {
-        flex-direction: column;
-      }
-
-      .email-input {
-        flex: 1;
-        padding: 0.75rem 1rem;
-        border: 2px solid $gray-300;
-        border-radius: 0.5rem;
-        font-size: 1rem;
-        transition: all 0.2s ease;
-        background: $white;
-
-        &:focus {
-          outline: none;
-          border-color: $magenta-violet;
-          box-shadow: 0 0 0 3px rgba(156, 39, 176, 0.1);
-        }
-
-        &:disabled {
-          background-color: $gray-100;
-          color: $gray-500;
-          cursor: not-allowed;
-        }
-
-        &::placeholder {
-          color: $gray-400;
-        }
-      }
-    }
-  }
-}
+// Form styles are now handled by global unified form styles in _forms.scss
+// This component uses the global form classes: .input-group, .input-label, .input-wrapper, .email-input
 
 // Button Styles
 %btn-base {

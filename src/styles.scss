@@ -26,6 +26,9 @@
 @use 'styles/variables' as *;
 @use 'sass:color';
 
+// Import unified form styles
+@use 'styles/forms';
+
 // Reset and base styles
 * {
   box-sizing: border-box;
@@ -494,6 +497,9 @@ body {
     font-size: 1rem;
     background: $white;
     box-sizing: border-box;
+    font-family: inherit;
+    transition: all 0.2s ease;
+    color: $gray-900;
 
     &:focus {
       outline: none;
@@ -800,22 +806,7 @@ body {
     }
   }
 
-  .form-input {
-    border: 2px solid $gray-200;
-    border-radius: 0.5rem;
-    padding: 0.75rem;
-    transition: all 0.2s ease;
-
-    &:focus {
-      border-color: $magenta-violet;
-      box-shadow: 0 0 0 3px rgba(156, 39, 176, 0.1);
-    }
-
-    &::placeholder {
-      color: $gray-400;
-      font-style: italic;
-    }
-  }
+  // Old form-input styling removed - now handled by unified _forms.scss
 }
 
 // Animations
@@ -1361,39 +1352,7 @@ body {
   }
 }
 
-// Enhanced textarea with better styling
-.form-textarea {
-  width: 100%;
-  padding: 0.75rem;
-  border: 2px solid $gray-200;
-  border-radius: 0.5rem;
-  font-family: inherit;
-  color: $gray-700;
-  font-size: 1rem;
-  line-height: 1.5;
-  resize: vertical;
-  min-height: 120px;
-  transition: all 0.2s ease;
-  background-color: $gray-50;
-  box-sizing: border-box;
-
-  &:focus {
-    outline: none;
-    border-color: $magenta-violet;
-    box-shadow: 0 0 0 3px rgba(156, 39, 176, 0.1);
-    background-color: $white;
-  }
-
-  &::placeholder {
-    color: $gray-400;
-    font-style: italic;
-  }
-
-  &:hover:not(:focus) {
-    border-color: $gray-300;
-    background-color: $white;
-  }
-}
+// Old form-textarea styling removed - now handled by unified _forms.scss
 
 .reminder-session {
   display: flex;
