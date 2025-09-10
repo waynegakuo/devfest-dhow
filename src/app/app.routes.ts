@@ -91,10 +91,6 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/admin/admin-voyage-management/admin-voyage-management.component').then(m => m.AdminVoyageManagementComponent)
       },
       {
-        path: 'sessions',
-        loadComponent: () => import('./pages/admin/admin-session-management/admin-session-management.component').then(m => m.AdminSessionManagementComponent)
-      },
-      {
         path: 'navigators',
         loadComponent: () => import('./pages/admin/admin-navigator-management/admin-navigator-management.component').then(m => m.AdminNavigatorManagementComponent)
       },
