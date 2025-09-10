@@ -1,9 +1,11 @@
-import { Component, inject, signal, computed } from '@angular/core';
+import { Component, inject, signal, computed, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { NavigatorService } from '../../../services/navigator/navigator.service';
 import { AdminService } from '../../../services/admin/admin.service';
 import { VoyagesDataService } from '../../../services/voyages-data/voyages-data.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 interface AdminQuickAction {
   id: string;
@@ -21,21 +23,50 @@ interface AdminQuickAction {
   templateUrl: './admin-helm-dashboard.component.html',
   styleUrl: './admin-helm-dashboard.component.scss'
 })
-export class AdminHelmDashboardComponent {
+export class AdminHelmDashboardComponent implements OnInit, OnDestroy {
   private navigatorService = inject(NavigatorService);
   private adminService = inject(AdminService);
   private voyagesDataService = inject(VoyagesDataService);
+  private destroy$ = new Subject<void>();
 
   // Get navigator data
   readonly navigator = this.navigatorService.currentNavigator.asReadonly();
 
   // Admin statistics with real-time voyages and islands data
+  private totalNavigatorCount = signal<number>(0);
+
   readonly adminStats = computed(() => ({
     totalVoyages: this.voyagesDataService.voyages().length,
     totalSessions: this.voyagesDataService.allIslands().length,
-    totalNavigators: 0, // Keep at zero as specified
-    activeRegistrations: 0 // Keep at zero as specified
+    totalNavigators: this.totalNavigatorCount(),
+    activeRegistrations: this.totalNavigatorCount() // Use same count for registrations
   }));
+
+  ngOnInit(): void {
+    this.loadNavigatorCount();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  /**
+   * Load total navigator count from AdminService
+   */
+  private loadNavigatorCount(): void {
+    this.adminService.getTotalNavigatorCount()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (count) => {
+          this.totalNavigatorCount.set(count);
+        },
+        error: (error) => {
+          console.error('Error loading navigator count:', error);
+          this.totalNavigatorCount.set(0);
+        }
+      });
+  }
 
   // Quick action cards for admin dashboard
   quickActions: AdminQuickAction[] = [

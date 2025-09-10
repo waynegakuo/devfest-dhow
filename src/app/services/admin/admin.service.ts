@@ -683,6 +683,52 @@ export class AdminService {
   }
 
   /**
+   * Gets all navigators (both regular users and admins)
+   * @returns Observable that emits array of all navigators
+   */
+  getAllNavigators(): Observable<Navigator[]> {
+    return runInInjectionContext(this.environmentInjector, () => {
+      const navigatorsRef = collection(this.firestore, 'navigators');
+      return from(getDocs(navigatorsRef)).pipe(
+        map(querySnapshot => {
+          const navigators: Navigator[] = [];
+          querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            navigators.push({
+              id: doc.id,
+              displayName: data['displayName'] || null,
+              email: data['email'] || null,
+              photoURL: data['photoURL'] || null,
+              techTrack: data['techTrack'] || null,
+              expertiseLevel: data['expertiseLevel'] || null,
+              hasCompletedCourseSelection: data['hasCompletedCourseSelection'] || false,
+              role: data['role'] || 'navigator',
+              createdAt: data['createdAt']?.toDate() || new Date(),
+              updatedAt: data['updatedAt']?.toDate() || new Date()
+            });
+          });
+          // Sort by creation date (newest first)
+          return navigators.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+        }),
+        catchError((error) => {
+          console.error('Error fetching all navigators:', error);
+          return of([]);
+        })
+      );
+    });
+  }
+
+  /**
+   * Gets total count of all navigators (both regular users and admins)
+   * @returns Observable that emits the total count
+   */
+  getTotalNavigatorCount(): Observable<number> {
+    return this.getAllNavigators().pipe(
+      map(navigators => navigators.length)
+    );
+  }
+
+  /**
    * Checks if a navigator has admin role by their email
    * @param email - Email address to check
    * @returns Observable that emits boolean indicating admin status

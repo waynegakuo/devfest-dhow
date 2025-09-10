@@ -1,1 +1,149 @@
-<p>admin-navigator-management works!</p>
+<div class="navigator-registry">
+  <!-- Header Section -->
+  <div class="registry-header mb-4">
+    <h1 class="registry-title">🧭 <span class="ocean-gradient-text">Navigator Registry</span></h1>
+    <p class="registry-subtitle">Complete registry of all DevFest Dhow navigators and crew members</p>
+  </div>
+
+  <!-- Loading State -->
+  @if (isLoading()) {
+    <div class="loading-container">
+      <div class="loading-spinner ocean-spinner"></div>
+      <p class="loading-text">Charting navigator data...</p>
+    </div>
+  } @else {
+
+    <!-- Statistics Cards -->
+    <div class="stats-section mb-4">
+      <div class="stats-grid">
+        <div class="stat-card ocean-blue">
+          <div class="stat-icon">👥</div>
+          <div class="stat-content">
+            <div class="stat-value">{{ totalCount() }}</div>
+            <div class="stat-label">Total Navigators</div>
+          </div>
+        </div>
+
+        <div class="stat-card coral-orange">
+          <div class="stat-icon">🧭</div>
+          <div class="stat-content">
+            <div class="stat-value">{{ regularCount() }}</div>
+            <div class="stat-label">Regular Navigators</div>
+          </div>
+        </div>
+
+        <div class="stat-card magenta-violet">
+          <div class="stat-icon">👑</div>
+          <div class="stat-content">
+            <div class="stat-value">{{ adminCount() }}</div>
+            <div class="stat-label">Admiral Crew</div>
+          </div>
+        </div>
+
+        <div class="stat-card wave-teal">
+          <div class="stat-icon">📊</div>
+          <div class="stat-content">
+            <div class="stat-value">{{ navigators().length }}</div>
+            <div class="stat-label">Active Registry</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigator Registry Table -->
+    <div class="registry-table-section">
+      <div class="section-header mb-3">
+        <h2 class="section-title">📋 Navigator Manifest</h2>
+        <button class="btn-refresh" (click)="loadNavigators()">
+          <span>🔄</span>
+          Refresh Registry
+        </button>
+      </div>
+
+      @if (navigators().length === 0) {
+        <div class="empty-state ocean-card">
+          <div class="empty-icon">⚓</div>
+          <h3>No Navigators Found</h3>
+          <p>The registry appears to be empty. Check your connection or try refreshing.</p>
+        </div>
+      } @else {
+        <div class="registry-table-container">
+          <div class="registry-table">
+            <div class="table-header">
+              <div class="header-cell">Navigator</div>
+              <div class="header-cell">Role</div>
+              <div class="header-cell">Tech Track</div>
+              <div class="header-cell">Experience</div>
+              <div class="header-cell">Joined</div>
+            </div>
+
+            @for (navigator of navigators(); track navigator.id) {
+              <div class="table-row">
+                <div class="navigator-cell">
+                  <div class="navigator-avatar">
+                    @if (navigator.photoURL) {
+                      <img [src]="navigator.photoURL" [alt]="getDisplayName(navigator)" />
+                    } @else {
+                      <span>{{ getDisplayName(navigator)[0].toUpperCase() }}</span>
+                    }
+                  </div>
+                  <div class="navigator-info">
+                    <div class="navigator-name">{{ getDisplayName(navigator) }}</div>
+                    <div class="navigator-email">{{ navigator.email }}</div>
+                  </div>
+                </div>
+
+                <div class="role-cell">
+                  <span [class]="getRoleBadgeClass(navigator.role)">
+                    @if (navigator.role === 'admin') {
+                      👑 Admiral
+                    } @else {
+                      🧭 Navigator
+                    }
+                  </span>
+                </div>
+
+                <div class="track-cell">
+                  <span class="tech-track">{{ getTechTrack(navigator) }}</span>
+                </div>
+
+                <div class="expertise-cell">
+                  <span class="expertise-level">{{ getExpertiseLevel(navigator) }}</span>
+                </div>
+
+                <div class="date-cell">
+                  <span class="join-date">{{ formatDate(navigator.createdAt) }}</span>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Registry Summary -->
+    <div class="registry-summary">
+      <div class="summary-card ocean-card">
+        <h3>⚓ Registry Summary</h3>
+        <div class="summary-stats">
+          <div class="summary-item">
+            <span class="summary-label">Total Registered:</span>
+            <span class="summary-value">{{ totalCount() }} navigators</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Admiral Crew:</span>
+            <span class="summary-value">{{ adminCount() }} members</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Regular Navigators:</span>
+            <span class="summary-value">{{ regularCount() }} members</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Registry Status:</span>
+            <span class="summary-value status-active">🟢 Active</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>
