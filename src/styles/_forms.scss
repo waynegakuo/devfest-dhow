@@ -1,0 +1,427 @@
+// ===================================
+// OCEAN-THEMED FORM STYLES
+// ===================================
+// Unified form styling for all DevFest Dhow components
+// Based on "Create New Island" section styling pattern
+
+@use './variables' as *;
+
+// Form container and layout
+.island-form {
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+
+    @media (max-width: 640px) {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+// Form group container
+.form-group {
+  margin-bottom: 1rem;
+
+  // Form labels with ocean theme
+  .form-label {
+    display: block;
+    font-weight: 600;
+    color: $gray-700;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+
+    // Required field indicator
+    &.required::after {
+      content: ' *';
+      color: $error-red;
+    }
+  }
+
+  // Main form input styling
+  .form-input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid $gray-200;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+    background: $white;
+
+    &:focus {
+      outline: none;
+      border-color: $magenta-violet;
+      box-shadow: 0 0 0 3px rgba(156, 39, 176, 0.1);
+    }
+
+    &:disabled {
+      background-color: $gray-100;
+      color: $gray-500;
+      cursor: not-allowed;
+      border-color: $gray-200;
+    }
+
+    &::placeholder {
+      color: $gray-400;
+      font-style: italic;
+    }
+
+    // Error state
+    &.form-input-error {
+      border-color: $error-red;
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+    }
+
+    // Success state
+    &.form-input-success {
+      border-color: $success-green;
+      box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
+    }
+  }
+
+  // Textarea styling
+  .form-textarea {
+    @extend .form-input;
+    min-height: 120px;
+    resize: vertical;
+    font-family: inherit;
+    line-height: 1.5;
+  }
+
+  // Select dropdown styling
+  .form-select {
+    @extend .form-input;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.5rem center;
+    background-repeat: no-repeat;
+    background-size: 1.5rem 1.5rem;
+    padding-right: 2.5rem;
+    appearance: none;
+
+    &:focus {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239c27b0' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    }
+  }
+
+  // Form hint/helper text
+  .form-hint {
+    display: block;
+    font-size: 0.75rem;
+    color: $gray-500;
+    margin-top: 0.25rem;
+    line-height: 1.4;
+  }
+
+  // Error message
+  .form-error {
+    display: block;
+    font-size: 0.75rem;
+    color: $error-red;
+    margin-top: 0.25rem;
+    font-weight: 500;
+  }
+
+  // Success message
+  .form-success {
+    display: block;
+    font-size: 0.75rem;
+    color: $success-green;
+    margin-top: 0.25rem;
+    font-weight: 500;
+  }
+}
+
+// Input group for inline elements (like email + button)
+.input-group {
+  margin-bottom: 1rem;
+
+  .input-label {
+    display: block;
+    font-weight: 600;
+    color: $gray-700;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+
+    &.required::after {
+      content: ' *';
+      color: $error-red;
+    }
+  }
+
+  .input-wrapper {
+    display: flex;
+    gap: 0.75rem;
+
+    @media (max-width: 640px) {
+      flex-direction: column;
+    }
+
+    // Unified email input (replaces component-specific email-input)
+    .email-input {
+      @extend .form-input;
+      flex: 1;
+    }
+  }
+}
+
+// Search input styling (for admin filters)
+.admin-search-input {
+  @extend .form-input;
+  padding-left: 2.5rem;
+  background: $white;
+}
+
+// Filter select styling
+.admin-filter-select {
+  @extend .form-select;
+  background: $white;
+}
+
+// Tags input container
+.tags-input-container {
+  .tags-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      background: $gray-100;
+      color: $gray-700;
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.25rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+
+      &.editable {
+        background: linear-gradient(135deg, $magenta-violet 0%, $ocean-blue 100%);
+        color: $white;
+      }
+
+      .tag-remove {
+        background: none;
+        border: none;
+        color: inherit;
+        cursor: pointer;
+        padding: 0;
+        margin-left: 0.25rem;
+        font-size: 0.875rem;
+        font-weight: bold;
+        line-height: 1;
+
+        &:hover {
+          opacity: 0.7;
+        }
+      }
+    }
+  }
+}
+
+// Checkbox and radio styling
+.form-checkbox,
+.form-radio {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+
+  input[type="checkbox"],
+  input[type="radio"] {
+    appearance: none;
+    width: 1.125rem;
+    height: 1.125rem;
+    border: 2px solid $gray-300;
+    border-radius: 0.25rem;
+    background: $white;
+    transition: all 0.2s ease;
+    cursor: pointer;
+
+    &:checked {
+      background: $magenta-violet;
+      border-color: $magenta-violet;
+    }
+
+    &:checked::after {
+      content: '✓';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: $white;
+      font-size: 0.75rem;
+      font-weight: bold;
+    }
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(156, 39, 176, 0.1);
+    }
+  }
+
+  input[type="radio"] {
+    border-radius: 50%;
+
+    &:checked::after {
+      content: '';
+      width: 0.375rem;
+      height: 0.375rem;
+      background: $white;
+      border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  &:hover input {
+    border-color: $magenta-violet;
+  }
+}
+
+// Toggle switch styling (for ocean-themed toggle buttons)
+.form-toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+
+  input[type="checkbox"] {
+    appearance: none;
+    width: 44px;
+    height: 24px;
+    background: $gray-300;
+    border-radius: 12px;
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border: none;
+    outline: none;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 20px;
+      height: 20px;
+      background: $white;
+      border-radius: 50%;
+      transition: transform 0.3s ease;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    &:checked {
+      background: $magenta-violet;
+
+      &::before {
+        transform: translateX(20px);
+      }
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 3px rgba(156, 39, 176, 0.1);
+    }
+
+    &:hover {
+      background: $gray-400;
+
+      &:checked {
+        background: darken($magenta-violet, 10%);
+      }
+    }
+  }
+}
+
+// File input styling
+.form-file {
+  .file-input {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+
+    input[type="file"] {
+      position: absolute;
+      left: -9999px;
+      opacity: 0;
+    }
+
+    .file-button {
+      @extend .form-input;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      background: $gray-50;
+      border: 2px dashed $gray-300;
+      text-align: center;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background: $gray-100;
+        border-color: $magenta-violet;
+      }
+    }
+  }
+}
+
+// Form validation states
+.form-group {
+  &.has-error {
+    .form-input,
+    .form-textarea,
+    .form-select {
+      border-color: $error-red;
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+    }
+  }
+
+  &.has-success {
+    .form-input,
+    .form-textarea,
+    .form-select {
+      border-color: $success-green;
+      box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
+    }
+  }
+}
+
+// Form loading state
+.form-loading {
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+  }
+}
+
+// Responsive form adjustments
+@media (max-width: 640px) {
+  .form-row {
+    grid-template-columns: 1fr !important;
+  }
+
+  .input-wrapper {
+    flex-direction: column !important;
+  }
+}

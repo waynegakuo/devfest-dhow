@@ -70,6 +70,7 @@ export class NavigatorService {
           techTrack: null,
           expertiseLevel: null,
           hasCompletedCourseSelection: false,
+          role: 'navigator',
           createdAt: now,
           updatedAt: now
         };

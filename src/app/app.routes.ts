@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { loginRedirectGuard } from './guards/login-redirect.guard';
 import { helmAuthGuard } from './guards/helm-auth.guard';
 import { courseSelectionGuard } from './guards/course-selection.guard';
+import { adminGuard } from './guards/admin.guard';
 
 export const routes: Routes = [
   {
@@ -56,6 +57,11 @@ export const routes: Routes = [
         path: 'stocking-the-galley',
         loadComponent: () => import('./pages/stocking-the-galley/stocking-the-galley.component').then(m => m.StockingTheGalleyComponent)
       },
+      {
+        path: 'admin-role-assignment',
+        loadComponent: () => import('./pages/admin/admin-role-assignment/admin-role-assignment.component').then(m => m.AdminRoleAssignmentComponent),
+        canActivate: [adminGuard]
+      },
       // {
       //   path: 'quest-for-atlantis',
       //   loadComponent: () => import('./pages/quest-for-atlantis/quest-for-atlantis.component').then(m => m.QuestForAtlantisComponent)
@@ -64,6 +70,46 @@ export const routes: Routes = [
       //   path: 'my-profile',
       //   loadComponent: () => import('./pages/my-profile/my-profile.component').then(m => m.MyProfileComponent)
       // }
+    ]
+  },
+  {
+    path: 'admin',
+    loadComponent: () => import('./shared/layouts/admin-dashboard-layout/admin-dashboard-layout.component').then(m => m.AdminDashboardLayoutComponent),
+    canActivate: [adminGuard],
+    children: [
+      {
+        path: '',
+        redirectTo: 'helm',
+        pathMatch: 'full'
+      },
+      {
+        path: 'helm',
+        loadComponent: () => import('./pages/admin/admin-helm-dashboard/admin-helm-dashboard.component').then(m => m.AdminHelmDashboardComponent)
+      },
+      {
+        path: 'voyages',
+        loadComponent: () => import('./pages/admin/admin-voyage-management/admin-voyage-management.component').then(m => m.AdminVoyageManagementComponent)
+      },
+      {
+        path: 'navigators',
+        loadComponent: () => import('./pages/admin/admin-navigator-management/admin-navigator-management.component').then(m => m.AdminNavigatorManagementComponent)
+      },
+      {
+        path: 'analytics',
+        loadComponent: () => import('./pages/admin/admin-analytics/admin-analytics.component').then(m => m.AdminAnalyticsComponent)
+      },
+      {
+        path: 'settings',
+        loadComponent: () => import('./pages/admin/admin-settings/admin-settings.component').then(m => m.AdminSettingsComponent)
+      },
+      {
+        path: 'role-assignment',
+        loadComponent: () => import('./pages/admin/admin-role-assignment/admin-role-assignment.component').then(m => m.AdminRoleAssignmentComponent)
+      },
+      {
+        path: 'islands',
+        loadComponent: () => import('./pages/admin/admin-island-coordination/admin-island-coordination.component').then(m => m.AdminIslandCoordinationComponent)
+      }
     ]
   },
   // Legacy routes for backward compatibility - redirect to dashboard

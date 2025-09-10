@@ -1,5 +1,6 @@
 export type TechTrack = 'AI/ML' | 'Cloud' | 'Web' | 'Mobile';
 export type ExpertiseLevel = 'Beginner' | 'Intermediate' | 'Expert';
+export type NavigatorRole = 'navigator' | 'admin';
 
 export interface Navigator {
   id: string;
@@ -9,6 +10,7 @@ export interface Navigator {
   techTrack: TechTrack | null;
   expertiseLevel: ExpertiseLevel | null;
   hasCompletedCourseSelection: boolean;
+  role: NavigatorRole;
   createdAt: Date;
   updatedAt: Date;
 }

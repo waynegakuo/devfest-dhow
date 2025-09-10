@@ -1,35 +1,29 @@
-import { Injectable, signal, computed } from '@angular/core';
+import { Injectable, signal, computed, inject, OnDestroy } from '@angular/core';
 import { Voyage } from '../../models/voyage.model';
 import { Island } from '../../models/island.model';
 import { Deck, SessionType } from '../../models/venue.model';
+import {
+  Firestore,
+  collection,
+  query,
+  orderBy,
+  getDocs,
+  onSnapshot,
+  CollectionReference
+} from '@angular/fire/firestore';
+import { from, Observable, forkJoin, of } from 'rxjs';
+import { switchMap, map, catchError } from 'rxjs/operators';
 
-// Interface for JSON data structure
-interface VoyageJson {
-  id: string;
-  name: string;
-  date: string;
-  islands: IslandJson[];
-}
-
-interface IslandJson {
-  id: string;
-  title: string;
-  speaker: string;
-  speakerRole: string;
-  speakerCompany: string;
-  time: string;
-  duration: string;
-  venue: string;
-  sessionType: string;
-  description: string;
-  tags: string[];
-  attended: boolean;
-}
 
 @Injectable({
   providedIn: 'root'
 })
-export class VoyagesDataService {
+export class VoyagesDataService implements OnDestroy {
+  private firestore = inject(Firestore);
+  private readonly voyagesCollection = collection(this.firestore, 'voyages') as CollectionReference;
+
+  // Track unsubscribe functions for cleanup
+  private unsubscribeFunctions: (() => void)[] = [];
 
   // Signals for reactive data management
   private voyagesSignal = signal<Voyage[]>([]);
@@ -59,59 +53,215 @@ export class VoyagesDataService {
   }
 
   /**
-   * Load voyages data from JSON file
+   * Load voyages data from Firestore with real-time updates
    */
   private loadVoyagesData(): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
 
-    // For now, import the JSON directly
-    // In production, this would be an HTTP call
-    import('../../data/mock-voyages.json')
-      .then((data: any) => {
-        const voyagesJson = data.default || data;
-        const voyages = this.transformJsonToVoyages(voyagesJson);
-        this.voyagesSignal.set(voyages);
-        this.loadingSignal.set(false);
-      })
-      .catch((error) => {
-        console.error('Error loading voyages data:', error);
+    // Set up real-time listener for voyages collection
+    this.setupVoyagesRealTimeListener();
+  }
+
+  /**
+   * Set up real-time listener for voyages collection
+   */
+  private setupVoyagesRealTimeListener(): void {
+    const voyagesQuery = query(this.voyagesCollection, orderBy('date'));
+
+    const unsubscribe = onSnapshot(voyagesQuery,
+      (snapshot) => {
+        console.log('🌊 Real-time update received for voyages collection');
+        this.processVoyagesSnapshot(snapshot);
+      },
+      (error) => {
+        console.error('❌ Error in voyages real-time listener:', error);
         this.errorSignal.set('Failed to load voyages data');
         this.loadingSignal.set(false);
-      });
+      }
+    );
+
+    // Store unsubscribe function for cleanup
+    this.unsubscribeFunctions.push(unsubscribe);
   }
 
   /**
-   * Transform JSON data to typed Voyage objects
+   * Process voyages snapshot and load islands with real-time listeners
    */
-  private transformJsonToVoyages(voyagesJson: VoyageJson[]): Voyage[] {
-    return voyagesJson.map(voyageJson => ({
-      id: voyageJson.id,
-      name: voyageJson.name,
-      date: voyageJson.date,
-      islands: voyageJson.islands.map(islandJson => this.transformJsonToIsland(islandJson))
-    }));
+  private async processVoyagesSnapshot(snapshot: any): Promise<void> {
+    const voyagePromises: Promise<Voyage>[] = [];
+
+    snapshot.forEach((doc: any) => {
+      const data = doc.data();
+      const voyageId = doc.id;
+
+      const voyagePromise = this.getVoyageWithRealTimeIslands(voyageId, data);
+      voyagePromises.push(voyagePromise);
+    });
+
+    try {
+      const voyages = await Promise.all(voyagePromises);
+      this.voyagesSignal.set(voyages);
+      this.loadingSignal.set(false);
+      console.log('🌊 Updated voyages with real-time data:', voyages.length);
+    } catch (error) {
+      console.error('❌ Error processing voyages snapshot:', error);
+      this.errorSignal.set('Failed to process voyages data');
+      this.loadingSignal.set(false);
+    }
   }
 
   /**
-   * Transform JSON island data to typed Island object
+   * Get voyage with real-time islands listener
    */
-  private transformJsonToIsland(islandJson: IslandJson): Island {
-    return {
-      id: islandJson.id,
-      title: islandJson.title,
-      speaker: islandJson.speaker,
-      speakerRole: islandJson.speakerRole,
-      speakerCompany: islandJson.speakerCompany,
-      time: islandJson.time,
-      duration: islandJson.duration,
-      venue: this.mapStringToDeck(islandJson.venue),
-      sessionType: this.mapStringToSessionType(islandJson.sessionType),
-      description: islandJson.description,
-      tags: islandJson.tags,
-      attended: islandJson.attended
-    };
+  private getVoyageWithRealTimeIslands(voyageId: string, voyageData: any): Promise<Voyage> {
+    return new Promise((resolve, reject) => {
+      const islandsRef = collection(this.firestore, `voyages/${voyageId}/islands`);
+
+      const unsubscribe = onSnapshot(islandsRef,
+        (snapshot) => {
+          const islands: Island[] = [];
+          snapshot.forEach(doc => {
+            const data = doc.data() as any;
+            islands.push({
+              id: doc.id,
+              title: data.title,
+              speaker: data.speaker,
+              speakerRole: data.speakerRole,
+              speakerCompany: data.speakerCompany,
+              time: data.time,
+              duration: data.duration,
+              venue: this.mapStringToDeck(data.venue),
+              sessionType: this.mapStringToSessionType(data.sessionType),
+              description: data.description,
+              tags: data.tags || [],
+              attended: data.attended || false
+            });
+          });
+
+          const voyage: Voyage = {
+            id: voyageId,
+            name: voyageData.name,
+            date: voyageData.date,
+            islands: islands
+          };
+
+          resolve(voyage);
+
+          // Update the existing voyage in the signal if it already exists
+          const currentVoyages = this.voyagesSignal();
+          const existingIndex = currentVoyages.findIndex(v => v.id === voyageId);
+
+          if (existingIndex !== -1) {
+            const updatedVoyages = [...currentVoyages];
+            updatedVoyages[existingIndex] = voyage;
+            this.voyagesSignal.set(updatedVoyages);
+            console.log(`🏝️ Real-time update for voyage ${voyageId} islands:`, islands.length);
+          }
+        },
+        (error) => {
+          console.error(`❌ Error in islands real-time listener for voyage ${voyageId}:`, error);
+          // Resolve with voyage containing empty islands on error
+          resolve({
+            id: voyageId,
+            name: voyageData.name,
+            date: voyageData.date,
+            islands: []
+          });
+        }
+      );
+
+      // Store unsubscribe function for cleanup
+      this.unsubscribeFunctions.push(unsubscribe);
+    });
   }
+
+  /**
+   * Get all voyages from Firestore with their islands (legacy method - kept for compatibility)
+   */
+  private getAllVoyagesFromFirestore(): Observable<Voyage[]> {
+    const voyagesQuery = query(this.voyagesCollection, orderBy('date'));
+
+    return from(getDocs(voyagesQuery)).pipe(
+      switchMap(snapshot => {
+        const voyagePromises: Observable<Voyage>[] = [];
+
+        snapshot.forEach(doc => {
+          const data = doc.data() as any;
+          const voyageId = doc.id;
+
+          // Load islands for each voyage
+          const islandsPromise = this.getIslandsByVoyage(voyageId).pipe(
+            map(islands => ({
+              id: voyageId,
+              name: data.name,
+              date: data.date,
+              islands: islands
+            } as Voyage)),
+            catchError(error => {
+              console.error(`❌ Error loading islands for voyage ${voyageId}:`, error);
+              // Return voyage with empty islands array on error
+              return of({
+                id: voyageId,
+                name: data.name,
+                date: data.date,
+                islands: []
+              } as Voyage);
+            })
+          );
+
+          voyagePromises.push(islandsPromise);
+        });
+
+        // Wait for all voyages with their islands to load
+        return voyagePromises.length > 0 ? forkJoin(voyagePromises) : of([]);
+      }),
+      map(voyages => {
+        console.log('🌊 Loaded voyages from Firestore:', voyages.length);
+        return voyages;
+      }),
+      catchError(error => {
+        console.error('❌ Error loading voyages from Firestore:', error);
+        throw error;
+      })
+    );
+  }
+
+  /**
+   * Get islands for a specific voyage from Firestore
+   */
+  private getIslandsByVoyage(voyageId: string): Observable<Island[]> {
+    const voyageRef = collection(this.firestore, `voyages/${voyageId}/islands`);
+
+    return from(getDocs(voyageRef)).pipe(
+      map(snapshot => {
+        const islands: Island[] = [];
+        snapshot.forEach(doc => {
+          const data = doc.data() as any;
+          islands.push({
+            id: doc.id,
+            title: data.title,
+            speaker: data.speaker,
+            speakerRole: data.speakerRole,
+            speakerCompany: data.speakerCompany,
+            time: data.time,
+            duration: data.duration,
+            venue: this.mapStringToDeck(data.venue),
+            sessionType: this.mapStringToSessionType(data.sessionType),
+            description: data.description,
+            tags: data.tags || [],
+            attended: data.attended || false
+          });
+        });
+        return islands;
+      }),
+      catchError(error => {
+        console.error(`❌ Error loading islands for voyage ${voyageId}:`, error);
+        return of([]);
+      })
+    );
+  }
+
 
   /**
    * Map string venue to Deck enum
@@ -202,5 +352,19 @@ export class VoyagesDataService {
    */
   getAllIslandsByTime(): Island[] {
     return this.islandsByTime();
+  }
+
+  /**
+   * Cleanup method - unsubscribe from all real-time listeners
+   */
+  ngOnDestroy(): void {
+    console.log('🧹 Cleaning up Firebase real-time listeners...');
+    this.unsubscribeFunctions.forEach(unsubscribe => {
+      if (typeof unsubscribe === 'function') {
+        unsubscribe();
+      }
+    });
+    this.unsubscribeFunctions = [];
+    console.log('✅ All Firebase listeners have been cleaned up');
   }
 }

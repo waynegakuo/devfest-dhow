@@ -1,0 +1,485 @@
+@use 'sass:color';
+@use '../../../../styles/variables' as *;
+
+$success-light: #E8F5E8;
+$error-light: #FFEBEE;
+$warning-light: #FFF3E0;
+
+.helm-control-center {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: 'Google Sans', sans-serif;
+  background: linear-gradient(135deg, $gray-50 0%, $white 100%);
+  min-height: 100vh;
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+  }
+}
+
+.control-center-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding: 2rem 0;
+  background: linear-gradient(135deg, $ocean-blue 0%, $deep-sea 100%);
+  border-radius: 1rem;
+  color: $white;
+  box-shadow: 0 4px 20px rgba(13, 71, 161, 0.3);
+}
+
+.header-content {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.helm-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+
+  @media (max-width: 768px) {
+    font-size: 2rem;
+  }
+}
+
+.title-icon {
+  font-size: 2rem;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.helm-subtitle {
+  font-size: 1.125rem;
+  opacity: 0.9;
+  margin: 0;
+  font-weight: 300;
+}
+
+.operation-status {
+  margin-bottom: 2rem;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+  &.success-message {
+    background-color: $success-light;
+    border: 2px solid $success-green;
+  }
+
+  &.error-message {
+    background-color: $error-light;
+    border: 2px solid $error-red;
+  }
+}
+
+.status-content {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.status-icon {
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.status-message {
+  flex: 1;
+  font-weight: 500;
+  color: $gray-800;
+}
+
+.btn-clear-status {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  color: $gray-500;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    color: $gray-700;
+  }
+}
+
+// Admin Controls Container
+.admin-controls-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-bottom: 3rem;
+
+  @media (max-width: 968px) {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+// Control Sections
+.control-section {
+  background: $white;
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  border: 1px solid $gray-200;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  }
+}
+
+.section-header {
+  margin-bottom: 1.5rem;
+
+  .section-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: $gray-800;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    .section-icon {
+      font-size: 1.25rem;
+    }
+  }
+
+  .section-description {
+    color: $gray-600;
+    font-size: 0.875rem;
+    margin: 0;
+  }
+
+  .section-actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+}
+
+// Form styles are now handled by global unified form styles in _forms.scss
+// This component uses the global form classes: .input-group, .input-label, .input-wrapper, .email-input
+
+// Button Styles
+%btn-base {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  min-height: 2.75rem;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+  }
+
+  .btn-icon, .loading-spinner, .refresh-icon {
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+
+  .loading-spinner {
+    animation: spin 1s linear infinite;
+  }
+}
+
+%btn-hover {
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+  }
+}
+
+.btn-primary {
+  @extend %btn-base, %btn-hover;
+  background: linear-gradient(135deg, $magenta-violet 0%, color.adjust($magenta-violet, $lightness: -10%) 100%);
+  color: $white;
+  box-shadow: 0 2px 8px rgba(156, 39, 176, 0.3);
+
+  &:hover:not(:disabled) {
+    box-shadow: 0 4px 12px rgba(156, 39, 176, 0.4);
+  }
+}
+
+.btn-secondary {
+  @extend %btn-base, %btn-hover;
+  background: linear-gradient(135deg, $wave-teal 0%, color.adjust($wave-teal, $lightness: -10%) 100%);
+  color: $white;
+  box-shadow: 0 2px 8px rgba(0, 172, 193, 0.3);
+
+  &:hover:not(:disabled) {
+    box-shadow: 0 4px 12px rgba(0, 172, 193, 0.4);
+  }
+}
+
+.btn-danger {
+  @extend %btn-base, %btn-hover;
+  background: linear-gradient(135deg, $error-red 0%, color.adjust($error-red, $lightness: -10%) 100%);
+  color: $white;
+  box-shadow: 0 2px 8px rgba(244, 67, 54, 0.3);
+
+  &:hover:not(:disabled) {
+    box-shadow: 0 4px 12px rgba(244, 67, 54, 0.4);
+  }
+}
+
+.btn-refresh {
+  @extend %btn-base, %btn-hover;
+  background: $gray-100;
+  color: $gray-700;
+  border: 1px solid $gray-300;
+
+  &:hover:not(:disabled) {
+    background: $gray-200;
+    border-color: $gray-400;
+  }
+}
+
+// Admirals Section
+.admirals-section {
+  background: $white;
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  border: 1px solid $gray-200;
+
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+
+    @media (max-width: 640px) {
+      flex-direction: column;
+      gap: 1rem;
+      align-items: stretch;
+    }
+  }
+}
+
+.admirals-list {
+  min-height: 200px;
+}
+
+// Loading and Empty States
+.loading-state, .empty-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1rem;
+  text-align: center;
+}
+
+.loading-content, .empty-content {
+  max-width: 300px;
+}
+
+.loading-spinner.large, .empty-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.loading-content h3, .empty-content h3 {
+  color: $gray-700;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.loading-content p, .empty-content p {
+  color: $gray-500;
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+// Admirals Grid
+.admirals-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.admiral-card {
+  background: $gray-50;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  border: 1px solid $gray-200;
+  transition: all 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    border-color: $gray-300;
+  }
+
+}
+
+.admiral-info {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.admiral-avatar {
+  flex-shrink: 0;
+}
+
+.avatar-image, .avatar-placeholder {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 2px solid $white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.avatar-image {
+  object-fit: cover;
+}
+
+.avatar-placeholder {
+  background: linear-gradient(135deg, $gray-300 0%, $gray-400 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-icon {
+  font-size: 1.5rem;
+  color: $white;
+}
+
+.admiral-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.admiral-name {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: $gray-800;
+  margin-bottom: 0.25rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.admiral-email {
+  font-size: 0.875rem;
+  color: $gray-600;
+  margin-bottom: 0.75rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.admiral-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.admiral-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.demote-btn {
+  padding: 0.5rem 1rem;
+  font-size: 0.8125rem;
+}
+
+.current-user-label {
+  background: $magenta-violet;
+  color: $white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  font-size: 0.8125rem;
+}
+
+// Badge Styles
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.375rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+
+  &.admin-badge {
+    background: linear-gradient(135deg, $coral-orange 0%, color.adjust($coral-orange, $lightness: -10%) 100%);
+    color: $white;
+  }
+
+  &.track-badge {
+    background: $ocean-blue;
+    color: $white;
+  }
+
+  &.level-badge {
+    background: $wave-teal;
+    color: $white;
+  }
+}
+
+// Animations
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 480px) {
+  .helm-control-center {
+    padding: 0.75rem;
+  }
+
+  .control-section, .admirals-section {
+    padding: 1.5rem;
+  }
+
+  .admiral-card {
+    padding: 1rem;
+  }
+
+  .avatar-image, .avatar-placeholder {
+    width: 50px;
+    height: 50px;
+  }
+
+  .avatar-icon {
+    font-size: 1.25rem;
+  }
+}

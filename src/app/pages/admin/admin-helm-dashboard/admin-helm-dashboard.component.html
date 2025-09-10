@@ -1,0 +1,108 @@
+<div class="admin-helm-dashboard">
+  <!-- Dashboard Header -->
+  <div class="dashboard-header mb-4">
+    <div class="welcome-section">
+      <h1 class="dashboard-title ocean-gradient-text">⚓ Admiral's Helm</h1>
+      <p class="welcome-message">{{ welcomeMessage() }}</p>
+      <p class="dashboard-subtitle">Command center for DevFest Dhow 2025</p>
+    </div>
+  </div>
+
+  <!-- Admin Statistics Cards -->
+  <div class="stats-section mb-4">
+    <div class="stats-grid">
+      <div class="stat-card ocean-blue">
+        <div class="stat-icon">🚢</div>
+        <div class="stat-content">
+          <div class="stat-value">{{ adminStats().totalVoyages }}</div>
+          <div class="stat-label">Active Voyages</div>
+        </div>
+      </div>
+
+      <div class="stat-card wave-teal">
+        <div class="stat-icon">🏝️</div>
+        <div class="stat-content">
+          <div class="stat-value">{{ adminStats().totalSessions }}</div>
+          <div class="stat-label">Total Islands</div>
+        </div>
+      </div>
+
+      <div class="stat-card coral-orange">
+        <div class="stat-icon">🧭</div>
+        <div class="stat-content">
+          <div class="stat-value">{{ adminStats().totalNavigators }}</div>
+          <div class="stat-label">Navigators</div>
+        </div>
+      </div>
+
+      <div class="stat-card magenta-violet">
+        <div class="stat-icon">📊</div>
+        <div class="stat-content">
+          <div class="stat-value">{{ adminStats().activeRegistrations }}</div>
+          <div class="stat-label">Registrations</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Actions Grid -->
+  <div class="quick-actions-section mb-4">
+    <h2 class="section-title">⚡ Quick Actions</h2>
+    <div class="actions-grid">
+      @for (action of quickActions; track action.id) {
+        <a
+          [routerLink]="action.route"
+          class="action-card"
+          [class]="action.color"
+        >
+          <div class="action-icon">{{ action.icon }}</div>
+          <div class="action-content">
+            <h3 class="action-title">{{ action.title }}</h3>
+            <p class="action-description">{{ action.description }}</p>
+          </div>
+          <div class="action-arrow">→</div>
+        </a>
+      }
+    </div>
+  </div>
+
+  <!-- Recent Activity Feed -->
+  <div class="activity-section">
+    <h2 class="section-title">📋 Recent Activity</h2>
+    <div class="activity-feed">
+      @for (activity of recentActivity(); track activity.id) {
+        <div class="activity-item" [class]="'activity-' + activity.type">
+          <div class="activity-indicator"></div>
+          <div class="activity-content">
+            <div class="activity-header">
+              <span class="activity-action">{{ activity.action }}</span>
+              <span class="activity-timestamp">{{ formatTimestamp(activity.timestamp) }}</span>
+            </div>
+            <p class="activity-details">{{ activity.details }}</p>
+          </div>
+        </div>
+      }
+
+      <!-- View All Link -->
+      <div class="activity-footer">
+        <a routerLink="/admin/activity" class="view-all-link">
+          View all activity →
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Help Section -->
+  <div class="help-section mt-4">
+    <div class="help-card">
+      <div class="help-icon">🔮</div>
+      <div class="help-content">
+        <h3>Need assistance, Admiral?</h3>
+        <p>Access the Oracle for guidance on managing your DevFest fleet.</p>
+        <a routerLink="/dashboard/ask-the-oracle" class="help-link">
+          Consult the Oracle →
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
