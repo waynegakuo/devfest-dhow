@@ -4,6 +4,8 @@ import { Voyage } from '../../models/voyage.model';
 import { Island } from '../../models/island.model';
 import { Deck, SessionType } from '../../models/venue.model';
 import { VoyagesDataService } from '../../services/voyages-data/voyages-data.service';
+import { MyVoyagePlanService } from '../../services/my-voyage-plan/my-voyage-plan.service';
+import { VoyagePlanItem } from '../../models/voyage-plan.model';
 
 @Component({
   selector: 'app-archipelago',
@@ -14,6 +16,7 @@ import { VoyagesDataService } from '../../services/voyages-data/voyages-data.ser
 })
 export class ArchipelagoComponent {
   private voyagesDataService = inject(VoyagesDataService);
+  private myVoyagePlanService = inject(MyVoyagePlanService);
 
   // Use centralized voyages data service
   voyages = this.voyagesDataService.voyages;
@@ -58,4 +61,25 @@ export class ArchipelagoComponent {
     // Session is ongoing if current time is between start and end time
     return now.getTime() >= sessionStartTime.getTime() && now.getTime() <= sessionEndTime.getTime();
   }
+
+    /**
+     * Check if an island is already in the user's voyage plan
+     */
+    isInVoyagePlan(island: Island): boolean {
+      return this.myVoyagePlanService.isInPlan(island.id);
+    }
+
+    /**
+     * Add or remove an island from the user's voyage plan
+     */
+    toggleVoyagePlan(island: Island, voyage: any): void {
+      const voyagePlanItem: VoyagePlanItem = {
+        island,
+        voyageId: voyage.id,
+        voyageName: voyage.name,
+        voyageDate: voyage.date
+      };
+
+      this.myVoyagePlanService.toggleSession(voyagePlanItem);
+    }
 }

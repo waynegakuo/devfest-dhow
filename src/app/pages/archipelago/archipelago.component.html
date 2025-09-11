@@ -46,23 +46,42 @@
                         }
                       </div>
 
-                      @if (isIslandOngoing(island)) {
-                        <div class="ongoing-status">
-                          <span class="ongoing-badge">
-                            <span class="ongoing-icon">●</span>
-                            <span class="ongoing-text">Ongoing</span>
-                          </span>
-                        </div>
-                      }
+                      <div class="island-actions">
+                        @if (isIslandOngoing(island)) {
+                          <div class="ongoing-status">
+                            <span class="ongoing-badge">
+                              <span class="ongoing-icon">●</span>
+                              <span class="ongoing-text">Ongoing</span>
+                            </span>
+                          </div>
+                        }
 
-                      @if (isIslandComplete(island)) {
-                        <div class="ended-status">
-                          <span class="ended-badge">
-                            <span class="ended-icon">✓</span>
-                            <span class="ended-text">Ended</span>
-                          </span>
-                        </div>
-                      }
+                        @if (isIslandComplete(island)) {
+                          <div class="ended-status">
+                            <span class="ended-badge">
+                              <span class="ended-icon">✓</span>
+                              <span class="ended-text">Ended</span>
+                            </span>
+                          </div>
+                        }
+
+                        @if (!isIslandComplete(island)) {
+                          <button
+                            class="btn-primary"
+                            [class.btn-secondary]="isInVoyagePlan(island)"
+                            (click)="toggleVoyagePlan(island, voyage)"
+                            [attr.aria-label]="isInVoyagePlan(island) ? 'Remove from My Voyage Plan' : 'Add to My Voyage Plan'"
+                          >
+                            @if (isInVoyagePlan(island)) {
+                              <span class="btn-icon">✓</span>
+                              <span class="btn-text">In My Voyage</span>
+                            } @else {
+                              <span class="btn-icon">+</span>
+                              <span class="btn-text">Add to Voyage</span>
+                            }
+                          </button>
+                        }
+                      </div>
                     </div>
                   </div>
                 </div>
