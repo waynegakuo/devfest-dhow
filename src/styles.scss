@@ -29,6 +29,9 @@
 // Import unified form styles
 @use 'styles/forms';
 
+// Import button styles
+@use 'styles/buttons';
+
 // Reset and base styles
 * {
   box-sizing: border-box;
@@ -121,30 +124,6 @@ body {
   }
 }
 
-.btn-primary {
-  background-color: $magenta-violet;
-  color: $white;
-  font-family: inherit;
-  font-weight: 500;
-  padding: 0.5rem 1rem;
-  border-radius: 0.375rem;
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 200ms;
-  border: none;
-  cursor: pointer;
-  text-decoration: none;
-  display: inline-block;
-
-  &:hover {
-    background-color: $deep-sea;
-  }
-
-  &:focus {
-    outline: 2px solid $ocean-blue;
-    outline-offset: 2px;
-  }
-}
 
 // Additional utility classes for the app
 .container {
@@ -314,95 +293,6 @@ body {
   background-clip: initial !important;
 }
 
-// Button variants
-.btn-secondary {
-  background-color: transparent;
-  color: $ocean-blue;
-  font-family: inherit;
-  font-weight: 500;
-  padding: 0.5rem 1rem;
-  border: 2px solid $ocean-blue;
-  border-radius: 0.375rem;
-  transition: all 0.2s ease;
-  cursor: pointer;
-  text-decoration: none;
-  display: inline-block;
-
-  &:hover {
-    background-color: $ocean-blue;
-    color: $white;
-    transform: translateY(-1px);
-  }
-}
-
-.btn-secondary-light {
-  background-color: transparent;
-  color: $white;
-  font-family: inherit;
-  border: 2px solid $white;
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.375rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-decoration: none;
-  display: inline-block;
-
-  &:hover {
-    background-color: $white;
-    color: $ocean-blue;
-  }
-}
-
-.btn-large {
-  padding: 0.75rem 2rem;
-  font-size: 1.125rem;
-}
-
-.btn-ocean {
-  background: linear-gradient(135deg, $ocean-blue, $wave-teal);
-  color: $white;
-  font-family: inherit;
-  font-weight: 500;
-  padding: 0.5rem 1rem;
-  border-radius: 0.375rem;
-  transition: all 0.2s ease;
-  border: none;
-  cursor: pointer;
-  text-decoration: none;
-  display: inline-block;
-
-  &:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(21, 101, 192, 0.3);
-  }
-}
-
-.attendance-btn {
-  background-color: transparent;
-  border: 2px solid $gray-200;
-  color: $gray-400;
-  font-family: inherit;
-  font-weight: 500;
-  padding: 0.5rem 1rem;
-  border-radius: 0.375rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  font-size: 0.875rem;
-  text-decoration: none;
-  display: inline-block;
-
-  &:hover {
-    border-color: $ocean-blue;
-    color: $ocean-blue;
-  }
-
-  &.attended {
-    border-color: $success-green;
-    color: $success-green;
-    background-color: rgba($success-green, 0.1);
-  }
-}
 
 // Page header styles - global styles for consistent page headers
 .page-header {
@@ -815,36 +705,8 @@ body {
   gap: 0.5rem;
 }
 
-.btn-sm {
-  padding: 0.5rem;
-  border-radius: 0.375rem;
-  min-width: 2.5rem;
-}
 
-.btn-info {
-  background-color: $wave-teal;
-  color: $white;
-  border: none;
-  cursor: pointer;
-  transition: all 0.2s ease;
 
-  &:hover {
-    background-color: #008394;
-  }
-}
-
-.btn-danger {
-  background-color: $coral-orange;
-  color: $white;
-  border: none;
-  border-radius: 0.375rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-
-  &:hover {
-    background-color: #e55a2b;
-  }
-}
 
 // Enhanced Tags component with improved styling
 .tags-input-container {
@@ -980,10 +842,6 @@ body {
     gap: 0.5rem;
     white-space: nowrap;
 
-    .admin-btn-icon {
-      font-size: 1.125rem;
-      font-weight: bold;
-    }
   }
 
   @media (max-width: 768px) {
@@ -1022,6 +880,7 @@ body {
       }
 
       .admin-search-input {
+        font-family: inherit;
         width: 100%;
         padding: 0.75rem 1rem 0.75rem 2.5rem;
         border: 2px solid $gray-200;
@@ -1059,6 +918,7 @@ body {
       }
 
       .admin-filter-select {
+        font-family: inherit;
         padding: 0.5rem 0.75rem;
         border: 2px solid $gray-200;
         border-radius: 0.5rem;
@@ -1392,61 +1252,6 @@ body {
   background: rgba($white, 0.8);
 }
 
-.sidebar-close-btn {
-  background: transparent;
-  border: none;
-  color: $gray-400;
-  cursor: pointer;
-  padding: 0.5rem;
-  border-radius: 0.375rem;
-  transition: all 0.2s ease;
-
-  &:hover {
-    color: $gray-700;
-    background-color: rgba($ocean-blue, 0.1);
-  }
-}
-
-.nav-tool-btn {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  width: 100%;
-  padding: 0.75rem 1rem;
-  margin-bottom: 0.5rem;
-  background: transparent;
-  border: 1px solid transparent;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  text-align: left;
-  font-family: inherit;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-
-  .tool-name {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: $gray-700;
-  }
-
-  &:hover {
-    background-color: rgba($ocean-blue, 0.1);
-    border-color: rgba($ocean-blue, 0.2);
-  }
-
-  &.active {
-    background-color: rgba($ocean-blue, 0.15);
-    border-color: $ocean-blue;
-
-    .tool-name {
-      color: $ocean-blue;
-      font-weight: 600;
-    }
-  }
-}
 
 // Form utilities
 .form-label {
@@ -1671,9 +1476,6 @@ body {
 }
 
 // Sidebar utilities
-.btn-full-width {
-  width: 100%;
-}
 
 // CSS Custom Properties for theme consistency
 :root {
@@ -1697,43 +1499,3 @@ body {
   --font-secondary: #{$font-family-secondary}; // "Roboto" - Secondary font for specific high-readability UI elements
 }
 
-// Floating action button utility
-.floating-action-btn {
-  position: fixed;
-  bottom: 2rem;
-  right: 2rem;
-  background: linear-gradient(135deg, var(--ocean-blue), var(--wave-teal));
-  color: var(--white);
-  border: none;
-  border-radius: 50px;
-  padding: 0.75rem 1.5rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  z-index: 100;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  box-shadow: 0 4px 15px rgba(21, 101, 192, 0.3);
-  font-family: inherit;
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(21, 101, 192, 0.4);
-  }
-
-  &.active {
-    background: linear-gradient(135deg, var(--magenta-violet), var(--deep-sea));
-  }
-
-  @media (max-width: 480px) {
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    padding: 0;
-    justify-content: center;
-
-    .btn-text {
-      display: none;
-    }
-  }
-}
