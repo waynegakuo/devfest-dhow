@@ -1,4 +1,4 @@
-export type TechTrack = 'AI/ML' | 'Cloud' | 'Web' | 'Mobile';
+export type TechTrack = 'AI/ML' | 'Cloud' | 'Web' | 'Mobile' | 'Web Development' | 'Mobile Development' | 'Cloud & DevOps' | 'AI & Machine Learning' | 'Game Development' | 'UI/UX Design';
 export type ExpertiseLevel = 'Beginner' | 'Intermediate' | 'Expert';
 export type NavigatorRole = 'navigator' | 'admin';
 

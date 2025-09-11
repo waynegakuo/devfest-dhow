@@ -29,6 +29,7 @@ export class AdminDashboardLayoutComponent {
     { id: 'voyage-management', name: 'Fleet Management', icon: '🚢', description: 'Voyage Management - Create, edit and manage voyages', route: '/admin/voyages' },
     { id: 'island-coordination', name: 'Island Coordination', icon: '🏝️', description: 'Island Coordination - Manage all conference sessions across voyages', route: '/admin/islands' },
     { id: 'navigator-management', name: 'Navigator Registry', icon: '🧭', description: 'Navigator Management - View and manage attendees', route: '/admin/navigators' },
+    { id: 'galley-resources', name: 'Galley Provisioning', icon: '📚', description: 'Resource Management - Stock the galley with preparatory materials', route: '/admin/resources' },
     { id: 'analytics', name: 'Fleet Analytics', icon: '📊', description: 'Analytics - Voyage and session insights', route: '/admin/analytics' },
     { id: 'settings', name: 'Ship Configuration', icon: '⚙️', description: 'Settings - System configuration and preferences', route: '/admin/settings' },
     { id: 'back-to-dashboard', name: 'Return to Voyage', icon: '🔙', description: 'Back to Main Dashboard', route: '/dashboard/helm' },

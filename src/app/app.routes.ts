@@ -109,6 +109,10 @@ export const routes: Routes = [
       {
         path: 'islands',
         loadComponent: () => import('./pages/admin/admin-island-coordination/admin-island-coordination.component').then(m => m.AdminIslandCoordinationComponent)
+      },
+      {
+        path: 'resources',
+        loadComponent: () => import('./pages/admin/admin-resource-management/admin-resource-management.component').then(m => m.AdminResourceManagementComponent)
       }
     ]
   },
