@@ -2,7 +2,7 @@
   <!-- Page Header -->
   <header class="admin-page-header">
     <div class="admin-header-content">
-      <div>
+      <div class="galley-header">
         <h1 class="admin-page-title">📚 Galley Resource Management</h1>
         <p class="admin-page-subtitle">Upload and manage resources for the Stocking the Galley section</p>
       </div>
@@ -79,8 +79,8 @@
                 formControlName="techTrack"
                 class="form-select">
                 <option value="">Select a track</option>
-                @for (track of availableTracks; track track) {
-                  <option [value]="track">{{ getTrackIcon(track) }} {{ track }}</option>
+                @for (track of tracks(); track track.id) {
+                  <option [value]="track.name">{{ track.icon }} {{ track.name }}</option>
                 }
               </select>
               @if (resourceForm.get('techTrack')?.invalid && resourceForm.get('techTrack')?.touched) {

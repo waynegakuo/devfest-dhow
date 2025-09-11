@@ -5,7 +5,7 @@ import { Subject, takeUntil } from 'rxjs';
 
 import { ResourceManagementService, ResourceUploadData } from '../../../services/resource-management/resource-management.service';
 import { PreparatoryContent, ContentType } from '../../../models/preparatory-content.model';
-import { TechTrack, ExpertiseLevel } from '../../../models/navigator.model';
+import { TechTrack, ExpertiseLevel, Track } from '../../../models/navigator.model';
 
 @Component({
   selector: 'app-admin-resource-management',
@@ -24,6 +24,7 @@ export class AdminResourceManagementComponent implements OnInit, OnDestroy {
   error = signal<string | null>(null);
   success = signal<string | null>(null);
   resources = signal<PreparatoryContent[]>([]);
+  tracks = signal<Track[]>([]);
   trackCounts = signal<{ track: TechTrack; count: number }[]>([]);
   selectedTrack = signal<TechTrack | null>(null);
   showForm = signal(false);
@@ -31,16 +32,6 @@ export class AdminResourceManagementComponent implements OnInit, OnDestroy {
 
   // Form
   resourceForm!: FormGroup;
-
-  // Static data
-  readonly availableTracks: TechTrack[] = [
-    'Web Development',
-    'Mobile Development',
-    'Cloud & DevOps',
-    'AI & Machine Learning',
-    'Game Development',
-    'UI/UX Design'
-  ];
 
   readonly contentTypes: ContentType[] = [
     'documentation',
@@ -58,6 +49,7 @@ export class AdminResourceManagementComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.initializeForm();
+    this.loadTracks();
     this.loadTrackCounts();
   }
 
@@ -84,6 +76,25 @@ export class AdminResourceManagementComponent implements OnInit, OnDestroy {
 
   get expertiseLevelControls() {
     return this.resourceForm.get('expertiseLevel') as FormArray;
+  }
+
+  private loadTracks(): void {
+    this.loading.set(true);
+    this.error.set(null);
+
+    this.resourceService.getAllTracks()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (tracks) => {
+          this.tracks.set(tracks);
+          this.loading.set(false);
+        },
+        error: (err) => {
+          this.error.set('Failed to load tracks');
+          this.loading.set(false);
+          console.error('Error loading tracks:', err);
+        }
+      });
   }
 
   private loadTrackCounts(): void {
@@ -300,15 +311,8 @@ export class AdminResourceManagementComponent implements OnInit, OnDestroy {
 
   // Get track icon
   getTrackIcon(track: TechTrack): string {
-    switch (track) {
-      case 'Web Development': return '🌐';
-      case 'Mobile Development': return '📱';
-      case 'Cloud & DevOps': return '☁️';
-      case 'AI & Machine Learning': return '🤖';
-      case 'Game Development': return '🎮';
-      case 'UI/UX Design': return '🎨';
-      default: return '💻';
-    }
+    const trackData = this.tracks().find(t => t.name === track);
+    return trackData?.icon || '⚡';
   }
 
   // Clear messages

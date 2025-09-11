@@ -1,6 +1,6 @@
-import { Injectable, inject } from '@angular/core';
+import {Injectable, inject, runInInjectionContext, EnvironmentInjector} from '@angular/core';
 import { Observable, from, throwError } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { map, catchError, switchMap } from 'rxjs/operators';
 import {
   Firestore,
   collection,
@@ -16,7 +16,7 @@ import {
   DocumentData
 } from '@angular/fire/firestore';
 import { PreparatoryContent, ContentType } from '../../models/preparatory-content.model';
-import { TechTrack, ExpertiseLevel } from '../../models/navigator.model';
+import { TechTrack, ExpertiseLevel, Track } from '../../models/navigator.model';
 
 export interface ResourceUploadData {
   title: string;
@@ -37,7 +37,29 @@ export interface ResourceUploadData {
 })
 export class ResourceManagementService {
   private firestore = inject(Firestore);
+  private environmentInjector = inject(EnvironmentInjector);
   private readonly resourcesCollection = collection(this.firestore, 'resources') as CollectionReference<DocumentData>;
+
+  /**
+   * Map track names to their Firestore-safe collection IDs
+   */
+  private getTrackCollectionId(trackName: TechTrack): string {
+    const trackMap: Record<TechTrack, string> = {
+      'Web Development': 'web-development',
+      'Mobile Development': 'mobile-development',
+      'Cloud & DevOps': 'cloud-devops',
+      'AI & Machine Learning': 'ai-machine-learning',
+      'Game Development': 'game-development',
+      'UI/UX Design': 'ui-ux-design',
+      // Legacy support for old track names
+      'AI/ML': 'ai-machine-learning',
+      'Cloud': 'cloud-devops',
+      'Web': 'web-development',
+      'Mobile': 'mobile-development'
+    };
+
+    return trackMap[trackName] || trackName.toLowerCase().replace(/[^a-z0-9]/g, '-');
+  }
 
   /**
    * Upload a new resource to Firestore
@@ -49,8 +71,9 @@ export class ResourceManagementService {
       createdAt: new Date()
     };
 
-    // Get the track-specific subcollection
-    const trackCollection = collection(this.firestore, `resources/${resourceData.techTrack}`);
+    // Get the track-specific subcollection using safe collection ID
+    const trackCollectionId = this.getTrackCollectionId(resourceData.techTrack);
+    const trackCollection = collection(this.firestore, `tracks/${trackCollectionId}/resources`);
 
     return from(addDoc(trackCollection, resource)).pipe(
       map(docRef => {
@@ -68,34 +91,38 @@ export class ResourceManagementService {
    * Get all resources for a specific track
    */
   getResourcesByTrack(track: TechTrack): Observable<PreparatoryContent[]> {
-    const trackCollection = collection(this.firestore, `resources/${track}`);
+    const trackCollectionId = this.getTrackCollectionId(track);
+    const trackCollection = collection(this.firestore, `tracks/${trackCollectionId}/resources`);
     const q = query(trackCollection, orderBy('createdAt', 'desc'));
 
-    return from(getDocs(q)).pipe(
-      map(snapshot => {
-        const resources: PreparatoryContent[] = [];
-        snapshot.forEach(doc => {
-          const data = doc.data();
-          resources.push({
-            ...data,
-            id: doc.id,
-            createdAt: data['createdAt']?.toDate() || new Date()
-          } as PreparatoryContent);
-        });
-        return resources;
-      }),
-      catchError(error => {
-        console.error('❌ Error fetching resources:', error);
-        return throwError(() => new Error('Failed to fetch resources'));
-      })
-    );
+    return runInInjectionContext(this.environmentInjector, () => {
+      return from(getDocs(q)).pipe(
+        map(snapshot => {
+          const resources: PreparatoryContent[] = [];
+          snapshot.forEach(doc => {
+            const data = doc.data();
+            resources.push({
+              ...data,
+              id: doc.id,
+              createdAt: data['createdAt']?.toDate() || new Date()
+            } as PreparatoryContent);
+          });
+          return resources;
+        }),
+        catchError(error => {
+          console.error('❌ Error fetching resources:', error);
+          return throwError(() => new Error('Failed to fetch resources'));
+        })
+      );
+    });
   }
 
   /**
    * Get resources by track and content type
    */
   getResourcesByTrackAndType(track: TechTrack, contentType: ContentType): Observable<PreparatoryContent[]> {
-    const trackCollection = collection(this.firestore, `resources/${track}`);
+    const trackCollectionId = this.getTrackCollectionId(track);
+    const trackCollection = collection(this.firestore, `tracks/${trackCollectionId}/resources`);
     const q = query(
       trackCollection,
       where('type', '==', contentType),
@@ -126,7 +153,8 @@ export class ResourceManagementService {
    * Update an existing resource
    */
   updateResource(track: TechTrack, resourceId: string, updates: Partial<ResourceUploadData>): Observable<void> {
-    const resourceDoc = doc(this.firestore, `resources/${track}/${resourceId}`);
+    const trackCollectionId = this.getTrackCollectionId(track);
+    const resourceDoc = doc(this.firestore, `tracks/${trackCollectionId}/resources/${resourceId}`);
 
     return from(updateDoc(resourceDoc, updates)).pipe(
       map(() => {
@@ -143,7 +171,8 @@ export class ResourceManagementService {
    * Delete a resource
    */
   deleteResource(track: TechTrack, resourceId: string): Observable<void> {
-    const resourceDoc = doc(this.firestore, `resources/${track}/${resourceId}`);
+    const trackCollectionId = this.getTrackCollectionId(track);
+    const resourceDoc = doc(this.firestore, `tracks/${trackCollectionId}/resources/${resourceId}`);
 
     return from(deleteDoc(resourceDoc)).pipe(
       map(() => {
@@ -157,64 +186,88 @@ export class ResourceManagementService {
   }
 
   /**
+   * Get all tracks from Firestore
+   */
+  getAllTracks(): Observable<Track[]> {
+    return runInInjectionContext(this.environmentInjector, () => {
+      const tracksCollection = collection(this.firestore, 'tracks');
+      const q = query(tracksCollection, where('isActive', '==', true), orderBy('name'));
+
+      return from(getDocs(q)).pipe(
+        map(snapshot => {
+          const tracks: Track[] = [];
+          snapshot.forEach(doc => {
+            const data = doc.data();
+            tracks.push({
+              ...data,
+              id: doc.id,
+              createdAt: data['createdAt']?.toDate() || new Date(),
+              updatedAt: data['updatedAt']?.toDate() || new Date()
+            } as Track);
+          });
+          return tracks;
+        }),
+        catchError(error => {
+          console.error('❌ Error fetching tracks:', error);
+          return throwError(() => new Error('Failed to fetch tracks'));
+        })
+      );
+    })
+
+  }
+
+  /**
    * Get all available tracks with resource counts
    */
   getTracksWithResourceCounts(): Observable<{ track: TechTrack; count: number }[]> {
-    const tracks: TechTrack[] = [
-      'Web Development',
-      'Mobile Development',
-      'Cloud & DevOps',
-      'AI & Machine Learning',
-      'Game Development',
-      'UI/UX Design'
-    ];
-
-    const trackPromises = tracks.map(async track => {
-      const trackCollection = collection(this.firestore, `resources/${track}`);
-      const snapshot = await getDocs(trackCollection);
-      return { track, count: snapshot.size };
+    return runInInjectionContext(this.environmentInjector, () => {
+      return this.getAllTracks().pipe(
+        switchMap(tracks => {
+          const trackPromises = tracks.map(async trackData => {
+            const track = trackData.name as TechTrack;
+            const trackCollectionId = this.getTrackCollectionId(track);
+            const trackCollection = collection(this.firestore, `tracks/${trackCollectionId}/resources`);
+            const snapshot = await getDocs(trackCollection);
+            return { track, count: snapshot.size };
+          });
+          return from(Promise.all(trackPromises));
+        }),
+        catchError(error => {
+          console.error('❌ Error fetching track counts:', error);
+          return throwError(() => new Error('Failed to fetch track counts'));
+        })
+      );
     });
-
-    return from(Promise.all(trackPromises)).pipe(
-      catchError(error => {
-        console.error('❌ Error fetching track counts:', error);
-        return throwError(() => new Error('Failed to fetch track counts'));
-      })
-    );
   }
 
   /**
    * Get featured resources across all tracks
    */
   getFeaturedResources(): Observable<PreparatoryContent[]> {
-    const tracks: TechTrack[] = [
-      'Web Development',
-      'Mobile Development',
-      'Cloud & DevOps',
-      'AI & Machine Learning',
-      'Game Development',
-      'UI/UX Design'
-    ];
+    return this.getAllTracks().pipe(
+      switchMap(tracks => {
+        const featuredPromises = tracks.map(async trackData => {
+          const track = trackData.name as TechTrack;
+          const trackCollectionId = this.getTrackCollectionId(track);
+          const trackCollection = collection(this.firestore, `tracks/${trackCollectionId}/resources`);
+          const q = query(trackCollection, where('featured', '==', true));
+          const snapshot = await getDocs(q);
+          const resources: PreparatoryContent[] = [];
 
-    const featuredPromises = tracks.map(async track => {
-      const trackCollection = collection(this.firestore, `resources/${track}`);
-      const q = query(trackCollection, where('featured', '==', true));
-      const snapshot = await getDocs(q);
-      const resources: PreparatoryContent[] = [];
+          snapshot.forEach(doc => {
+            const data = doc.data();
+            resources.push({
+              ...data,
+              id: doc.id,
+              createdAt: data['createdAt']?.toDate() || new Date()
+            } as PreparatoryContent);
+          });
 
-      snapshot.forEach(doc => {
-        const data = doc.data();
-        resources.push({
-          ...data,
-          id: doc.id,
-          createdAt: data['createdAt']?.toDate() || new Date()
-        } as PreparatoryContent);
-      });
+          return resources;
+        });
 
-      return resources;
-    });
-
-    return from(Promise.all(featuredPromises)).pipe(
+        return from(Promise.all(featuredPromises));
+      }),
       map(results => results.flat()),
       catchError(error => {
         console.error('❌ Error fetching featured resources:', error);
