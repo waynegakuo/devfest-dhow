@@ -65,7 +65,7 @@ export class CourseSelectionComponent {
       await this.navigatorService.saveCourseSelection(courseSelection);
 
       // Navigate to the main dashboard or home page
-      this.router.navigate(['/']);
+      this.router.navigate(['/dashboard']);
     } catch (error) {
       console.error('Error saving course selection:', error);
       // TODO: Add proper error handling/notification
