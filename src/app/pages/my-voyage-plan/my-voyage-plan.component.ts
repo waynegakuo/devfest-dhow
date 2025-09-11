@@ -163,7 +163,7 @@ export class MyVoyagePlanComponent {
     }
 
     description.push('', `Part of: ${item.voyageName} (${item.voyageDate})`);
-    return description.join('\\n');
+    return description.join('\n');
   }
 
   // Escape special characters for ICS format
