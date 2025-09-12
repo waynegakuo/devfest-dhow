@@ -50,12 +50,7 @@ export class ResourceManagementService {
       'Cloud & DevOps': 'cloud-devops',
       'AI & Machine Learning': 'ai-machine-learning',
       'Game Development': 'game-development',
-      'UI/UX Design': 'ui-ux-design',
-      // Legacy support for old track names
-      'AI/ML': 'ai-machine-learning',
-      'Cloud': 'cloud-devops',
-      'Web': 'web-development',
-      'Mobile': 'mobile-development'
+      'UI/UX Design': 'ui-ux-design'
     };
 
     return trackMap[trackName] || trackName.toLowerCase().replace(/[^a-z0-9]/g, '-');
@@ -82,7 +77,6 @@ export class ResourceManagementService {
 
     return from(addDoc(trackCollection, resource)).pipe(
       map(docRef => {
-        console.log('✅ Resource uploaded successfully:', docRef.id);
         return docRef.id;
       }),
       catchError(error => {
@@ -168,7 +162,7 @@ export class ResourceManagementService {
 
     return from(updateDoc(resourceDoc, cleanedUpdates)).pipe(
       map(() => {
-        console.log('✅ Resource updated successfully:', resourceId);
+        // Resource updated successfully
       }),
       catchError(error => {
         console.error('❌ Error updating resource:', error);
@@ -186,7 +180,7 @@ export class ResourceManagementService {
 
     return from(deleteDoc(resourceDoc)).pipe(
       map(() => {
-        console.log('✅ Resource deleted successfully:', resourceId);
+        // Resource deleted successfully
       }),
       catchError(error => {
         console.error('❌ Error deleting resource:', error);

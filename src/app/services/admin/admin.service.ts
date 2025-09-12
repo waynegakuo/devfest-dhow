@@ -60,7 +60,6 @@ export class AdminService {
 
       return from(voyagePromise).pipe(
         map(docRef => {
-          console.log('🚢 Voyage created with ID:', docRef.id);
           return docRef.id;
         }),
         catchError(error => {
@@ -92,7 +91,6 @@ export class AdminService {
       return from(voyagePromise).pipe(
         switchMap(voyageDocRef => {
           const voyageId = voyageDocRef.id;
-          console.log('🚢 Voyage created with ID:', voyageId);
 
           // If no islands to create, return voyage ID immediately
           if (!islands || islands.length === 0) {
@@ -124,7 +122,6 @@ export class AdminService {
           // Commit batch operation for islands
           return from(batch.commit()).pipe(
             map(() => {
-              console.log(`🏝️ Created ${islands.length} islands for voyage ${voyageId}`);
               return voyageId;
             })
           );
@@ -185,7 +182,6 @@ export class AdminService {
             return voyagePromises.length > 0 ? forkJoin(voyagePromises) : of([]);
           }),
           map(voyages => {
-            console.log('🌊 Loaded voyages with islands:', voyages.length);
             return voyages;
           }),
           catchError(error => {
@@ -246,7 +242,7 @@ export class AdminService {
 
       return from(updatePromise).pipe(
         map(() => {
-          console.log('✅ Voyage updated:', voyageId);
+          // Voyage updated successfully
         }),
         catchError(error => {
           console.error('❌ Error updating voyage:', error);
@@ -270,7 +266,7 @@ export class AdminService {
 
       return from(this.deleteVoyageWithIslands(voyageRef, islandsCollection)).pipe(
         map(() => {
-          console.log('🗑️ Voyage and islands deleted:', voyageId);
+          // Voyage and islands deleted successfully
         }),
         catchError(error => {
           console.error('❌ Error deleting voyage:', error);
@@ -336,7 +332,6 @@ export class AdminService {
 
       return from(islandPromise).pipe(
         map(docRef => {
-          console.log('🏝️ Island created with ID:', docRef.id);
           return docRef.id;
         }),
         catchError(error => {
@@ -382,7 +377,6 @@ export class AdminService {
                 attended: data.attended || false
               });
             });
-            console.log('🏝️ Loaded islands for voyage:', voyageId, islands.length);
             return islands;
           }),
           catchError(error => {
@@ -421,7 +415,7 @@ export class AdminService {
 
       return from(updatePromise).pipe(
         map(() => {
-          console.log('✅ Island updated:', islandId);
+          // Island updated successfully
         }),
         catchError(error => {
           console.error('❌ Error updating island:', error);
@@ -447,7 +441,7 @@ export class AdminService {
 
       return from(deletePromise).pipe(
         map(() => {
-          console.log('🗑️ Island deleted:', islandId);
+          // Island deleted successfully
         }),
         catchError(error => {
           console.error('❌ Error deleting island:', error);

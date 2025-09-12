@@ -17,7 +17,7 @@ export class CourseSelectionComponent {
   private router = inject(Router);
 
   // Available options
-  readonly techTracks: TechTrack[] = ['AI/ML', 'Cloud', 'Web', 'Mobile'];
+  readonly techTracks: TechTrack[] = ['Web Development', 'Mobile Development', 'Cloud & DevOps', 'AI & Machine Learning', 'Game Development', 'UI/UX Design'];
   readonly expertiseLevels: ExpertiseLevel[] = ['Beginner', 'Intermediate', 'Expert'];
 
   // Form data

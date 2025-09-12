@@ -2,7 +2,7 @@ import { Component, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { NavigatorService } from '../../services/navigator/navigator.service';
-import { PreparatoryContentService } from '../../services/preparatory-content/preparatory-content.service';
+import { TracksService } from '../../services/tracks/tracks.service';
 import { CuratedContent, PreparatoryContent, PreparatoryContentSection } from '../../models/preparatory-content.model';
 import { TechTrack, ExpertiseLevel } from '../../models/navigator.model';
 
@@ -15,7 +15,7 @@ import { TechTrack, ExpertiseLevel } from '../../models/navigator.model';
 })
 export class StockingTheGalleyComponent implements OnInit {
   private navigatorService = inject(NavigatorService);
-  private preparatoryContentService = inject(PreparatoryContentService);
+  private tracksService = inject(TracksService);
   private router = inject(Router);
 
   // Component state
@@ -36,7 +36,6 @@ export class StockingTheGalleyComponent implements OnInit {
         }
       },
       error: (err) => {
-        console.error('Error loading navigator:', err);
         this.error.set('Failed to load navigator data');
       }
     });
@@ -58,9 +57,8 @@ export class StockingTheGalleyComponent implements OnInit {
 
     this.loading.set(true);
     this.error.set(null);
-
     // Load curated content based on user's track and expertise level
-    this.preparatoryContentService.getCuratedContent(
+    this.tracksService.getCuratedContent(
       currentNavigator.techTrack,
       currentNavigator.expertiseLevel
     ).subscribe({
@@ -71,17 +69,16 @@ export class StockingTheGalleyComponent implements OnInit {
       error: (err) => {
         this.error.set('Failed to load preparatory content');
         this.loading.set(false);
-        console.error('Error loading curated content:', err);
       }
     });
 
     // Load featured content
-    this.preparatoryContentService.getFeaturedContent().subscribe({
+    this.tracksService.getFeaturedContent().subscribe({
       next: (featured) => {
         this.featuredContent.set(featured);
       },
       error: (err) => {
-        console.error('Error loading featured content:', err);
+        // Handle error silently
       }
     });
   }

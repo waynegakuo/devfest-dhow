@@ -10,14 +10,14 @@ export class PreparatoryContentService {
 
   // Mock data for preparatory content
   private mockContent: PreparatoryContent[] = [
-    // AI/ML Content
+    // AI & Machine Learning Content
     {
       id: 'aiml-1',
       title: 'Introduction to Machine Learning',
       description: 'Comprehensive guide to get started with machine learning concepts and fundamentals.',
       type: 'documentation',
       url: 'https://developers.google.com/machine-learning/crash-course',
-      techTrack: 'AI/ML',
+      techTrack: 'AI & Machine Learning',
       expertiseLevel: ['Beginner'],
       author: 'Google AI',
       source: 'Google Developers',
@@ -31,7 +31,7 @@ export class PreparatoryContentService {
       description: 'Complete preparation guide for TensorFlow Developer Certificate with hands-on examples.',
       type: 'guide',
       url: 'https://www.tensorflow.org/certificate',
-      techTrack: 'AI/ML',
+      techTrack: 'AI & Machine Learning',
       expertiseLevel: ['Intermediate', 'Expert'],
       duration: '40 hours',
       author: 'TensorFlow Team',
@@ -46,7 +46,7 @@ export class PreparatoryContentService {
       description: 'Learn how to integrate Gemini AI into your applications with practical examples.',
       type: 'video',
       url: 'https://www.youtube.com/watch?v=example-gemini',
-      techTrack: 'AI/ML',
+      techTrack: 'AI & Machine Learning',
       expertiseLevel: ['Intermediate', 'Expert'],
       duration: '45 min',
       author: 'Google AI',
@@ -56,14 +56,14 @@ export class PreparatoryContentService {
       createdAt: new Date('2024-03-10')
     },
 
-    // Cloud Content
+    // Cloud & DevOps Content
     {
       id: 'cloud-1',
       title: 'Google Cloud Platform Fundamentals',
       description: 'Essential concepts and services for getting started with Google Cloud Platform.',
       type: 'documentation',
       url: 'https://cloud.google.com/docs/overview',
-      techTrack: 'Cloud',
+      techTrack: 'Cloud & DevOps',
       expertiseLevel: ['Beginner'],
       author: 'Google Cloud',
       source: 'Google Cloud Docs',
@@ -77,7 +77,7 @@ export class PreparatoryContentService {
       description: 'Advanced patterns and practices for running production workloads on Kubernetes.',
       type: 'guide',
       url: 'https://kubernetes.io/docs/concepts/configuration/best-practices/',
-      techTrack: 'Cloud',
+      techTrack: 'Cloud & DevOps',
       expertiseLevel: ['Intermediate', 'Expert'],
       author: 'Kubernetes Community',
       source: 'Kubernetes.io',
@@ -91,7 +91,7 @@ export class PreparatoryContentService {
       description: 'Build and deploy containerized applications using Google Cloud Run serverless platform.',
       type: 'tutorial',
       url: 'https://cloud.google.com/run/docs/tutorials',
-      techTrack: 'Cloud',
+      techTrack: 'Cloud & DevOps',
       expertiseLevel: ['Intermediate'],
       duration: '2 hours',
       author: 'Google Cloud',
@@ -101,14 +101,14 @@ export class PreparatoryContentService {
       createdAt: new Date('2024-03-05')
     },
 
-    // Web Content
+    // Web Development Content
     {
       id: 'web-1',
       title: 'Modern JavaScript Fundamentals',
       description: 'Master ES6+ features, async programming, and modern JavaScript development patterns.',
       type: 'article',
       url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide',
-      techTrack: 'Web',
+      techTrack: 'Web Development',
       expertiseLevel: ['Beginner', 'Intermediate'],
       author: 'MDN Contributors',
       source: 'MDN Web Docs',
@@ -122,7 +122,7 @@ export class PreparatoryContentService {
       description: 'Comprehensive tutorial covering Angular 19 new features, standalone components, and signals.',
       type: 'video',
       url: 'https://www.youtube.com/watch?v=example-angular19',
-      techTrack: 'Web',
+      techTrack: 'Web Development',
       expertiseLevel: ['Intermediate', 'Expert'],
       duration: '3 hours',
       author: 'Angular Team',
@@ -137,7 +137,7 @@ export class PreparatoryContentService {
       description: 'Build fast, reliable, and engaging web applications with PWA technologies.',
       type: 'tutorial',
       url: 'https://web.dev/progressive-web-apps/',
-      techTrack: 'Web',
+      techTrack: 'Web Development',
       expertiseLevel: ['Intermediate'],
       duration: '4 hours',
       author: 'Chrome DevRel',
@@ -147,14 +147,14 @@ export class PreparatoryContentService {
       createdAt: new Date('2024-02-20')
     },
 
-    // Mobile Content
+    // Mobile Development Content
     {
       id: 'mobile-1',
       title: 'Flutter Development Basics',
       description: 'Get started with Flutter framework for cross-platform mobile app development.',
       type: 'documentation',
       url: 'https://docs.flutter.dev/get-started',
-      techTrack: 'Mobile',
+      techTrack: 'Mobile Development',
       expertiseLevel: ['Beginner'],
       author: 'Flutter Team',
       source: 'Flutter Docs',
@@ -168,7 +168,7 @@ export class PreparatoryContentService {
       description: 'Master complex state management patterns in Flutter using Bloc, Provider, and Riverpod.',
       type: 'guide',
       url: 'https://docs.flutter.dev/development/data-and-backend/state-mgmt',
-      techTrack: 'Mobile',
+      techTrack: 'Mobile Development',
       expertiseLevel: ['Intermediate', 'Expert'],
       author: 'Flutter Community',
       source: 'Flutter Docs',
@@ -182,7 +182,7 @@ export class PreparatoryContentService {
       description: 'Integrate Firebase services into your mobile applications for authentication, database, and more.',
       type: 'tutorial',
       url: 'https://firebase.google.com/docs/flutter/setup',
-      techTrack: 'Mobile',
+      techTrack: 'Mobile Development',
       expertiseLevel: ['Intermediate'],
       duration: '90 min',
       author: 'Firebase Team',
