@@ -4,14 +4,9 @@
 
   .schedule-content {
     padding: 1rem 2rem;
-
-    @media (max-width: 768px) {
-      padding: 1rem;
-    }
+    @media (max-width: 768px) { padding: 1rem; }
   }
 
-
-  // Loading state
   .loading-container {
     text-align: center;
     padding: 3rem 0;
@@ -27,8 +22,6 @@
         background: linear-gradient(135deg, var(--ocean-blue), var(--wave-teal));
         border-radius: 5px;
         animation: wave 1.2s ease-in-out infinite;
-
-        &:nth-child(1) { animation-delay: 0s; }
         &:nth-child(2) { animation-delay: 0.2s; }
         &:nth-child(3) { animation-delay: 0.4s; }
       }
@@ -45,7 +38,6 @@
     20% { transform: scaleY(1); }
   }
 
-  // Error state
   .error-container {
     display: flex;
     justify-content: center;
@@ -60,24 +52,12 @@
       border: 2px solid var(--coral-orange);
       max-width: 400px;
 
-      .error-icon {
-        font-size: 3rem;
-        margin-bottom: 1rem;
-      }
-
-      h3 {
-        color: var(--coral-orange);
-        margin-bottom: 0.5rem;
-      }
-
-      p {
-        color: var(--text-secondary);
-        margin-bottom: 1.5rem;
-      }
+      .error-icon { font-size: 3rem; margin-bottom: 1rem; }
+      h3 { color: var(--coral-orange); margin-bottom: 0.5rem; }
+      p { color: var(--text-secondary); margin-bottom: 1.5rem; }
     }
   }
 
-  // Track info card
   .track-info-card {
     background: linear-gradient(135deg, var(--ocean-blue), var(--deep-sea));
     color: white;
@@ -98,11 +78,7 @@
         flex-direction: column;
         gap: 0.5rem;
 
-        .track-name {
-          font-size: 1.5rem;
-          font-weight: bold;
-        }
-
+        .track-name { font-size: 1.5rem; font-weight: bold; }
         .expertise-level {
           background: rgba(255, 255, 255, 0.2);
           padding: 0.25rem 0.75rem;
@@ -116,33 +92,19 @@
         display: flex;
         gap: 1.5rem;
         align-items: center;
-
-        @media (max-width: 768px) {
-          gap: 1rem;
-        }
+        @media (max-width: 768px) { gap: 1rem; }
 
         .stat-item {
           text-align: center;
           font-size: 0.9rem;
-
-          strong {
-            display: block;
-            font-size: 1.5rem;
-            font-weight: bold;
-          }
+          strong { display: block; font-size: 1.5rem; font-weight: bold; }
         }
       }
     }
 
-    .track-description {
-      font-size: 1rem;
-      line-height: 1.6;
-      opacity: 0.9;
-      margin: 0;
-    }
+    .track-description { font-size: 1rem; line-height: 1.6; opacity: 0.9; margin: 0; }
   }
 
-  // Content sections - Accordion Implementation
   .content-section {
     &.accordion-section {
       margin: 1.5rem 0;
@@ -176,7 +138,6 @@
       .section-header-content {
         flex: 1;
         margin: 0;
-
         .section-title {
           font-size: 1.3rem;
           font-weight: bold;
@@ -200,47 +161,25 @@
           color: var(--ocean-blue);
           transition: all 0.3s ease;
           display: inline-block;
+          transform: rotate(-90deg);
 
-          &.expanded {
-            transform: rotate(0deg);
-          }
-
-          &:not(.expanded) {
-            transform: rotate(-90deg);
-          }
+          &.expanded { transform: rotate(0deg); }
         }
       }
     }
 
     .accordion-content {
-      padding: 1.5rem;
-      background: white;
-      animation: expandAccordion 0.3s ease-out;
+      padding: 1.5rem; background: white;
     }
 
     .content-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
       gap: 1.5rem;
-
-      @media (max-width: 768px) {
-        grid-template-columns: 1fr;
-      }
+      @media (max-width: 768px) { grid-template-columns: 1fr; }
     }
   }
 
-  @keyframes expandAccordion {
-    from {
-      opacity: 0;
-      transform: translateY(-10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  // Content cards
   .content-card {
     background: white;
     border-radius: 12px;
@@ -315,10 +254,7 @@
         .meta-item {
           font-size: 0.8rem;
           color: var(--text-secondary);
-
-          strong {
-            color: var(--text-primary);
-          }
+          strong { color: var(--text-primary); }
         }
       }
 
@@ -354,7 +290,6 @@
     }
   }
 
-  // Empty states
   .no-content-card,
   .requirement-card {
     background: white;
@@ -367,23 +302,9 @@
     margin: 2rem auto;
 
     .no-content-icon,
-    .requirement-icon {
-      font-size: 4rem;
-      margin-bottom: 1rem;
-      display: block;
-    }
-
-    h3 {
-      color: var(--ocean-blue);
-      font-size: 1.5rem;
-      margin-bottom: 1rem;
-    }
-
-    p {
-      color: var(--text-secondary);
-      line-height: 1.6;
-      margin-bottom: 2rem;
-    }
+    .requirement-icon { font-size: 4rem; margin-bottom: 1rem; display: block; }
+    h3 { color: var(--ocean-blue); font-size: 1.5rem; margin-bottom: 1rem; }
+    p { color: var(--text-secondary); line-height: 1.6; margin-bottom: 2rem; }
   }
 
   .course-selection-required {
@@ -396,10 +317,7 @@
     .requirement-card {
       margin: 0;
       border-color: var(--magenta-violet);
-
-      .requirement-icon {
-        color: var(--magenta-violet);
-      }
+      .requirement-icon { color: var(--magenta-violet); }
     }
   }
 }
