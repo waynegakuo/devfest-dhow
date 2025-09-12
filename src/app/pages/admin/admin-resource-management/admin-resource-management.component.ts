@@ -90,7 +90,7 @@ export class AdminResourceManagementComponent implements OnInit, OnDestroy {
           this.loading.set(false);
         },
         error: (err) => {
-          this.error.set('Failed to load tracks');
+          this.setErrorWithTimeout('Failed to load tracks');
           this.loading.set(false);
           console.error('Error loading tracks:', err);
         }
@@ -109,7 +109,7 @@ export class AdminResourceManagementComponent implements OnInit, OnDestroy {
           this.loading.set(false);
         },
         error: (err) => {
-          this.error.set('Failed to load track counts');
+          this.setErrorWithTimeout('Failed to load track counts');
           this.loading.set(false);
           console.error('Error loading track counts:', err);
         }
@@ -129,7 +129,7 @@ export class AdminResourceManagementComponent implements OnInit, OnDestroy {
           this.loading.set(false);
         },
         error: (err) => {
-          this.error.set('Failed to load resources');
+          this.setErrorWithTimeout('Failed to load resources');
           this.loading.set(false);
           console.error('Error loading resources:', err);
         }
@@ -221,7 +221,7 @@ export class AdminResourceManagementComponent implements OnInit, OnDestroy {
         .pipe(takeUntil(this.destroy$))
         .subscribe({
           next: () => {
-            this.success.set('Resource updated successfully!');
+            this.setSuccessWithTimeout('Resource updated successfully!');
             this.loading.set(false);
             this.showForm.set(false);
             this.editingResource.set(null);
@@ -229,7 +229,7 @@ export class AdminResourceManagementComponent implements OnInit, OnDestroy {
             this.loadTrackCounts();
           },
           error: (err) => {
-            this.error.set('Failed to update resource');
+            this.setErrorWithTimeout('Failed to update resource');
             this.loading.set(false);
             console.error('Error updating resource:', err);
           }
@@ -240,7 +240,7 @@ export class AdminResourceManagementComponent implements OnInit, OnDestroy {
         .pipe(takeUntil(this.destroy$))
         .subscribe({
           next: (resourceId) => {
-            this.success.set('Resource uploaded successfully!');
+            this.setSuccessWithTimeout('Resource uploaded successfully!');
             this.loading.set(false);
             this.showForm.set(false);
             this.resourceForm.reset();
@@ -253,7 +253,7 @@ export class AdminResourceManagementComponent implements OnInit, OnDestroy {
             this.loadTrackCounts();
           },
           error: (err) => {
-            this.error.set('Failed to upload resource');
+            this.setErrorWithTimeout('Failed to upload resource');
             this.loading.set(false);
             console.error('Error uploading resource:', err);
           }
@@ -273,13 +273,13 @@ export class AdminResourceManagementComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
-          this.success.set('Resource deleted successfully!');
+          this.setSuccessWithTimeout('Resource deleted successfully!');
           this.loading.set(false);
           this.loadResourcesForTrack(resource.techTrack);
           this.loadTrackCounts();
         },
         error: (err) => {
-          this.error.set('Failed to delete resource');
+          this.setErrorWithTimeout('Failed to delete resource');
           this.loading.set(false);
           console.error('Error deleting resource:', err);
         }
@@ -313,6 +313,22 @@ export class AdminResourceManagementComponent implements OnInit, OnDestroy {
   getTrackIcon(track: TechTrack): string {
     const trackData = this.tracks().find(t => t.name === track);
     return trackData?.icon || '⚡';
+  }
+
+  // Set success message with automatic timeout
+  private setSuccessWithTimeout(message: string, timeoutMs: number = 4000): void {
+    this.success.set(message);
+    setTimeout(() => {
+      this.success.set(null);
+    }, timeoutMs);
+  }
+
+  // Set error message with automatic timeout
+  private setErrorWithTimeout(message: string, timeoutMs: number = 4000): void {
+    this.error.set(message);
+    setTimeout(() => {
+      this.error.set(null);
+    }, timeoutMs);
   }
 
   // Clear messages

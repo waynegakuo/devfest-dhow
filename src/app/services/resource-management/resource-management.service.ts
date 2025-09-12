@@ -65,8 +65,13 @@ export class ResourceManagementService {
    * Upload a new resource to Firestore
    */
   uploadResource(resourceData: ResourceUploadData): Observable<string> {
+    // Filter out undefined values to prevent Firestore errors
+    const cleanedData = Object.fromEntries(
+      Object.entries(resourceData).filter(([_, value]) => value !== undefined)
+    ) as ResourceUploadData;
+
     const resource: PreparatoryContent = {
-      ...resourceData,
+      ...cleanedData,
       id: '', // Will be set by Firestore
       createdAt: new Date()
     };
@@ -153,10 +158,15 @@ export class ResourceManagementService {
    * Update an existing resource
    */
   updateResource(track: TechTrack, resourceId: string, updates: Partial<ResourceUploadData>): Observable<void> {
+    // Filter out undefined values to prevent Firestore errors
+    const cleanedUpdates = Object.fromEntries(
+      Object.entries(updates).filter(([_, value]) => value !== undefined)
+    ) as Partial<ResourceUploadData>;
+
     const trackCollectionId = this.getTrackCollectionId(track);
     const resourceDoc = doc(this.firestore, `tracks/${trackCollectionId}/resources/${resourceId}`);
 
-    return from(updateDoc(resourceDoc, updates)).pipe(
+    return from(updateDoc(resourceDoc, cleanedUpdates)).pipe(
       map(() => {
         console.log('✅ Resource updated successfully:', resourceId);
       }),
