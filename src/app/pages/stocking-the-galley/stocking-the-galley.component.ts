@@ -25,6 +25,9 @@ export class StockingTheGalleyComponent implements OnInit {
   loading = signal(false);
   error = signal<string | null>(null);
 
+  // Accordion state management - tracks which sections are expanded
+  expandedSections = signal<Set<string>>(new Set());
+
   ngOnInit(): void {
     // Initialize navigator data and then load content
     this.navigatorService.getNavigator().subscribe({
@@ -64,6 +67,7 @@ export class StockingTheGalleyComponent implements OnInit {
     ).subscribe({
       next: (content) => {
         this.curatedContent.set(content);
+        this.initializeAccordionState();
         this.loading.set(false);
       },
       error: (err) => {
@@ -113,5 +117,32 @@ export class StockingTheGalleyComponent implements OnInit {
   // Navigate to course selection if user needs to set preferences
   goToChartCourse(): void {
     this.router.navigate(['/chart-course']);
+  }
+
+  // Accordion functionality
+  toggleSection(sectionTitle: string): void {
+    const currentExpanded = this.expandedSections();
+    const newExpanded = new Set(currentExpanded);
+
+    if (newExpanded.has(sectionTitle)) {
+      newExpanded.delete(sectionTitle);
+    } else {
+      newExpanded.add(sectionTitle);
+    }
+
+    this.expandedSections.set(newExpanded);
+  }
+
+  isSectionExpanded(sectionTitle: string): boolean {
+    return this.expandedSections().has(sectionTitle);
+  }
+
+  // Initialize first section as expanded when content loads
+  private initializeAccordionState(): void {
+    const content = this.curatedContent();
+    if (content && content.sections.length > 0) {
+      const firstSectionTitle = content.sections[0].title;
+      this.expandedSections.set(new Set([firstSectionTitle]));
+    }
   }
 }

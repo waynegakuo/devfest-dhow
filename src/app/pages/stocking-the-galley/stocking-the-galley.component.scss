@@ -142,23 +142,80 @@
     }
   }
 
-  // Content sections
+  // Content sections - Accordion Implementation
   .content-section {
-    .section-header {
+    &.accordion-section {
       margin: 1.5rem 0;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      border: 1px solid #e5e7eb;
+      overflow: hidden;
+      transition: all 0.3s ease;
 
-      .section-title {
-        font-size: 1.8rem;
-        font-weight: bold;
-        color: var(--ocean-blue);
-        margin-bottom: 0.5rem;
+      &:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        border-color: var(--ocean-blue);
+      }
+    }
+
+    .accordion-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      cursor: pointer;
+      background: linear-gradient(135deg, rgba(21, 101, 192, 0.05), rgba(0, 172, 193, 0.05));
+      border-bottom: 1px solid #e5e7eb;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background: linear-gradient(135deg, rgba(21, 101, 192, 0.1), rgba(0, 172, 193, 0.1));
       }
 
-      .section-description {
-        color: var(--text-secondary);
-        font-size: 1rem;
+      .section-header-content {
+        flex: 1;
         margin: 0;
+
+        .section-title {
+          font-size: 1.3rem;
+          font-weight: bold;
+          color: var(--ocean-blue);
+          margin-bottom: 0.5rem;
+          transition: color 0.3s ease;
+        }
+
+        .section-description {
+          color: var(--text-secondary);
+          font-size: 1rem;
+          margin: 0;
+        }
       }
+
+      .accordion-toggle {
+        margin-left: 1rem;
+
+        .toggle-icon {
+          font-size: 1.2rem;
+          color: var(--ocean-blue);
+          transition: all 0.3s ease;
+          display: inline-block;
+
+          &.expanded {
+            transform: rotate(0deg);
+          }
+
+          &:not(.expanded) {
+            transform: rotate(-90deg);
+          }
+        }
+      }
+    }
+
+    .accordion-content {
+      padding: 1.5rem;
+      background: white;
+      animation: expandAccordion 0.3s ease-out;
     }
 
     .content-grid {
@@ -169,6 +226,17 @@
       @media (max-width: 768px) {
         grid-template-columns: 1fr;
       }
+    }
+  }
+
+  @keyframes expandAccordion {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
     }
   }
 

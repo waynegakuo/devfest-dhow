@@ -62,66 +62,79 @@
         </p>
       </div>
 
-      <!-- Curated Content Sections -->
+      <!-- Curated Content Sections - Accordion Implementation -->
       @for (section of curatedContent()!.sections; track section.title) {
-        <div class="content-section mb-4">
-          <div class="section-header">
-            <h2 class="section-title">{{ section.title }}</h2>
-            <p class="section-description">{{ section.description }}</p>
+        <div class="content-section accordion-section mb-4">
+          <!-- Accordion Header - Clickable -->
+          <div class="accordion-header" (click)="toggleSection(section.title)">
+            <div class="section-header-content">
+              <h2 class="section-title">{{ section.title }}</h2>
+              <p class="section-description">{{ section.description }}</p>
+            </div>
+            <div class="accordion-toggle">
+              <span class="toggle-icon" [class.expanded]="isSectionExpanded(section.title)">
+                {{ isSectionExpanded(section.title) ? '▲' : '▼' }}
+              </span>
+            </div>
           </div>
 
-          <div class="content-grid">
-            @for (item of section.items; track item.id) {
-              <div class="content-card" (click)="openLink(item.url)">
-                <div class="card-header">
-                  <div class="content-type-badge">
-                    <span class="type-icon">{{ getContentTypeIcon(item.type) }}</span>
-                    <span class="type-label">{{ item.type | titlecase }}</span>
-                  </div>
-                  @if (item.featured) {
-                    <span class="featured-badge">⭐ Featured</span>
-                  }
-                </div>
-
-                <div class="card-body">
-                  <h3 class="content-title">{{ item.title }}</h3>
-                  <p class="content-description">{{ item.description }}</p>
-
-                  <div class="content-meta">
-                    @if (item.author) {
-                      <span class="meta-item">
-                        <strong>By:</strong> {{ item.author }}
-                      </span>
-                    }
-                    @if (item.duration) {
-                      <span class="meta-item">
-                        <strong>Duration:</strong> {{ item.duration }}
-                      </span>
-                    }
-                    @if (item.source) {
-                      <span class="meta-item">
-                        <strong>Source:</strong> {{ item.source }}
-                      </span>
-                    }
-                  </div>
-
-                  @if (item.tags.length > 0) {
-                    <div class="content-tags">
-                      @for (tag of item.tags; track tag) {
-                        <span class="tag">{{ tag }}</span>
+          <!-- Accordion Content - Collapsible -->
+          @if (isSectionExpanded(section.title)) {
+            <div class="accordion-content">
+              <div class="content-grid">
+                @for (item of section.items; track item.id) {
+                  <div class="content-card" (click)="openLink(item.url)">
+                    <div class="card-header">
+                      <div class="content-type-badge">
+                        <span class="type-icon">{{ getContentTypeIcon(item.type) }}</span>
+                        <span class="type-label">{{ item.type | titlecase }}</span>
+                      </div>
+                      @if (item.featured) {
+                        <span class="featured-badge">⭐ Featured</span>
                       }
                     </div>
-                  }
-                </div>
 
-                <div class="card-footer">
-                  <span class="external-link-indicator">
-                    Open Resource 🔗
-                  </span>
-                </div>
+                    <div class="card-body">
+                      <h3 class="content-title">{{ item.title }}</h3>
+                      <p class="content-description">{{ item.description }}</p>
+
+                      <div class="content-meta">
+                        @if (item.author) {
+                          <span class="meta-item">
+                            <strong>By:</strong> {{ item.author }}
+                          </span>
+                        }
+                        @if (item.duration) {
+                          <span class="meta-item">
+                            <strong>Duration:</strong> {{ item.duration }}
+                          </span>
+                        }
+                        @if (item.source) {
+                          <span class="meta-item">
+                            <strong>Source:</strong> {{ item.source }}
+                          </span>
+                        }
+                      </div>
+
+                      @if (item.tags.length > 0) {
+                        <div class="content-tags">
+                          @for (tag of item.tags; track tag) {
+                            <span class="tag">{{ tag }}</span>
+                          }
+                        </div>
+                      }
+                    </div>
+
+                    <div class="card-footer">
+                      <span class="external-link-indicator">
+                        Open Resource 🔗
+                      </span>
+                    </div>
+                  </div>
+                }
               </div>
-            }
-          </div>
+            </div>
+          }
         </div>
       }
 
