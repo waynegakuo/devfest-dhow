@@ -11,19 +11,19 @@
     <div class="navbar-right desktop-nav">
       <div class="navbar-nav">
         @if (availableRoutes.home) {
-          <a routerLink="/" class="nav-link">Home Port</a>
+          <a routerLink="/" class="nav-link">🏠 Home Port</a>
         }
         @if (availableRoutes.voyages) {
-          <a routerLink="/voyages" class="nav-link">Voyages</a>
+          <a routerLink="/voyages" class="nav-link">🛳️ Voyages</a>
         }
         @if (availableRoutes.islands) {
-          <a routerLink="/islands" class="nav-link">Islands</a>
+          <a routerLink="/islands" class="nav-link">🏝️ Islands</a>
         }
         @if (availableRoutes.navigators) {
-          <a routerLink="/navigators" class="nav-link">Navigators</a>
+          <a routerLink="/navigators" class="nav-link">🧭 Navigators</a>
         }
         @if (availableRoutes.helm) {
-          <a routerLink="/helm" class="nav-link">The Helm</a>
+          <a routerLink="/helm" class="nav-link">⚓ The Helm</a>
         }
         @if (availableRoutes.admin && isAdmin()) {
           <a routerLink="/admin" class="nav-link admin-link">
@@ -32,9 +32,15 @@
           </a>
         }
         @if (availableRoutes.compass) {
-          <a routerLink="/compass" class="nav-link">Compass</a>
+          <a routerLink="/compass" class="nav-link">🧭 Compass</a>
         }
       </div>
+
+      <!-- Help Button -->
+      <button class="help-btn" (click)="toggleHelpPopup()" aria-label="Open help guide" title="Ocean Terminology Guide">
+        <span class="help-icon">🚤</span>
+        Help
+      </button>
 
       <!-- CTA Button / User Profile -->
       <div class="navbar-cta">
@@ -54,19 +60,19 @@
   <div class="mobile-nav" [class.open]="isMobileMenuOpen">
     <div class="mobile-nav-content">
       @if (availableRoutes.home) {
-        <a routerLink="/" class="mobile-nav-link" (click)="closeMobileMenu()">Home Port</a>
+        <a routerLink="/" class="mobile-nav-link" (click)="closeMobileMenu()">🏠 Home Port</a>
       }
       @if (availableRoutes.voyages) {
-        <a routerLink="/voyages" class="mobile-nav-link" (click)="closeMobileMenu()">Voyages</a>
+        <a routerLink="/voyages" class="mobile-nav-link" (click)="closeMobileMenu()">🛳️ Voyages</a>
       }
       @if (availableRoutes.islands) {
-        <a routerLink="/islands" class="mobile-nav-link" (click)="closeMobileMenu()">Islands</a>
+        <a routerLink="/islands" class="mobile-nav-link" (click)="closeMobileMenu()">🏝️ Islands</a>
       }
       @if (availableRoutes.navigators) {
-        <a routerLink="/navigators" class="mobile-nav-link" (click)="closeMobileMenu()">Navigators</a>
+        <a routerLink="/navigators" class="mobile-nav-link" (click)="closeMobileMenu()">🧭 Navigators</a>
       }
       @if (availableRoutes.helm) {
-        <a routerLink="/helm" class="mobile-nav-link" (click)="closeMobileMenu()">The Helm</a>
+        <a routerLink="/helm" class="mobile-nav-link" (click)="closeMobileMenu()">⚓ The Helm</a>
       }
       @if (availableRoutes.admin && isAdmin()) {
         <a routerLink="/admin" class="mobile-nav-link admin-link" (click)="closeMobileMenu()">
@@ -75,11 +81,21 @@
         </a>
       }
       @if (availableRoutes.compass) {
-        <a routerLink="/compass" class="mobile-nav-link" (click)="closeMobileMenu()">Compass</a>
+        <a routerLink="/compass" class="mobile-nav-link" (click)="closeMobileMenu()">🧭 Compass</a>
       }
+      <button class="mobile-help-btn" (click)="toggleHelpPopup(); closeMobileMenu()" aria-label="Open help guide">
+        <span class="help-icon">🚤</span>
+        Help
+      </button>
       <div class="mobile-nav-cta">
         <app-user-auth (closeMobileMenu)="closeMobileMenu()"></app-user-auth>
       </div>
     </div>
   </div>
+
+  <!-- Help Popup -->
+  <app-help-popup
+    [isVisible]="isHelpPopupVisible"
+    (close)="closeHelpPopup()">
+  </app-help-popup>
 </nav>

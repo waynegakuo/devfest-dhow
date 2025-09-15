@@ -2,7 +2,7 @@ import { Component, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { NavigatorService } from '../../services/navigator/navigator.service';
-import { PreparatoryContentService } from '../../services/preparatory-content/preparatory-content.service';
+import { TracksService } from '../../services/tracks/tracks.service';
 import { CuratedContent, PreparatoryContent, PreparatoryContentSection } from '../../models/preparatory-content.model';
 import { TechTrack, ExpertiseLevel } from '../../models/navigator.model';
 
@@ -15,7 +15,7 @@ import { TechTrack, ExpertiseLevel } from '../../models/navigator.model';
 })
 export class StockingTheGalleyComponent implements OnInit {
   private navigatorService = inject(NavigatorService);
-  private preparatoryContentService = inject(PreparatoryContentService);
+  private tracksService = inject(TracksService);
   private router = inject(Router);
 
   // Component state
@@ -24,6 +24,9 @@ export class StockingTheGalleyComponent implements OnInit {
   featuredContent = signal<PreparatoryContent[]>([]);
   loading = signal(false);
   error = signal<string | null>(null);
+
+  // Accordion state management - tracks which sections are expanded
+  expandedSections = signal<Set<string>>(new Set());
 
   ngOnInit(): void {
     // Initialize navigator data and then load content
@@ -36,7 +39,6 @@ export class StockingTheGalleyComponent implements OnInit {
         }
       },
       error: (err) => {
-        console.error('Error loading navigator:', err);
         this.error.set('Failed to load navigator data');
       }
     });
@@ -58,30 +60,29 @@ export class StockingTheGalleyComponent implements OnInit {
 
     this.loading.set(true);
     this.error.set(null);
-
     // Load curated content based on user's track and expertise level
-    this.preparatoryContentService.getCuratedContent(
+    this.tracksService.getCuratedContent(
       currentNavigator.techTrack,
       currentNavigator.expertiseLevel
     ).subscribe({
       next: (content) => {
         this.curatedContent.set(content);
+        this.initializeAccordionState();
         this.loading.set(false);
       },
       error: (err) => {
         this.error.set('Failed to load preparatory content');
         this.loading.set(false);
-        console.error('Error loading curated content:', err);
       }
     });
 
     // Load featured content
-    this.preparatoryContentService.getFeaturedContent().subscribe({
+    this.tracksService.getFeaturedContent().subscribe({
       next: (featured) => {
         this.featuredContent.set(featured);
       },
       error: (err) => {
-        console.error('Error loading featured content:', err);
+        // Handle error silently
       }
     });
   }
@@ -116,5 +117,32 @@ export class StockingTheGalleyComponent implements OnInit {
   // Navigate to course selection if user needs to set preferences
   goToChartCourse(): void {
     this.router.navigate(['/chart-course']);
+  }
+
+  // Accordion functionality
+  toggleSection(sectionTitle: string): void {
+    const currentExpanded = this.expandedSections();
+    const newExpanded = new Set(currentExpanded);
+
+    if (newExpanded.has(sectionTitle)) {
+      newExpanded.delete(sectionTitle);
+    } else {
+      newExpanded.add(sectionTitle);
+    }
+
+    this.expandedSections.set(newExpanded);
+  }
+
+  isSectionExpanded(sectionTitle: string): boolean {
+    return this.expandedSections().has(sectionTitle);
+  }
+
+  // Initialize first section as expanded when content loads
+  private initializeAccordionState(): void {
+    const content = this.curatedContent();
+    if (content && content.sections.length > 0) {
+      const firstSectionTitle = content.sections[0].title;
+      this.expandedSections.set(new Set([firstSectionTitle]));
+    }
   }
 }

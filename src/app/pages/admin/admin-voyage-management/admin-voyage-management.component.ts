@@ -148,7 +148,6 @@ export class AdminVoyageManagementComponent implements OnInit, OnDestroy {
           .pipe(takeUntil(this.destroy$))
           .subscribe({
             next: (voyageId) => {
-              console.log('Voyage with islands created with ID:', voyageId);
               this.toastService.showSuccess('Voyage created successfully!', `Your voyage group with ${islandsToCreate.length} sessions is ready to sail.`);
               this.showCreateModal.set(false);
               this.resetVoyageForm();
@@ -170,7 +169,6 @@ export class AdminVoyageManagementComponent implements OnInit, OnDestroy {
           .pipe(takeUntil(this.destroy$))
           .subscribe({
             next: (voyageId) => {
-              console.log('Voyage created with ID:', voyageId);
               this.toastService.showSuccess('Voyage created successfully!', 'Your new voyage group is ready for sessions.');
               this.showCreateModal.set(false);
               this.resetVoyageForm();

@@ -1,6 +1,7 @@
 import { Component, inject, computed } from '@angular/core';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { UserAuthComponent } from '../user-auth/user-auth.component';
+import { HelpPopupComponent } from '../help-popup/help-popup.component';
 import { RouterLink } from '@angular/router';
 import { NavigatorService } from '../../../services/navigator/navigator.service';
 import { AuthService } from '../../../services/auth/auth.service';
@@ -8,7 +9,7 @@ import { AuthService } from '../../../services/auth/auth.service';
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, NgOptimizedImage, UserAuthComponent, RouterLink],
+  imports: [CommonModule, NgOptimizedImage, UserAuthComponent, HelpPopupComponent, RouterLink],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss'
 })
@@ -17,6 +18,7 @@ export class NavbarComponent {
   private authService = inject(AuthService);
 
   isMobileMenuOpen = false;
+  isHelpPopupVisible = false;
 
   // Get current navigator data
   readonly navigator = this.navigatorService.currentNavigator.asReadonly();
@@ -44,5 +46,13 @@ export class NavbarComponent {
 
   closeMobileMenu(): void {
     this.isMobileMenuOpen = false;
+  }
+
+  toggleHelpPopup(): void {
+    this.isHelpPopupVisible = !this.isHelpPopupVisible;
+  }
+
+  closeHelpPopup(): void {
+    this.isHelpPopupVisible = false;
   }
 }

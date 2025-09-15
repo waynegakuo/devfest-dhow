@@ -71,7 +71,6 @@ export class VoyagesDataService implements OnDestroy {
 
     const unsubscribe = onSnapshot(voyagesQuery,
       (snapshot) => {
-        console.log('🌊 Real-time update received for voyages collection');
         this.processVoyagesSnapshot(snapshot);
       },
       (error) => {
@@ -103,7 +102,6 @@ export class VoyagesDataService implements OnDestroy {
       const voyages = await Promise.all(voyagePromises);
       this.voyagesSignal.set(voyages);
       this.loadingSignal.set(false);
-      console.log('🌊 Updated voyages with real-time data:', voyages.length);
     } catch (error) {
       console.error('❌ Error processing voyages snapshot:', error);
       this.errorSignal.set('Failed to process voyages data');
@@ -156,7 +154,6 @@ export class VoyagesDataService implements OnDestroy {
             const updatedVoyages = [...currentVoyages];
             updatedVoyages[existingIndex] = voyage;
             this.voyagesSignal.set(updatedVoyages);
-            console.log(`🏝️ Real-time update for voyage ${voyageId} islands:`, islands.length);
           }
         },
         (error) => {
@@ -217,7 +214,6 @@ export class VoyagesDataService implements OnDestroy {
         return voyagePromises.length > 0 ? forkJoin(voyagePromises) : of([]);
       }),
       map(voyages => {
-        console.log('🌊 Loaded voyages from Firestore:', voyages.length);
         return voyages;
       }),
       catchError(error => {
@@ -358,13 +354,11 @@ export class VoyagesDataService implements OnDestroy {
    * Cleanup method - unsubscribe from all real-time listeners
    */
   ngOnDestroy(): void {
-    console.log('🧹 Cleaning up Firebase real-time listeners...');
     this.unsubscribeFunctions.forEach(unsubscribe => {
       if (typeof unsubscribe === 'function') {
         unsubscribe();
       }
     });
     this.unsubscribeFunctions = [];
-    console.log('✅ All Firebase listeners have been cleaned up');
   }
 }

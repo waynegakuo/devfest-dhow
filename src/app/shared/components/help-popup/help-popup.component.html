@@ -1,0 +1,37 @@
+@if (isVisible) {
+  <div class="help-popup-backdrop" (click)="onBackdropClick()">
+    <div class="help-popup-container" (click)="onPopupClick($event)">
+      <div class="help-popup-header">
+        <h2 class="help-popup-title">
+          🌊 Ocean Terminology Guide
+        </h2>
+        <button class="close-btn" (click)="closePopup()" aria-label="Close help popup">
+          <span class="close-icon">✕</span>
+        </button>
+      </div>
+
+      <div class="help-popup-content">
+        <p class="help-intro">
+          Welcome to DevFest Dhow! We use ocean-themed terminology throughout the app.
+          Here's your guide to navigating these waters:
+        </p>
+
+        <div class="terminology-grid">
+          @for (item of oceanTerminology(); track item.term) {
+            <div class="terminology-item">
+              <div class="term-name">
+                <span class="term-emoji">{{ item.emoji }}</span>
+                {{ item.term }}
+              </div>
+              <div class="term-meaning">{{ item.meaning }}</div>
+            </div>
+          }
+        </div>
+
+        <div class="help-footer">
+          <p class="fair-winds">⛵ May fair winds guide your conference journey!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+}

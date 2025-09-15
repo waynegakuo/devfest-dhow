@@ -19,17 +19,23 @@
               (click)="selectTrack(track)">
               <div class="track-icon">
                 @switch (track) {
-                  @case ('AI/ML') {
-                    <i class="track-emoji">🤖</i>
-                  }
-                  @case ('Cloud') {
-                    <i class="track-emoji">☁️</i>
-                  }
-                  @case ('Web') {
+                  @case ('Web Development') {
                     <i class="track-emoji">🌐</i>
                   }
-                  @case ('Mobile') {
+                  @case ('Mobile Development') {
                     <i class="track-emoji">📱</i>
+                  }
+                  @case ('Cloud & DevOps') {
+                    <i class="track-emoji">☁️</i>
+                  }
+                  @case ('AI & Machine Learning') {
+                    <i class="track-emoji">🤖</i>
+                  }
+                  @case ('Game Development') {
+                    <i class="track-emoji">🎮</i>
+                  }
+                  @case ('UI/UX Design') {
+                    <i class="track-emoji">🎨</i>
                   }
                 }
               </div>

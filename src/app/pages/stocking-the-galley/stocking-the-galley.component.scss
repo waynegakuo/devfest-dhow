@@ -3,19 +3,11 @@
   background: inherit;
 
   .schedule-content {
-    padding: 2rem;
-
-    @media (max-width: 768px) {
-      padding: 1rem;
-    }
+    padding: 1rem 2rem;
+    @media (max-width: 768px) { padding: 1rem; }
   }
 
-
-  // Loading state
   .loading-container {
-    text-align: center;
-    padding: 3rem 0;
-
     .loading-spinner {
       display: inline-flex;
       gap: 0.5rem;
@@ -27,16 +19,9 @@
         background: linear-gradient(135deg, var(--ocean-blue), var(--wave-teal));
         border-radius: 5px;
         animation: wave 1.2s ease-in-out infinite;
-
-        &:nth-child(1) { animation-delay: 0s; }
         &:nth-child(2) { animation-delay: 0.2s; }
         &:nth-child(3) { animation-delay: 0.4s; }
       }
-    }
-
-    .loading-text {
-      color: var(--text-secondary);
-      font-size: 1.1rem;
     }
   }
 
@@ -45,39 +30,8 @@
     20% { transform: scaleY(1); }
   }
 
-  // Error state
-  .error-container {
-    display: flex;
-    justify-content: center;
-    padding: 2rem 0;
 
-    .error-card {
-      background: white;
-      border-radius: 12px;
-      padding: 2rem;
-      text-align: center;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      border: 2px solid var(--coral-orange);
-      max-width: 400px;
 
-      .error-icon {
-        font-size: 3rem;
-        margin-bottom: 1rem;
-      }
-
-      h3 {
-        color: var(--coral-orange);
-        margin-bottom: 0.5rem;
-      }
-
-      p {
-        color: var(--text-secondary);
-        margin-bottom: 1.5rem;
-      }
-    }
-  }
-
-  // Track info card
   .track-info-card {
     background: linear-gradient(135deg, var(--ocean-blue), var(--deep-sea));
     color: white;
@@ -98,11 +52,7 @@
         flex-direction: column;
         gap: 0.5rem;
 
-        .track-name {
-          font-size: 1.5rem;
-          font-weight: bold;
-        }
-
+        .track-name { font-size: 1.5rem; font-weight: bold; }
         .expertise-level {
           background: rgba(255, 255, 255, 0.2);
           padding: 0.25rem 0.75rem;
@@ -116,207 +66,92 @@
         display: flex;
         gap: 1.5rem;
         align-items: center;
-
-        @media (max-width: 768px) {
-          gap: 1rem;
-        }
+        @media (max-width: 768px) { gap: 1rem; }
 
         .stat-item {
           text-align: center;
           font-size: 0.9rem;
-
-          strong {
-            display: block;
-            font-size: 1.5rem;
-            font-weight: bold;
-          }
+          strong { display: block; font-size: 1.5rem; font-weight: bold; }
         }
       }
     }
 
-    .track-description {
-      font-size: 1rem;
-      line-height: 1.6;
-      opacity: 0.9;
-      margin: 0;
-    }
+    .track-description { font-size: 1rem; line-height: 1.6; opacity: 0.9; margin: 0; }
   }
 
-  // Content sections
   .content-section {
-    .section-header {
+    &.accordion-section {
       margin: 1.5rem 0;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      border: 1px solid #e5e7eb;
+      overflow: hidden;
+      transition: all 0.3s ease;
 
-      .section-title {
-        font-size: 1.8rem;
-        font-weight: bold;
-        color: var(--ocean-blue);
-        margin-bottom: 0.5rem;
-      }
-
-      .section-description {
-        color: var(--text-secondary);
-        font-size: 1rem;
-        margin: 0;
+      &:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        border-color: var(--ocean-blue);
       }
     }
 
-    .content-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-      gap: 1.5rem;
-
-      @media (max-width: 768px) {
-        grid-template-columns: 1fr;
-      }
-    }
-  }
-
-  // Content cards
-  .content-card {
-    background: white;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border: 1px solid #e5e7eb;
-    cursor: pointer;
-    transition: all 0.3s ease;
-
-    &:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-      border-color: var(--ocean-blue);
-    }
-
-    .card-header {
+    .accordion-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1rem 1rem 0 1rem;
-
-      .content-type-badge {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        background: var(--sand-beige);
-        padding: 0.25rem 0.75rem;
-        border-radius: 20px;
-        font-size: 0.8rem;
-        font-weight: 500;
-
-        .type-icon {
-          font-size: 1rem;
-        }
-      }
-
-      .featured-badge {
-        background: linear-gradient(135deg, #fbbf24, #f59e0b);
-        color: white;
-        padding: 0.25rem 0.75rem;
-        border-radius: 20px;
-        font-size: 0.7rem;
-        font-weight: bold;
-        text-transform: uppercase;
-      }
-    }
-
-    .card-body {
       padding: 1rem;
+      cursor: pointer;
+      background: linear-gradient(135deg, rgba(21, 101, 192, 0.05), rgba(0, 172, 193, 0.05));
+      border-bottom: 1px solid #e5e7eb;
+      transition: all 0.3s ease;
 
-      .content-title {
-        font-size: 1.1rem;
-        font-weight: bold;
-        color: var(--ocean-blue);
-        margin-bottom: 0.5rem;
-        line-height: 1.3;
+      &:hover {
+        background: linear-gradient(135deg, rgba(21, 101, 192, 0.1), rgba(0, 172, 193, 0.1));
       }
 
-      .content-description {
-        color: var(--text-secondary);
-        font-size: 0.9rem;
-        line-height: 1.5;
-        margin-bottom: 1rem;
-      }
+      .section-header-content {
+        flex: 1;
+        margin: 0;
+        .section-title {
+          font-size: 1.3rem;
+          font-weight: bold;
+          color: var(--ocean-blue);
+          margin-bottom: 0.5rem;
+          transition: color 0.3s ease;
+        }
 
-      .content-meta {
-        display: flex;
-        flex-direction: column;
-        gap: 0.25rem;
-        margin-bottom: 1rem;
-
-        .meta-item {
-          font-size: 0.8rem;
+        .section-description {
           color: var(--text-secondary);
-
-          strong {
-            color: var(--text-primary);
-          }
+          font-size: 1rem;
+          margin: 0;
         }
       }
 
-      .content-tags {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.5rem;
+      .accordion-toggle {
+        margin-left: 1rem;
 
-        .tag {
-          background: var(--wave-teal);
-          color: white;
-          padding: 0.2rem 0.6rem;
-          border-radius: 12px;
-          font-size: 0.7rem;
-          font-weight: 500;
+        .toggle-icon {
+          font-size: 1.2rem;
+          color: var(--ocean-blue);
+          transition: all 0.3s ease;
+          display: inline-block;
+          transform: rotate(-90deg);
+
+          &.expanded { transform: rotate(0deg); }
         }
       }
     }
 
-    .card-footer {
-      padding: 0.75rem 1rem;
-      background: #f8fafc;
-      border-top: 1px solid #e5e7eb;
-
-      .external-link-indicator {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--ocean-blue);
-        font-size: 0.9rem;
-        font-weight: 500;
-      }
+    .accordion-content {
+      padding: 1.5rem;
+      background: white;
+      animation: slideDown 0.3s ease-out;
+      transform-origin: top;
     }
+
   }
 
-  // Empty states
-  .no-content-card,
-  .requirement-card {
-    background: white;
-    border-radius: 16px;
-    padding: 3rem 2rem;
-    text-align: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border: 2px dashed #d1d5db;
-    max-width: 500px;
-    margin: 2rem auto;
 
-    .no-content-icon,
-    .requirement-icon {
-      font-size: 4rem;
-      margin-bottom: 1rem;
-      display: block;
-    }
-
-    h3 {
-      color: var(--ocean-blue);
-      font-size: 1.5rem;
-      margin-bottom: 1rem;
-    }
-
-    p {
-      color: var(--text-secondary);
-      line-height: 1.6;
-      margin-bottom: 2rem;
-    }
-  }
 
   .course-selection-required {
     display: flex;
@@ -328,10 +163,7 @@
     .requirement-card {
       margin: 0;
       border-color: var(--magenta-violet);
-
-      .requirement-icon {
-        color: var(--magenta-violet);
-      }
+      .requirement-icon { color: var(--magenta-violet); }
     }
   }
 }
