@@ -1,0 +1,194 @@
+<div class="quiz-taking-page">
+  <!-- Quiz Header -->
+  <div class="quiz-header">
+    <div class="quiz-topic-info">
+      <span class="topic-icon" [style.color]="topicColor">{{ topicIcon }}</span>
+      <h1>{{ topicName }} Challenge</h1>
+    </div>
+    <div class="quiz-controls">
+      <button class="btn-quit" (click)="quitQuiz()">
+        ❌ Quit Quiz
+      </button>
+    </div>
+  </div>
+
+  <!-- Progress Bar -->
+  <div class="progress-container">
+    <div class="progress-bar">
+      <div class="progress-fill" [style.width.%]="progressPercentage"></div>
+    </div>
+    <div class="progress-text">
+      Question {{ currentQuestionIndex + 1 }} of {{ questions.length }}
+      <span class="progress-percentage">({{ progressPercentage }}%)</span>
+    </div>
+  </div>
+
+  <!-- Quiz Content -->
+  @if (!showResult && currentQuestion) {
+    <div class="quiz-content">
+      <div class="question-container">
+        <div class="question-number">
+          Question {{ currentQuestionIndex + 1 }}
+        </div>
+        <h2 class="question-text">{{ currentQuestion.question }}</h2>
+
+        <div class="options-container">
+          @for (option of currentQuestion.options; track option.id) {
+            <button
+              class="option-button"
+              [class.selected]="selectedAnswer === option.id"
+              (click)="selectAnswer(option.id)">
+              <span class="option-label">{{ option.id.toUpperCase() }}.</span>
+              <span class="option-text">{{ option.text }}</span>
+              @if (selectedAnswer === option.id) {
+                <span class="option-check">✓</span>
+              }
+            </button>
+          }
+        </div>
+      </div>
+
+      <!-- Navigation Buttons -->
+      <div class="navigation-buttons">
+        <button
+          class="btn-nav prev"
+          [disabled]="isFirstQuestion"
+          (click)="previousQuestion()">
+          ← Previous
+        </button>
+
+        <div class="nav-spacer"></div>
+
+        @if (isLastQuestion) {
+          <button
+            class="btn-nav submit"
+            [disabled]="!selectedAnswer || isSubmitting"
+            (click)="completeQuiz()">
+            @if (isSubmitting) {
+              <span class="spinner-small"></span>
+              Submitting...
+            } @else {
+              Submit Quiz 🚀
+            }
+          </button>
+        } @else {
+          <button
+            class="btn-nav next"
+            [disabled]="!selectedAnswer"
+            (click)="nextQuestion()">
+            Next →
+          </button>
+        }
+      </div>
+    </div>
+  }
+
+  <!-- Quiz Results -->
+  @if (showResult && quizResult) {
+    <div class="quiz-results">
+      <div class="results-header">
+        <div class="score-circle" [class]="getScoreClass()">
+          <div class="score-percentage">{{ quizResult.attempt.percentage }}%</div>
+          <div class="score-fraction">{{ quizResult.attempt.score }}/{{ quizResult.attempt.maxScore }}</div>
+        </div>
+
+        <div class="result-status">
+          @if (quizResult.passed) {
+            <h2 class="result-title success">🎉 Congratulations!</h2>
+            <p class="result-subtitle">You passed the {{ topicName }} challenge!</p>
+          } @else {
+            <h2 class="result-title fail">📚 Keep Learning!</h2>
+            <p class="result-subtitle">You didn't pass this time, but don't give up!</p>
+          }
+        </div>
+      </div>
+
+      <div class="results-details">
+        <div class="detail-card">
+          <h3>⏱️ Time Taken</h3>
+          <p class="detail-value">{{ formatTime(quizResult.attempt.duration) }}</p>
+        </div>
+
+        <div class="detail-card">
+          <h3>🎯 Accuracy</h3>
+          <p class="detail-value">{{ quizResult.attempt.percentage }}%</p>
+        </div>
+
+        <div class="detail-card">
+          <h3>✅ Correct Answers</h3>
+          <p class="detail-value">{{ quizResult.attempt.score }} out of {{ quizResult.attempt.maxScore }}</p>
+        </div>
+      </div>
+
+      <div class="feedback-section">
+        <h3>📝 Feedback</h3>
+        <p class="feedback-text">{{ quizResult.feedback }}</p>
+        @if (quizResult.nextRecommendation) {
+          <p class="recommendation">💡 {{ quizResult.nextRecommendation }}</p>
+        }
+      </div>
+
+      <!-- Answer Review -->
+      <div class="answer-review">
+        <h3>🔍 Review Your Answers</h3>
+        @for (question of quizResult.attempt.questions; track question.id; let i = $index) {
+          <div class="review-question">
+            <div class="review-header">
+              <span class="question-num">Q{{ i + 1 }}</span>
+              <h4>{{ question.question }}</h4>
+              @if (quizResult.attempt.answers[i].isCorrect) {
+                <span class="result-icon correct">✅</span>
+              } @else {
+                <span class="result-icon incorrect">❌</span>
+              }
+            </div>
+
+            <div class="review-options">
+              @for (option of question.options; track option.id) {
+                <div class="review-option"
+                     [class.selected]="quizResult.attempt.answers[i].selectedOptionId === option.id"
+                     [class.correct]="option.id === question.correctAnswerId"
+                     [class.incorrect]="quizResult.attempt.answers[i].selectedOptionId === option.id && option.id !== question.correctAnswerId">
+                  <span class="option-label">{{ option.id.toUpperCase() }}.</span>
+                  <span class="option-text">{{ option.text }}</span>
+                  @if (option.id === question.correctAnswerId) {
+                    <span class="correct-indicator">✓ Correct</span>
+                  }
+                  @if (quizResult.attempt.answers[i].selectedOptionId === option.id && option.id !== question.correctAnswerId) {
+                    <span class="incorrect-indicator">Your answer</span>
+                  }
+                </div>
+              }
+            </div>
+
+            @if (question.explanation) {
+              <div class="explanation">
+                <strong>💡 Explanation:</strong> {{ question.explanation }}
+              </div>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="result-actions">
+        <button class="btn-action secondary" (click)="retakeQuiz()">
+          🔄 Try Another Topic
+        </button>
+        <button class="btn-action primary" (click)="goToDashboard()">
+          🏠 Back to Dashboard
+        </button>
+      </div>
+    </div>
+  }
+
+  <!-- Loading State -->
+  @if (isSubmitting) {
+    <div class="loading-overlay">
+      <div class="loading-content">
+        <div class="spinner"></div>
+        <p>Calculating your results...</p>
+      </div>
+    </div>
+  }
+</div>
