@@ -42,3 +42,5 @@ testem.log
 Thumbs.db
 
 /functions/.env
+GENKIT_ONCALL_USAGE_GUIDE.md
+NAVIGATION_DRILLS_DOCUMENTATION.md
