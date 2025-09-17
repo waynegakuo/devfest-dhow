@@ -129,7 +129,7 @@ const ai = genkit({
       apiKey: process.env.GEMINI_API_KEY,
     }),
   ],
-  model: googleAI.model('gemini-2.5-flash')
+  model: googleAI.model('gemini-2.5-pro')
 });
 
 // Quiz topics configuration
@@ -213,23 +213,44 @@ export const _quizGenerationFlowLogic = ai.defineFlow(
     `;
 
     const result = await ai.generate({
-      model: googleAI.model('gemini-2.5-flash'),
       prompt: prompt,
     });
 
     let parsedResult;
     try {
-      parsedResult = JSON.parse(result.text);
+      // Clean the response text to handle potential formatting issues
+      const cleanedText = result.text.trim();
+
+      // Try to extract JSON if it's wrapped in markdown code blocks
+      const jsonMatch = cleanedText.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
+      const textToParse = jsonMatch ? jsonMatch[1].trim() : cleanedText;
+
+      parsedResult = JSON.parse(textToParse);
     } catch (parseError) {
-      console.error('Failed to parse AI response:', result.text);
-      throw new Error('Failed to generate valid quiz questions');
+      console.error('JSON parsing failed:', parseError);
+      console.error('Raw AI response:', result.text);
+      const errorMessage = parseError instanceof Error ? parseError.message : String(parseError);
+      throw new Error(`Failed to parse AI response as JSON: ${errorMessage}`);
+    }
+
+    // Check if parsedResult has the expected structure
+    if (!parsedResult || !parsedResult.questions) {
+      console.error('AI response missing questions array:', parsedResult);
+      throw new Error('AI response does not contain questions array');
     }
 
     // Validate AI response structure with Zod
     const questionsValidation = z.array(QuizQuestionSchema).safeParse(parsedResult.questions);
     if (!questionsValidation.success) {
       console.error('AI response validation failed:', questionsValidation.error);
-      throw new Error('Invalid quiz structure returned from AI');
+      console.error('Questions that failed validation:', JSON.stringify(parsedResult.questions, null, 2));
+
+      // Provide more specific error information
+      const errorDetails = questionsValidation.error.errors.map(err =>
+        `${err.path.join('.')}: ${err.message}`
+      ).join(', ');
+
+      throw new Error(`Invalid quiz structure returned from AI. Validation errors: ${errorDetails}`);
     }
 
     const response = {
