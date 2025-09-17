@@ -263,7 +263,12 @@ export const generateQuizQuestions = onCallGenkit(
 
 
 // Save quiz attempt to user profile
-export const saveQuizAttempt = onCall(async (request) => {
+export const saveQuizAttempt = onCall(
+  {
+    region: 'africa-south1',
+    cors: true,
+  },
+  async (request) => {
   // Validate input data with Zod schema
   try {
     const validatedInput = SaveQuizAttemptInputSchema.parse(request.data);
@@ -386,7 +391,12 @@ export const saveQuizAttempt = onCall(async (request) => {
 });
 
 // Get navigator's quiz statistics
-export const getNavigatorQuizStats = onCall(async (request) => {
+export const getNavigatorQuizStats = onCall(
+  {
+    region: 'africa-south1',
+    cors: true,
+  },
+  async (request) => {
   // Validate input data with Zod schema
   try {
     const validatedInput = GetNavigatorQuizStatsInputSchema.parse(request.data);
