@@ -124,6 +124,7 @@ export class QuizTakingComponent implements OnInit, OnDestroy {
       this.completeQuiz();
     } else {
       this.currentQuestionIndex++;
+      console.log('Current question index:', this.currentQuestionIndex);
       this.loadQuestionState();
       this.quizService.updateQuizProgress(this.currentQuestionIndex);
     }
