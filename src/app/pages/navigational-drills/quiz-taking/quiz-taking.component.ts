@@ -58,7 +58,6 @@ export class QuizTakingComponent implements OnInit, OnDestroy {
         if (attempt) {
           this.currentQuizAttempt = attempt;
           this.questions = attempt.questions || [];
-          this.currentQuestionIndex = 0;
           this.questionStartTime = Date.now();
         } else {
           // No active quiz, redirect back to drills
@@ -124,7 +123,6 @@ export class QuizTakingComponent implements OnInit, OnDestroy {
       this.completeQuiz();
     } else {
       this.currentQuestionIndex++;
-      console.log('Current question index:', this.currentQuestionIndex);
       this.loadQuestionState();
       this.quizService.updateQuizProgress(this.currentQuestionIndex);
     }
