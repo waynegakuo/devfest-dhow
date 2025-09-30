@@ -10,13 +10,23 @@ import {
   QuizStats,
   QUIZ_TOPICS
 } from '../../models/quiz.model';
-import {FirebaseApp} from '@angular/fire/app';
+import { FirebaseApp } from '@angular/fire/app';
+import {
+  Firestore,
+  collection,
+  query,
+  where,
+  orderBy,
+  limit,
+  getDocs
+} from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root'
 })
 export class QuizService {
   private firebaseApp = inject(FirebaseApp);
+  private firestore = inject(Firestore);
   private functions;
   // State management
   private currentQuizSubject = new BehaviorSubject<QuizQuestion[] | null>(null);
@@ -281,5 +291,51 @@ export class QuizService {
    */
   hasActiveQuiz(): boolean {
     return this.currentQuizAttemptSubject.value !== null;
+  }
+
+  /**
+   * Get navigator's quiz history (detailed attempts)
+   * Directly queries Firestore instead of using a Cloud Function
+   */
+  getNavigatorQuizHistory(navigatorId: string): Observable<QuizAttempt[]> {
+    return from((async () => {
+      try {
+        // Query Firestore to get the quiz attempts for this navigator
+        const attemptsRef = collection(this.firestore, 'quiz_attempts');
+        const attemptsQuery = query(
+          attemptsRef,
+          where('navigatorId', '==', navigatorId),
+          orderBy('completedAt', 'desc'),
+          limit(10) // Limit to most recent 10 quizzes
+        );
+
+        const querySnapshot = await getDocs(attemptsQuery);
+
+        // Process the results
+        const history: QuizAttempt[] = [];
+        querySnapshot.forEach(doc => {
+          const attemptData = doc.data();
+
+          // Convert string dates to Date objects
+          const attempt = {
+            ...attemptData,
+            startedAt: new Date(attemptData['startedAt']),
+            completedAt: new Date(attemptData['completedAt'])
+          } as QuizAttempt;
+
+          history.push(attempt);
+        });
+
+        return history;
+      } catch (error) {
+        console.error('Error fetching quiz history:', error);
+        throw new Error('Failed to fetch quiz history');
+      }
+    })()).pipe(
+      catchError(error => {
+        console.error('Error fetching quiz history:', error);
+        throw error;
+      })
+    );
   }
 }
