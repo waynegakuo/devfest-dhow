@@ -1,0 +1,65 @@
+// Quiz Taking Component - Essential Styles Only (Enhanced results in global styles)
+:host {
+  display: block;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #e3f2fd, #f8f9fa);
+}
+
+.quiz-taking-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  min-height: 100vh;
+}
+
+// Essential quiz styles - larger styles moved to global
+.quiz-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(135deg, #1565C0, #0D47A1);
+  padding: 1.5rem 2rem;
+  border-radius: 16px;
+  color: white;
+  margin-bottom: 2rem;
+  box-shadow: 0 8px 24px rgba(21, 101, 192, 0.3);
+}
+
+.progress-container {
+  margin-bottom: 2rem;
+}
+
+.quiz-content {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(21, 101, 192, 0.1);
+}
+
+.quiz-results {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+  border: 1px solid rgba(21, 101, 192, 0.1);
+}
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(21, 101, 192, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+@media (max-width: 768px) {
+  .quiz-taking-page { 
+    padding: 1rem; 
+  }
+}

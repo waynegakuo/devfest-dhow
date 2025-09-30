@@ -1,0 +1,476 @@
+<div class="quiz-taking-page">
+  <!-- Quiz Header -->
+  <div class="quiz-header">
+    <div class="quiz-topic-info">
+      <span class="topic-icon" [style.color]="topicColor">{{ topicIcon }}</span>
+      <h1>{{ topicName }} Challenge</h1>
+    </div>
+    <div class="quiz-controls">
+      <button class="btn-quit" (click)="quitQuiz()">
+        ❌ Quit Quiz
+      </button>
+    </div>
+  </div>
+
+  <!-- Progress Bar -->
+  <div class="progress-container">
+    <div class="progress-bar">
+      <div class="progress-fill" [style.width.%]="progressPercentage"></div>
+    </div>
+    <div class="progress-text">
+      Question {{ currentQuestionIndex + 1 }} of {{ questions.length }}
+      <span class="progress-percentage">({{ progressPercentage }}%)</span>
+    </div>
+  </div>
+
+  <!-- Quiz Content -->
+  @if (!showResult && currentQuestion) {
+    <div class="quiz-content">
+      <div class="question-container">
+        <div class="question-number">
+          Question {{ currentQuestionIndex + 1 }}
+        </div>
+        <h2 class="question-text">{{ currentQuestion.question }}</h2>
+
+        <div class="options-container">
+          @for (option of currentQuestion.options; track option.id) {
+            <button
+              class="option-button"
+              [class.selected]="selectedAnswer === option.id"
+              (click)="selectAnswer(option.id)">
+              <span class="option-label">{{ option.id.toUpperCase() }}.</span>
+              <span class="option-text">{{ option.text }}</span>
+              @if (selectedAnswer === option.id) {
+                <span class="option-check">✓</span>
+              }
+            </button>
+          }
+        </div>
+      </div>
+
+      <!-- Navigation Buttons -->
+      <div class="navigation-buttons">
+        <button
+          class="btn-nav prev"
+          [disabled]="isFirstQuestion"
+          (click)="previousQuestion()">
+          ← Previous
+        </button>
+
+        <div class="nav-spacer"></div>
+
+        @if (isLastQuestion) {
+          <button
+            class="btn-nav submit"
+            [disabled]="!selectedAnswer || isSubmitting"
+            (click)="completeQuiz()">
+            @if (isSubmitting) {
+              <span class="spinner-small"></span>
+              Submitting...
+            } @else {
+              Submit Quiz 🚀
+            }
+          </button>
+        } @else {
+          <button
+            class="btn-nav next"
+            [disabled]="!selectedAnswer"
+            (click)="nextQuestion()">
+            Next →
+          </button>
+        }
+      </div>
+    </div>
+  }
+
+  <!-- Quiz Results -->
+  @if (showResult && quizResult) {
+    <section class="quiz-results">
+      <div class="results-header">
+        <div class="score-circle" [class]="getScoreClass()">
+          <div class="score-percentage">{{ quizResult.attempt.percentage }}%</div>
+          <div class="score-fraction">{{ quizResult.attempt.score }}/{{ quizResult.attempt.maxScore }}</div>
+        </div>
+
+        <div class="result-status">
+          @if (quizResult.attempt.percentage >= 90) {
+            <h2 class="result-title excellent" role="status" aria-live="polite">🏆 Outstanding Performance!</h2>
+            <p class="result-subtitle">You mastered the {{ topicName }} challenge with flying colors!</p>
+            <div class="achievement-badge excellent" role="img" aria-label="Achievement: AI Master level">
+              <span class="badge-icon" aria-hidden="true">⭐</span>
+              <span class="badge-text">AI Master</span>
+            </div>
+          } @else if (quizResult.attempt.percentage >= 80) {
+            <h2 class="result-title good">🎯 Great Job!</h2>
+            <p class="result-subtitle">Excellent work on the {{ topicName }} challenge!</p>
+            <div class="achievement-badge good">
+              <span class="badge-icon">🎖️</span>
+              <span class="badge-text">AI Expert</span>
+            </div>
+          } @else if (quizResult.passed) {
+            <h2 class="result-title success">✅ Well Done!</h2>
+            <p class="result-subtitle">You passed the {{ topicName }} challenge!</p>
+            <div class="achievement-badge pass">
+              <span class="badge-icon">🎓</span>
+              <span class="badge-text">AI Navigator</span>
+            </div>
+          } @else {
+            <h2 class="result-title fail">📚 Keep Exploring!</h2>
+            <p class="result-subtitle">Every navigator learns through practice. Try again to master {{ topicName }}!</p>
+            <div class="encouragement-message">
+              <span class="message-icon">🧭</span>
+              <span class="message-text">Your journey to AI mastery continues!</span>
+            </div>
+          }
+
+          <div class="performance-summary" role="group" aria-label="Quiz performance summary">
+            <div class="summary-item">
+              <span class="summary-label" id="accuracy-label">Accuracy:</span>
+              <span class="summary-value" [class]="getAccuracyClass()" aria-labelledby="accuracy-label">{{ quizResult.attempt.percentage }}%</span>
+            </div>
+            <div class="summary-item">
+              <span class="summary-label" id="time-label">Time:</span>
+              <span class="summary-value" aria-labelledby="time-label">{{ formatTime(quizResult.attempt.duration) }}</span>
+            </div>
+            <div class="summary-item">
+              <span class="summary-label" id="questions-label">Questions:</span>
+              <span class="summary-value" aria-labelledby="questions-label">{{ quizResult.attempt.score }} out of {{ quizResult.attempt.maxScore }} correct</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="results-details">
+        <div class="detail-card">
+          <h3>⏱️ Time Taken</h3>
+          <p class="detail-value">{{ formatTime(quizResult.attempt.duration) }}</p>
+        </div>
+
+        <div class="detail-card">
+          <h3>🎯 Accuracy</h3>
+          <p class="detail-value">{{ quizResult.attempt.percentage }}%</p>
+        </div>
+
+        <div class="detail-card">
+          <h3>✅ Correct Answers</h3>
+          <p class="detail-value">{{ quizResult.attempt.score }} out of {{ quizResult.attempt.maxScore }}</p>
+        </div>
+      </div>
+
+      <!-- Performance Insights Section -->
+      <div class="performance-insights">
+        <h3>📈 Performance Insights</h3>
+        <div class="insights-grid">
+          <div class="insight-card time-analysis">
+            <div class="insight-header">
+              <span class="insight-icon">⏱️</span>
+              <h4>Time Analysis</h4>
+            </div>
+            <div class="insight-content">
+              <div class="metric">
+                <span class="metric-label">Average per question:</span>
+                <span class="metric-value">{{ getAverageTimePerQuestion() }}s</span>
+              </div>
+              <div class="metric">
+                <span class="metric-label">Fastest answer:</span>
+                <span class="metric-value">{{ getFastestAnswerTime() }}s</span>
+              </div>
+              <div class="metric">
+                <span class="metric-label">Slowest answer:</span>
+                <span class="metric-value">{{ getSlowestAnswerTime() }}s</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="insight-card difficulty-analysis">
+            <div class="insight-header">
+              <span class="insight-icon">🎯</span>
+              <h4>Difficulty Breakdown</h4>
+            </div>
+            <div class="insight-content">
+              <div class="difficulty-stats">
+                @for (stat of getDifficultyStats(); track stat.difficulty) {
+                  <div class="difficulty-stat" [class]="stat.difficulty">
+                    <span class="stat-difficulty">{{ getDifficultyLabel(stat.difficulty) }}</span>
+                    <span class="stat-accuracy">{{ stat.accuracy }}%</span>
+                    <div class="stat-bar">
+                      <div class="stat-fill" [style.width.%]="stat.accuracy"></div>
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+
+          <div class="insight-card topic-mastery">
+            <div class="insight-header">
+              <span class="insight-icon">📚</span>
+              <h4>{{ topicName }} Mastery</h4>
+            </div>
+            <div class="insight-content">
+              <div class="mastery-level">
+                <div class="mastery-circle" [class]="getMasteryLevel()">
+                  <span class="mastery-percentage">{{ quizResult.attempt.percentage }}%</span>
+                </div>
+                <p class="mastery-description">{{ getMasteryDescription() }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="feedback-section">
+        <h3>📝 Personalized Feedback</h3>
+        <div class="feedback-content">
+          <div class="feedback-main">
+            <p class="feedback-text">{{ quizResult.feedback }}</p>
+            @if (quizResult.nextRecommendation) {
+              <div class="recommendation-box">
+                <span class="recommendation-icon">💡</span>
+                <p class="recommendation">{{ quizResult.nextRecommendation }}</p>
+              </div>
+            }
+          </div>
+
+          <div class="improvement-tips">
+            <h4>🌱 Areas for Growth</h4>
+            <div class="tips-list">
+              @for (tip of getImprovementTips(); track tip.area) {
+                <div class="tip-item" [class]="tip.priority">
+                  <span class="tip-icon">{{ tip.icon }}</span>
+                  <div class="tip-content">
+                    <span class="tip-area">{{ tip.area }}</span>
+                    <span class="tip-description">{{ tip.description }}</span>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Answer Review -->
+      <section class="answer-review" role="region" aria-label="Detailed quiz answer review">
+        <div class="review-header-section">
+          <h3>🔍 Detailed Answer Review</h3>
+          <div class="review-stats" role="group" aria-label="Answer statistics">
+            <div class="stat-item correct" role="status">
+              <span class="stat-icon" aria-hidden="true">✅</span>
+              <span class="stat-count">{{ getCorrectAnswersCount() }}</span>
+              <span class="stat-label">Correct</span>
+            </div>
+            <div class="stat-item incorrect" role="status">
+              <span class="stat-icon" aria-hidden="true">❌</span>
+              <span class="stat-count">{{ getIncorrectAnswersCount() }}</span>
+              <span class="stat-label">Incorrect</span>
+            </div>
+          </div>
+        </div>
+
+        @for (question of quizResult.attempt.questions; track question.id; let i = $index) {
+          <div class="review-question" [class.correct-answer]="isAnswerCorrect(i)" [class.incorrect-answer]="!isAnswerCorrect(i)">
+            <div class="review-header">
+              <div class="question-info">
+                <span class="question-num">Q{{ i + 1 }}</span>
+                <div class="question-meta">
+                  <span class="difficulty-badge" [class]="question.difficulty">
+                    {{ getDifficultyLabel(question.difficulty) }}
+                  </span>
+                  <span class="time-taken">⏱️ {{ formatTime(getAnswerTimeTaken(i)) }}</span>
+                </div>
+              </div>
+              <div class="result-status">
+                @if (isAnswerCorrect(i)) {
+                  <div class="status-badge correct">
+                    <span class="status-icon">✅</span>
+                    <span class="status-text">Correct</span>
+                  </div>
+                } @else {
+                  <div class="status-badge incorrect">
+                    <span class="status-icon">❌</span>
+                    <span class="status-text">Incorrect</span>
+                  </div>
+                }
+              </div>
+            </div>
+
+            <div class="question-text">
+              <h4>{{ question.question }}</h4>
+            </div>
+
+            <div class="review-options">
+              @for (option of question.options; track option.id) {
+                <div class="review-option"
+                     [class.selected]="getSelectedOptionId(i) === option.id"
+                     [class.correct-option]="option.id === question.correctAnswerId"
+                     [class.incorrect-selection]="getSelectedOptionId(i) === option.id && option.id !== question.correctAnswerId">
+                  <div class="option-content">
+                    <span class="option-label">{{ option.id.toUpperCase() }}.</span>
+                    <span class="option-text">{{ option.text }}</span>
+                  </div>
+                  <div class="option-indicators">
+                    @if (option.id === question.correctAnswerId) {
+                      <span class="correct-indicator">
+                        <span class="indicator-icon">✓</span>
+                        <span class="indicator-text">Correct Answer</span>
+                      </span>
+                    }
+                    @if (getSelectedOptionId(i) === option.id && option.id !== question.correctAnswerId) {
+                      <span class="incorrect-indicator">
+                        <span class="indicator-icon">✗</span>
+                        <span class="indicator-text">Your Choice</span>
+                      </span>
+                    }
+                    @if (getSelectedOptionId(i) === option.id && option.id === question.correctAnswerId) {
+                      <span class="correct-selection-indicator">
+                        <span class="indicator-icon">🎯</span>
+                        <span class="indicator-text">Your Correct Choice</span>
+                      </span>
+                    }
+                  </div>
+                </div>
+              }
+            </div>
+
+            @if (question.explanation) {
+              <div class="explanation-section">
+                <div class="explanation-header">
+                  <span class="explanation-icon">💡</span>
+                  <h5>Explanation</h5>
+                </div>
+                <div class="explanation-content">
+                  {{ question.explanation }}
+                </div>
+              </div>
+            } @else {
+              <div class="no-explanation">
+                <span class="no-explanation-icon">📝</span>
+                <span class="no-explanation-text">Detailed explanation coming soon!</span>
+              </div>
+            }
+          </div>
+        }
+      </section>
+
+      <!-- Progress History Section -->
+      <div class="progress-history">
+        <h3>📈 Your Learning Progress</h3>
+        <div class="history-content">
+          <div class="current-session">
+            <h4>🔥 This Session</h4>
+            <div class="session-stats">
+              <div class="stat-highlight">
+                <span class="stat-icon">🎯</span>
+                <div class="stat-info">
+                  <span class="stat-value">{{ quizResult.attempt.percentage }}%</span>
+                  <span class="stat-label">Accuracy</span>
+                </div>
+              </div>
+              <div class="stat-highlight">
+                <span class="stat-icon">⏱️</span>
+                <div class="stat-info">
+                  <span class="stat-value">{{ formatTime(quizResult.attempt.duration) }}</span>
+                  <span class="stat-label">Time Taken</span>
+                </div>
+              </div>
+              <div class="stat-highlight">
+                <span class="stat-icon">🏆</span>
+                <div class="stat-info">
+                  <span class="stat-value">{{ getCorrectAnswersCount() }}/{{ quizResult.attempt.maxScore }}</span>
+                  <span class="stat-label">Correct</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="topic-progress">
+            <h4>📚 {{ topicName }} Journey</h4>
+            <div class="progress-overview">
+              <div class="progress-metric">
+                <span class="metric-label">Topic Mastery Level:</span>
+                <div class="mastery-indicator" [class]="getMasteryLevel()">
+                  <span class="mastery-dot"></span>
+                  <span class="mastery-text">{{ getMasteryLevel() | titlecase }}</span>
+                </div>
+              </div>
+              <div class="progress-metric">
+                <span class="metric-label">Learning Trajectory:</span>
+                <div class="trajectory-indicator">
+                  <span class="trajectory-icon">🚀</span>
+                  <span class="trajectory-text">{{ getLearningTrajectory() }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="next-steps">
+            <h4>🌱 Recommended Next Steps</h4>
+            <div class="recommendations">
+              @for (step of getNextSteps(); track step.title) {
+                <div class="recommendation-item" [class]="step.priority">
+                  <span class="rec-icon">{{ step.icon }}</span>
+                  <div class="rec-content">
+                    <span class="rec-title">{{ step.title }}</span>
+                    <span class="rec-description">{{ step.description }}</span>
+                  </div>
+                  @if (step.actionable && step.action) {
+                    <button class="rec-action btn-sm btn-secondary" (click)="step.action!()">
+                      {{ step.actionText }}
+                    </button>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Social Sharing -->
+      <div class="social-sharing">
+        <h3>🎆 Share Your Achievement</h3>
+        <div class="sharing-options">
+          <button class="share-btn twitter" (click)="shareOnTwitter()" aria-label="Share on Twitter">
+            <span class="share-icon">🐦</span>
+            <span class="share-text">Share on Twitter</span>
+          </button>
+          <button class="share-btn linkedin" (click)="shareOnLinkedIn()" aria-label="Share on LinkedIn">
+            <span class="share-icon">💼</span>
+            <span class="share-text">Share on LinkedIn</span>
+          </button>
+          <button class="share-btn copy" (click)="copyResultsLink()" aria-label="Copy results summary">
+            <span class="share-icon">📋</span>
+            <span class="share-text">Copy Summary</span>
+          </button>
+        </div>
+        <div class="achievement-showcase" *ngIf="quizResult.attempt.percentage >= 70">
+          <p class="showcase-text">🏅 Show the world your AI knowledge mastery!</p>
+          <div class="showcase-badge" [class]="getScoreClass()">
+            <span class="badge-score">{{ quizResult.attempt.percentage }}%</span>
+            <span class="badge-topic">{{ topicName }}</span>
+            <span class="badge-level">{{ getMasteryLevel() | titlecase }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="result-actions">
+        <button class="btn-action secondary" (click)="retakeQuiz()">
+          🔄 Try Another Topic
+        </button>
+        <button class="btn-action primary" (click)="goToDashboard()">
+          🏠 Back to Dashboard
+        </button>
+      </div>
+    </section>
+  }
+
+  <!-- Loading State -->
+  @if (isSubmitting) {
+    <div class="loading-overlay">
+      <div class="loading-content">
+        <div class="spinner"></div>
+        <p>Calculating your results...</p>
+      </div>
+    </div>
+  }
+</div>

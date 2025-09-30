@@ -46,6 +46,10 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/navigational-drills/navigational-drills.component').then(m => m.NavigationalDrillsComponent)
       },
       {
+        path: 'navigational-drills/quiz/:topicId',
+        loadComponent: () => import('./pages/navigational-drills/quiz-taking/quiz-taking.component').then(m => m.QuizTakingComponent)
+      },
+      {
         path: 'codelab-doubloons',
         loadComponent: () => import('./pages/codelab-doubloons/codelab-doubloons.component').then(m => m.CodelabDoubloonsComponent)
       },

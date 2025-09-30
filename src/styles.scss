@@ -32,6 +32,9 @@
 // Import button styles
 @use 'styles/buttons';
 
+// Import quiz results styles
+@use 'styles/quiz-results';
+
 // Reset and base styles
 * {
   box-sizing: border-box;
