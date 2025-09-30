@@ -5,6 +5,12 @@
         <h1>🎯 Navigational Drills</h1>
         <p>AI Knowledge Challenges</p>
       </div>
+      <div class="page-actions">
+        <button class="btn-primary history-button" (click)="toggleHistoryModal()">
+          <span class="btn-icon">📜</span>
+          <span class="btn-text">Drills History</span>
+        </button>
+      </div>
     </header>
 
     <main class="page-content">
@@ -86,4 +92,19 @@
       </div>
     </main>
   </div>
+
+  <!-- History Modal -->
+  @if (showHistoryModal()) {
+    <div class="modal-overlay">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Navigational Drills History</h2>
+          <button class="modal-close" (click)="toggleHistoryModal()">×</button>
+        </div>
+        <div class="modal-body">
+          <app-quiz-history></app-quiz-history>
+        </div>
+      </div>
+    </div>
+  }
 </div>

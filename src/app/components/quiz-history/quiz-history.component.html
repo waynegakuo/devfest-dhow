@@ -1,0 +1,72 @@
+<div class="quiz-history-container">
+  <h2 class="section-title">Navigational Drills History</h2>
+  <p class="section-description">Review your journey through previous navigational challenges</p>
+
+  @if (isLoading) {
+    <div class="loading-state">
+      <div class="ocean-loader"></div>
+      <p>Retrieving your voyage records...</p>
+    </div>
+  } @else if (errorMessage) {
+    <div class="error-state">
+      <p>{{ errorMessage }}</p>
+      <button class="retry-button" (click)="loadQuizHistory()">Try Again</button>
+    </div>
+  } @else if (quizHistory.length === 0) {
+    <div class="empty-state">
+      <div class="empty-icon">🏝️</div>
+      <p>You haven't completed any navigational drills yet.</p>
+      <p class="secondary-text">Embark on a quiz voyage to chart your progress!</p>
+    </div>
+  } @else {
+    <div class="quiz-history-list">
+      @for (attempt of quizHistory; track attempt.id) {
+        <div class="history-card">
+          <div class="topic-badge" [style.background-color]="getQuizTopicColor(attempt.topicId)">
+            <span class="topic-icon">{{ getQuizTopicIcon(attempt.topicId) }}</span>
+          </div>
+          <div class="history-content">
+            <div class="history-header">
+              <h3 class="topic-name">{{ attempt.topicName }}</h3>
+              <span class="completion-date">{{ attempt.completedAt | date:'medium' }}</span>
+            </div>
+            <div class="history-details">
+              <div class="score-section">
+                <div class="score-display" [ngClass]="getResultClass(attempt.percentage)">
+                  <span class="score-value">{{ attempt.percentage }}%</span>
+                </div>
+                <div class="score-stats">
+                  <p>Score: {{ attempt.score }}/{{ attempt.maxScore }}</p>
+                  <p>Duration: {{ formatDuration(attempt.duration) }}</p>
+                </div>
+              </div>
+              <div class="quiz-metrics">
+                <div class="metric">
+                  <span class="metric-label">Questions</span>
+                  <span class="metric-value">{{ attempt.questions.length }}</span>
+                </div>
+                <div class="metric">
+                  <span class="metric-label">Correct</span>
+                  <span class="metric-value">{{ attempt.score }}</span>
+                </div>
+                <div class="metric">
+                  <span class="metric-label">Incorrect</span>
+                  <span class="metric-value">{{ attempt.maxScore - attempt.score }}</span>
+                </div>
+              </div>
+            </div>
+            <div class="history-footer">
+              <div class="result-indicator" [ngClass]="getResultClass(attempt.percentage)">
+                @if (attempt.percentage >= 70) {
+                  <span>🎆 Passed</span>
+                } @else {
+                  <span>Retry recommended</span>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>

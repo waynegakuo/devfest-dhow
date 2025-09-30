@@ -7,12 +7,11 @@ import { AuthService } from '../../services/auth/auth.service';
 import { MyVoyagePlanService } from '../../services/my-voyage-plan/my-voyage-plan.service';
 import { VoyagePlanItem } from '../../models/voyage-plan.model';
 import { VoyagesDataService } from '../../services/voyages-data/voyages-data.service';
-import { QuizHistoryComponent } from '../../components/quiz-history/quiz-history.component';
 
 @Component({
   selector: 'app-helm-dashboard',
   standalone: true,
-  imports: [CommonModule, QuizHistoryComponent],
+  imports: [CommonModule],
   templateUrl: './helm-dashboard.component.html',
   styleUrl: './helm-dashboard.component.scss'
 })

@@ -1,7 +1,8 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { QuizService } from '../../services/quiz/quiz.service';
+import { QuizHistoryComponent } from '../../components/quiz-history/quiz-history.component';
 
 import { QuizTopic } from '../../models/quiz.model';
 import {AuthService} from '../../services/auth/auth.service';
@@ -9,7 +10,7 @@ import {AuthService} from '../../services/auth/auth.service';
 @Component({
   selector: 'app-navigational-drills',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, QuizHistoryComponent],
   templateUrl: './navigational-drills.component.html',
   styleUrl: './navigational-drills.component.scss'
 })
@@ -21,6 +22,14 @@ export class NavigationalDrillsComponent implements OnInit {
   quizTopics: QuizTopic[] = [];
   isLoading = false;
   selectedTopic: QuizTopic | null = null;
+
+  // Modal state
+  readonly showHistoryModal = signal(false);
+
+  // Toggle quiz history modal
+  toggleHistoryModal(): void {
+    this.showHistoryModal.update(value => !value);
+  }
 
   ngOnInit(): void {
     this.loadQuizTopics();
