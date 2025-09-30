@@ -268,7 +268,7 @@
         </div>
 
         @for (question of quizResult.attempt.questions; track question.id; let i = $index) {
-          <div class="review-question" [class.correct-answer]="quizResult.attempt.answers[i].isCorrect" [class.incorrect-answer]="!quizResult.attempt.answers[i].isCorrect">
+          <div class="review-question" [class.correct-answer]="isAnswerCorrect(i)" [class.incorrect-answer]="!isAnswerCorrect(i)">
             <div class="review-header">
               <div class="question-info">
                 <span class="question-num">Q{{ i + 1 }}</span>
@@ -276,11 +276,11 @@
                   <span class="difficulty-badge" [class]="question.difficulty">
                     {{ getDifficultyLabel(question.difficulty) }}
                   </span>
-                  <span class="time-taken">⏱️ {{ formatTime(quizResult.attempt.answers[i].timeTaken) }}</span>
+                  <span class="time-taken">⏱️ {{ formatTime(getAnswerTimeTaken(i)) }}</span>
                 </div>
               </div>
               <div class="result-status">
-                @if (quizResult.attempt.answers[i].isCorrect) {
+                @if (isAnswerCorrect(i)) {
                   <div class="status-badge correct">
                     <span class="status-icon">✅</span>
                     <span class="status-text">Correct</span>
@@ -301,9 +301,9 @@
             <div class="review-options">
               @for (option of question.options; track option.id) {
                 <div class="review-option"
-                     [class.selected]="quizResult.attempt.answers[i].selectedOptionId === option.id"
+                     [class.selected]="getSelectedOptionId(i) === option.id"
                      [class.correct-option]="option.id === question.correctAnswerId"
-                     [class.incorrect-selection]="quizResult.attempt.answers[i].selectedOptionId === option.id && option.id !== question.correctAnswerId">
+                     [class.incorrect-selection]="getSelectedOptionId(i) === option.id && option.id !== question.correctAnswerId">
                   <div class="option-content">
                     <span class="option-label">{{ option.id.toUpperCase() }}.</span>
                     <span class="option-text">{{ option.text }}</span>
@@ -315,13 +315,13 @@
                         <span class="indicator-text">Correct Answer</span>
                       </span>
                     }
-                    @if (quizResult.attempt.answers[i].selectedOptionId === option.id && option.id !== question.correctAnswerId) {
+                    @if (getSelectedOptionId(i) === option.id && option.id !== question.correctAnswerId) {
                       <span class="incorrect-indicator">
                         <span class="indicator-icon">✗</span>
                         <span class="indicator-text">Your Choice</span>
                       </span>
                     }
-                    @if (quizResult.attempt.answers[i].selectedOptionId === option.id && option.id === question.correctAnswerId) {
+                    @if (getSelectedOptionId(i) === option.id && option.id === question.correctAnswerId) {
                       <span class="correct-selection-indicator">
                         <span class="indicator-icon">🎯</span>
                         <span class="indicator-text">Your Correct Choice</span>

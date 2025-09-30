@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { QuizService } from '../../../services/quiz/quiz.service';
 import { AuthService } from '../../../services/auth/auth.service';
-import { QuizQuestion, QuizAttempt, QuizResult, QUIZ_TOPICS } from '../../../models/quiz.model';
+import {QuizQuestion, QuizAttempt, QuizResult, QUIZ_TOPICS, QuizAnswer} from '../../../models/quiz.model';
 
 @Component({
   selector: 'app-quiz-taking',
@@ -273,14 +273,36 @@ export class QuizTakingComponent implements OnInit, OnDestroy {
     return Math.max(...this.quizResult.attempt.answers.map(answer => answer.timeTaken));
   }
 
+  // Helper method to safely find an answer for a question
+  getAnswerForQuestion(questionId: string): QuizAnswer | undefined {
+    if (!this.quizResult) return undefined;
+    return this.quizResult.attempt.answers.find(a => a.questionId === questionId);
+  }
+
+  isAnswerCorrect(index: number): boolean {
+    if (!this.quizResult || !this.quizResult.attempt.answers[index]) return false;
+    return this.quizResult.attempt.answers[index].isCorrect;
+  }
+
+  getAnswerTimeTaken(index: number): number {
+    if (!this.quizResult || !this.quizResult.attempt.answers[index]) return 0;
+    return this.quizResult.attempt.answers[index].timeTaken;
+  }
+
+  getSelectedOptionId(index: number): string {
+    if (!this.quizResult || !this.quizResult.attempt.answers[index]) return '';
+    return this.quizResult.attempt.answers[index].selectedOptionId;
+  }
+
   getDifficultyStats(): Array<{difficulty: string, accuracy: number, count: number}> {
     if (!this.quizResult) return [];
 
     const difficultyMap = new Map<string, {correct: number, total: number}>();
 
-    this.quizResult.attempt.questions.forEach((question, index) => {
+    this.quizResult.attempt.questions.forEach((question) => {
       const difficulty = question.difficulty;
-      const isCorrect = this.quizResult!.attempt.answers[index].isCorrect;
+      // Find the matching answer for this question by questionId
+      const answer = this.getAnswerForQuestion(question.id);
 
       if (!difficultyMap.has(difficulty)) {
         difficultyMap.set(difficulty, {correct: 0, total: 0});
@@ -288,7 +310,8 @@ export class QuizTakingComponent implements OnInit, OnDestroy {
 
       const stats = difficultyMap.get(difficulty)!;
       stats.total++;
-      if (isCorrect) stats.correct++;
+      // Only increment correct count if we have a matching answer and it's correct
+      if (answer && answer.isCorrect) stats.correct++;
     });
 
     return Array.from(difficultyMap.entries()).map(([difficulty, stats]) => ({
