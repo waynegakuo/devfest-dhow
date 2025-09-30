@@ -156,6 +156,12 @@ export class QuizTakingComponent implements OnInit, OnDestroy {
   completeQuiz(): void {
     if (this.isSubmitting) return;
 
+    // Save the answer for the last question before completing the quiz
+    this.saveCurrentAnswer();
+
+    // Update progress to 100% when completing the quiz
+    this.quizService.updateQuizProgress(this.questions.length - 1);
+
     this.isSubmitting = true;
     console.log('Attempting to complete quiz...');
 

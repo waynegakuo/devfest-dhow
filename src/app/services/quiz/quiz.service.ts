@@ -90,12 +90,14 @@ export class QuizService {
 
   /**
    * Update quiz progress
+   * Note: currentQuestion is 0-indexed, but we add 1 for progress calculation
+   * to ensure progress reaches 100% when all questions are completed
    */
   updateQuizProgress(currentQuestion: number): void {
     const currentAttempt = this.currentQuizAttemptSubject.value;
     if (currentAttempt && currentAttempt.questions) {
       this.quizProgressSubject.next({
-        current: currentQuestion,
+        current: currentQuestion + 1,
         total: currentAttempt.questions.length
       });
     }
