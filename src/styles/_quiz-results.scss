@@ -317,19 +317,19 @@
     }
 
     &.excellent {
-      background: linear-gradient(135deg, $success-green, darken($success-green, 10%));
+      background: linear-gradient(135deg, $success-green, color.adjust($success-green, $lightness: -10%));
     }
 
     &.good {
-      background: linear-gradient(135deg, $coral-orange, darken($coral-orange, 10%));
+      background: linear-gradient(135deg, $coral-orange, color.adjust($coral-orange, $lightness: -10%));
     }
 
     &.pass {
-      background: linear-gradient(135deg, $wave-teal, darken($wave-teal, 10%));
+      background: linear-gradient(135deg, $wave-teal, color.adjust($wave-teal, $lightness: -10%));
     }
 
     &.fail {
-      background: linear-gradient(135deg, $gray-500, darken($gray-500, 10%));
+      background: linear-gradient(135deg, $gray-500, color.adjust($gray-500, $lightness: -10%));
     }
 
     &:hover {
@@ -364,17 +364,17 @@
     }
 
     &.excellent {
-      background: linear-gradient(135deg, $success-green, darken($success-green, 10%));
+      background: linear-gradient(135deg, $success-green, color.adjust($success-green, $lightness: -10%));
       color: white;
     }
 
     &.good {
-      background: linear-gradient(135deg, $coral-orange, darken($coral-orange, 10%));
+      background: linear-gradient(135deg, $coral-orange, color.adjust($coral-orange, $lightness: -10%));
       color: white;
     }
 
     &.pass {
-      background: linear-gradient(135deg, $wave-teal, darken($wave-teal, 10%));
+      background: linear-gradient(135deg, $wave-teal, color.adjust($wave-teal, $lightness: -10%));
       color: white;
     }
   }
