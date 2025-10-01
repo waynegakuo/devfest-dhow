@@ -3,13 +3,113 @@
     <header class="page-header">
       <div class="page-title">
         <h1>🔮 Ask the Oracle</h1>
-        <p>AI Assistant</p>
+        <p>Gemini-Powered AI Assistant</p>
+      </div>
+      <div class="header-actions">
+        <button class="clear-chat-btn" (click)="clearChat()" title="Clear Chat History">
+          <span class="icon">🗑️</span>
+          Clear Chat
+        </button>
       </div>
     </header>
-    <main class="page-content">
-      <div class="content-intro">
-        <h2>Consult the Oracle</h2>
-        <p>Get answers about the conference from our Gemini-powered AI assistant.</p>
+
+    <main class="oracle-container">
+      <!-- Chat Messages Area -->
+      <div class="oracle-chat-messages">
+        @for (message of messages(); track message.id) {
+          <div class="message-wrapper" [class.user-message]="message.isUser" [class.oracle-message]="!message.isUser">
+            <div class="message-avatar">
+              @if (message.isUser) {
+                <span class="navigator-avatar">⚓</span>
+              } @else {
+                <span class="oracle-avatar">🔮</span>
+              }
+            </div>
+            <div class="message-content">
+              <div class="message-header">
+                <span class="message-sender">{{ message.isUser ? 'Navigator' : 'Oracle' }}</span>
+                <span class="message-timestamp">{{ message.timestamp | date:'short' }}</span>
+              </div>
+              <div class="message-text" [innerHTML]="message.content | messageFormatter"></div>
+            </div>
+          </div>
+        }
+
+        <!-- Typing Indicator -->
+        @if (isTyping()) {
+          <div class="message-wrapper oracle-message typing-message">
+            <div class="message-avatar">
+              <span class="oracle-avatar">🔮</span>
+            </div>
+            <div class="message-content">
+              <div class="message-header">
+                <span class="message-sender">Oracle</span>
+                <span class="message-timestamp">now</span>
+              </div>
+              <div class="typing-indicator">
+                <div class="typing-dots">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+                <span class="typing-text">The Oracle is consulting the digital seas...</span>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Chat Input Area -->
+      <div class="oracle-chat-input">
+        <div class="input-container">
+          <div class="input-wrapper">
+            <textarea
+              [(ngModel)]="currentMessage"
+              (keypress)="onKeyPress($event)"
+              placeholder="Ask the Oracle about DevFest Pwani 2025... (e.g., 'What's the schedule?' or 'Who are the speakers?')"
+              rows="1"
+              class="message-input"
+              [disabled]="isTyping()">
+            </textarea>
+            <button
+              class="send-button"
+              (click)="sendMessage()"
+              [disabled]="!currentMessage().trim() || isTyping()"
+              title="Send Message">
+              <span class="send-icon">🚀</span>
+            </button>
+          </div>
+          <div class="input-suggestions">
+            <button class="suggestion-chip" (click)="currentMessage.set('What is the schedule for DevFest?')">
+              📅 Schedule
+            </button>
+            <button class="suggestion-chip" (click)="currentMessage.set('Who are the speakers?')">
+              🎤 Speakers
+            </button>
+            <button class="suggestion-chip" (click)="currentMessage.set('Where is the venue?')">
+              📍 Venue
+            </button>
+            <button class="suggestion-chip" (click)="currentMessage.set('How do I register?')">
+              🎫 Registration
+            </button>
+            <button class="suggestion-chip" (click)="currentMessage.set('What tracks are available?')">
+              🛤️ Tracks
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Info Panel -->
+      <div class="quick-info-panel">
+        <div class="info-card">
+          <h3>🌊 Oracle Tips</h3>
+          <ul>
+            <li>Ask about schedules, speakers, and venue details</li>
+            <li>Get information about registration and tickets</li>
+            <li>Learn about conference tracks and sessions</li>
+            <li>Find out about networking and food options</li>
+          </ul>
+        </div>
       </div>
     </main>
   </div>
