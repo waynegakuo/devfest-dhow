@@ -6,6 +6,10 @@
         <p>Gemini-Powered AI Assistant</p>
       </div>
       <div class="header-actions">
+        <button class="tips-btn" (click)="toggleTips()">
+          <span class="icon">💡</span>
+          Oracle Tips
+        </button>
         <button class="clear-chat-btn" (click)="clearChat()" title="Clear Chat History">
           <span class="icon">🗑️</span>
           Clear Chat
@@ -100,17 +104,19 @@
       </div>
 
       <!-- Quick Info Panel -->
-      <div class="quick-info-panel">
-        <div class="info-card">
-          <h3>🌊 Oracle Tips</h3>
-          <ul>
-            <li>Ask about schedules, speakers, and venue details</li>
-            <li>Get information about registration and tickets</li>
-            <li>Learn about conference tracks and sessions</li>
-            <li>Find out about networking and food options</li>
-          </ul>
+      @if (showTips()) {
+        <div class="quick-info-panel">
+          <div class="info-card">
+            <h3>🌊 Oracle Tips</h3>
+            <ul>
+              <li>Ask about schedules, speakers, and venue details</li>
+              <li>Get information about registration and tickets</li>
+              <li>Learn about conference tracks and sessions</li>
+              <li>Find out about networking and food options</li>
+            </ul>
+          </div>
         </div>
-      </div>
+      }
     </main>
   </div>
 </div>

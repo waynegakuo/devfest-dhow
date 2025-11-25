@@ -26,6 +26,7 @@ export class AskTheOracleComponent implements OnInit, OnDestroy {
   messages = signal<OracleMessage[]>([]);
   currentMessage = signal('');
   isTyping = signal(false);
+  showTips = signal(false);
 
   // Dummy conference data for responses
   private conferenceData = {
@@ -221,5 +222,9 @@ export class AskTheOracleComponent implements OnInit, OnDestroy {
   clearChat() {
     this.messages.set([]);
     this.ngOnInit(); // Reinitialize with welcome message
+  }
+
+  toggleTips() {
+    this.showTips.update(value => !value);
   }
 }
