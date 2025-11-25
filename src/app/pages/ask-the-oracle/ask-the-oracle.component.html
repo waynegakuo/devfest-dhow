@@ -6,11 +6,11 @@
         <p>Gemini-Powered AI Assistant</p>
       </div>
       <div class="header-actions">
-        <button class="tips-btn" (click)="toggleTips()">
+        <button class="chat-button tips-btn" (click)="toggleTips()">
           <span class="icon">💡</span>
           Oracle Tips
         </button>
-        <button class="clear-chat-btn" (click)="clearChat()" title="Clear Chat History">
+        <button class="chat-button clear-chat-btn" (click)="clearChat()" title="Clear Chat History">
           <span class="icon">🗑️</span>
           Clear Chat
         </button>
@@ -84,19 +84,19 @@
             </button>
           </div>
           <div class="input-suggestions">
-            <button class="suggestion-chip" (click)="currentMessage.set('What is the schedule for DevFest?')">
+            <button class="chat-button suggestion-chip" (click)="currentMessage.set('What is the schedule for DevFest?')">
               📅 Schedule
             </button>
-            <button class="suggestion-chip" (click)="currentMessage.set('Who are the speakers?')">
+            <button class="chat-button suggestion-chip" (click)="currentMessage.set('Who are the speakers?')">
               🎤 Speakers
             </button>
-            <button class="suggestion-chip" (click)="currentMessage.set('Where is the venue?')">
+            <button class="chat-button suggestion-chip" (click)="currentMessage.set('Where is the venue?')">
               📍 Venue
             </button>
-            <button class="suggestion-chip" (click)="currentMessage.set('How do I register?')">
+            <button class="chat-button suggestion-chip" (click)="currentMessage.set('How do I register?')">
               🎫 Registration
             </button>
-            <button class="suggestion-chip" (click)="currentMessage.set('What tracks are available?')">
+            <button class="chat-button suggestion-chip" (click)="currentMessage.set('What tracks are available?')">
               🛤️ Tracks
             </button>
           </div>

@@ -46,19 +46,6 @@
       display: flex;
       gap: 1rem;
 
-      .tips-btn,
-      .clear-chat-btn {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        padding: 0.5rem 1rem;
-        border-radius: 0.5rem;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        font-size: 0.875rem;
-        font-weight: 500;
-      }
-
       .tips-btn {
         background: rgba(21, 101, 192, 0.1);
         color: $ocean-blue;
@@ -346,9 +333,6 @@
         color: $ocean-blue;
         padding: 0.5rem 0.75rem;
         border-radius: 1rem;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        font-size: 0.875rem;
         font-weight: 500;
 
         &:hover {
