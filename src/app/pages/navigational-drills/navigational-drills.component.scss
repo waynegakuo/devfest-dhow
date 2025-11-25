@@ -221,45 +221,8 @@
       gap: 2rem;
 
       .info-card {
-        background: white;
-        padding: 2rem;
-        border-radius: 1rem;
-        border: 1px solid rgba(21, 101, 192, 0.1);
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-
-        h3 {
-          color: $gray-700;
-          margin-bottom: 1.5rem;
-          font-size: 1.1rem;
-          font-weight: 600;
-        }
-
-        ul {
-          list-style: none;
-          padding: 0;
-          margin: 0;
-
-          li {
-            color: $gray-600;
-            margin-bottom: 0.75rem;
-            padding-left: 1.5rem;
-            position: relative;
-            font-size: 0.9rem;
-            line-height: 1.5;
-
-            &:before {
-              content: '•';
-              color: $magenta-violet;
-              position: absolute;
-              left: 0;
-              font-weight: bold;
-            }
-
-            strong {
-              color: $gray-700;
-              font-weight: 600;
-            }
-          }
+        ul li::before {
+          color: $magenta-violet;
         }
       }
     }
