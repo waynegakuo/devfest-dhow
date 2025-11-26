@@ -109,7 +109,12 @@
               <div class="island-details">
                 <div class="speaker-info">
                   <strong>{{ island.speaker }}</strong>
-                  <span class="speaker-role">{{ island.speakerRole }} at {{ island.speakerCompany }}</span>
+                  @if (island.speakerCompany) {
+                    <span class="speaker-role">{{ island.speakerRole }} at {{ island.speakerCompany }}</span>
+                  } @else {
+                    <span class="speaker-role">{{ island.speakerRole }}</span>
+                  }
+
                 </div>
                 <div class="venue-info">
                   📍 {{ island.venue }}

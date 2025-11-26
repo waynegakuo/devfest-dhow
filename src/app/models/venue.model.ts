@@ -2,7 +2,8 @@ export enum Deck {
   ALPHA = 'Alpha Deck',
   BRAVO = 'Bravo Deck',
   CHARLIE = 'Charlie Deck',
-  DELTA = 'Delta Deck'
+  DELTA = 'Delta Deck',
+  AUDITORIUM = 'Auditorium'
 }
 
 export enum SessionType {

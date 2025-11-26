@@ -268,6 +268,7 @@ export class VoyagesDataService implements OnDestroy {
       case 'Bravo Deck': return Deck.BRAVO;
       case 'Charlie Deck': return Deck.CHARLIE;
       case 'Delta Deck': return Deck.DELTA;
+      case 'Auditorium': return Deck.AUDITORIUM;
       default: return Deck.ALPHA;
     }
   }
