@@ -11,7 +11,7 @@
 
   <div class="sidebar-nav">
     @for (item of effectiveNavigationItems(); track item.id) {
-      @if (item.id !== 'admin-roles' || isAdmin()) {
+      @if ((item.id !== 'admin-roles' || isAdmin()) && item.display) {
         <button
           class="nav-item-btn"
           [class.active]="activeNav() === item.id"
