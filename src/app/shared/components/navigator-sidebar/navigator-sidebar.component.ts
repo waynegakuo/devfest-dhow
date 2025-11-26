@@ -85,7 +85,7 @@ export class NavigatorSidebarComponent implements OnInit, OnDestroy{
     { id: 'galley', name: 'Stocking the Galley', icon: '📚', description: 'Preparatory Content - Curated learning resources for your track', route: '/dashboard/stocking-the-galley', display: true },
     { id: 'drills', name: 'Navigational Drills', icon: '🎯', description: 'Challenges - Pre-conference challenges and quizzes', route: '/dashboard/navigational-drills', display: true },
     { id: 'doubloons', name: 'Codelab Doubloons', icon: '🪙', description: 'Rewards - Gamification and codelab progress', route: '/dashboard/codelab-doubloons', display: false },
-    { id: 'oracle', name: 'Ask the Oracle', icon: '🔮', description: 'AI Assistant - Gemini-powered chatbot', route: '/dashboard/ask-the-oracle' },
+    { id: 'oracle', name: 'Ask the Oracle', icon: '🔮', description: 'AI Assistant - Gemini-powered chatbot', route: '/dashboard/ask-the-oracle', display: true },
     { id: 'atlantis', name: 'The Quest for Atlantis', icon: '🏛️', description: 'AR Hunt - Augmented reality scavenger hunt', route: '/dashboard/quest-for-atlantis', display: false },
     { id: 'profile', name: 'My Profile', icon: '👤', description: 'Profile - View and edit your navigator profile', route: '/dashboard/my-profile', display: false },
     { id: 'admin-roles', name: 'Admiral Command', icon: '👑', description: 'Admin - Manage navigator roles and permissions', route: '/dashboard/admin-role-assignment', display: true },
