@@ -1,4 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Pipe({
   name: 'messageFormatter',
@@ -6,21 +7,47 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class MessageFormatterPipe implements PipeTransform {
 
-  transform(message: string): string {
+  constructor(private sanitizer: DomSanitizer) {}
+
+  transform(message: string): SafeHtml {
     if (!message) return '';
 
-    // Convert newlines to <br> tags for proper HTML display
-    let formatted = message.replace(/\n/g, '<br>');
+    let formatted = message;
 
-    // Make text between asterisks bold (e.g., *important* -> <strong>important</strong>)
-    formatted = formatted.replace(/\*([^*]+)\*/g, '<strong>$1</strong>');
+    // Process headers first (from h3 to h1 to avoid conflicts)
+    formatted = formatted.replace(/^### (.*$)/gim, '<h3>$1</h3>');
+    formatted = formatted.replace(/^## (.*$)/gim, '<h2>$1</h2>');
+    formatted = formatted.replace(/^# (.*$)/gim, '<h1>$1</h1>');
 
-    // Format bullet points with proper spacing
-    formatted = formatted.replace(/^• /gm, '<span style="color: var(--ocean-blue); font-weight: bold;">•</span> ');
+    // Process links: [text](url)
+    formatted = formatted.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (match, text, url) => {
+      if (url.includes('maps.app.goo.gl')) {
+        const lat = -4.026;
+        const lon = 39.68;
+        const staticMapUrl = `https://staticmap.openstreetmap.de/staticmap.php?center=${lat},${lon}&zoom=16&size=400x200&maptype=mapnik&markers=${lat},${lon},red-pushpin`;
+        return `<div class="map-preview" style="margin-top: 8px; margin-bottom: 8px;">
+                  <a href="${url}" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: inherit;">
+                    <img src="${staticMapUrl}" alt="Map preview of ${text}" style="max-width: 100%; border-radius: 8px; border: 1px solid #ccc;">
+                    <div style="text-align: center; margin-top: 4px; color: var(--cyan-blue); text-decoration: underline;">${text}</div>
+                  </a>
+                </div>`;
+      }
+      return `<a href="${url}" target="_blank" rel="noopener noreferrer" style="color: var(--cyan-blue); text-decoration: underline;">${text}</a>`;
+    });
 
-    // Format numbers at start of lines (for numbered lists)
+    // Process bold text: **text** or *text*
+    formatted = formatted.replace(/\*\*([^\*]+)\*\*/g, '<strong>$1</strong>');
+    formatted = formatted.replace(/\*([^\*]+)\*/g, '<strong>$1</strong>');
+
+    // Process lists
+    // Unordered lists: *, •, or -
+    formatted = formatted.replace(/^[\*•-] /gm, '<span style="color: var(--ocean-blue); font-weight: bold;">•</span> ');
+    // Numbered lists: 1.
     formatted = formatted.replace(/^(\d+)\. /gm, '<span style="color: var(--magenta-violet); font-weight: bold;">$1.</span> ');
 
-    return formatted;
+    // Finally, handle newlines
+    formatted = formatted.replace(/\n/g, '<br>');
+
+    return this.sanitizer.bypassSecurityTrustHtml(formatted);
   }
 }
