@@ -4,7 +4,7 @@ import { RouterOutlet } from '@angular/router';
 import { NavigatorSidebarComponent } from '../../components/navigator-sidebar/navigator-sidebar.component';
 import { AuthService } from '../../../services/auth/auth.service';
 import { NavigatorService } from '../../../services/navigator/navigator.service';
-import { NavigationItem } from '../../components/navigator-sidebar/navigator-sidebar.component';
+import { NavigationItem } from '../../../models/navigation.model';
 
 @Component({
   selector: 'app-admin-dashboard-layout',
@@ -25,15 +25,15 @@ export class AdminDashboardLayoutComponent {
 
   // Admin-specific navigation items
   adminNavigationItems: NavigationItem[] = [
-    { id: 'admin-helm', name: 'Admiral\'s Helm', icon: '⚓', description: 'Admin Dashboard - Central command for voyage management', route: '/admin/helm' },
-    { id: 'voyage-management', name: 'Fleet Management', icon: '🚢', description: 'Voyage Management - Create, edit and manage voyages', route: '/admin/voyages' },
-    { id: 'island-coordination', name: 'Island Coordination', icon: '🏝️', description: 'Island Coordination - Manage all conference sessions across voyages', route: '/admin/islands' },
-    { id: 'navigator-management', name: 'Navigator Registry', icon: '🧭', description: 'Navigator Management - View and manage attendees', route: '/admin/navigators' },
-    { id: 'galley-resources', name: 'Galley Provisioning', icon: '📚', description: 'Resource Management - Stock the galley with preparatory materials', route: '/admin/resources' },
-    { id: 'analytics', name: 'Fleet Analytics', icon: '📊', description: 'Analytics - Voyage and session insights', route: '/admin/analytics' },
-    { id: 'settings', name: 'Ship Configuration', icon: '⚙️', description: 'Settings - System configuration and preferences', route: '/admin/settings' },
-    { id: 'back-to-dashboard', name: 'Return to Voyage', icon: '🔙', description: 'Back to Main Dashboard', route: '/dashboard/helm' },
-    { id: 'logout', name: 'Log Out', icon: '🚪', description: 'Securely end your session', action: 'logout' }
+    { id: 'admin-helm', name: 'Admiral\'s Helm', icon: '⚓', description: 'Admin Dashboard - Central command for voyage management', route: '/admin/helm', display: true },
+    { id: 'voyage-management', name: 'Fleet Management', icon: '🚢', description: 'Voyage Management - Create, edit and manage voyages', route: '/admin/voyages', display: true },
+    { id: 'island-coordination', name: 'Island Coordination', icon: '🏝️', description: 'Island Coordination - Manage all conference sessions across voyages', route: '/admin/islands', display: true },
+    { id: 'navigator-management', name: 'Navigator Registry', icon: '🧭', description: 'Navigator Management - View and manage attendees', route: '/admin/navigators', display: true },
+    { id: 'galley-resources', name: 'Galley Provisioning', icon: '📚', description: 'Resource Management - Stock the galley with preparatory materials', route: '/admin/resources', display: true },
+    { id: 'analytics', name: 'Fleet Analytics', icon: '📊', description: 'Analytics - Voyage and session insights', route: '/admin/analytics', display: true },
+    { id: 'settings', name: 'Ship Configuration', icon: '⚙️', description: 'Settings - System configuration and preferences', route: '/admin/settings', display: true },
+    { id: 'back-to-dashboard', name: 'Return to Voyage', icon: '🔙', description: 'Back to Main Dashboard', route: '/dashboard/helm', display: true },
+    { id: 'logout', name: 'Log Out', icon: '🚪', description: 'Securely end your session', action: 'logout', display: true }
   ];
 
   // Toggle sidebar

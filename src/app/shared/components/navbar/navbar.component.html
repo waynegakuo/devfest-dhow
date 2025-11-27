@@ -36,16 +36,17 @@
         }
       </div>
 
-      <!-- Help Button -->
-      <button class="help-btn" (click)="toggleHelpPopup()" aria-label="Open help guide" title="Ocean Terminology Guide">
-        <span class="help-icon">🚤</span>
-        Help
-      </button>
+
 
       <!-- CTA Button / User Profile -->
       <div class="navbar-cta">
         <app-user-auth></app-user-auth>
       </div>
+      <!-- Help Button -->
+      <button class="help-btn" (click)="toggleHelpPopup()" aria-label="Open help guide" title="Ocean Terminology Guide">
+        <span class="help-icon">🚤</span>
+        Guide
+      </button>
     </div>
 
     <!-- Mobile Menu Button -->
@@ -83,13 +84,13 @@
       @if (availableRoutes.compass) {
         <a routerLink="/compass" class="mobile-nav-link" (click)="closeMobileMenu()">🧭 Compass</a>
       }
-      <button class="mobile-help-btn" (click)="toggleHelpPopup(); closeMobileMenu()" aria-label="Open help guide">
-        <span class="help-icon">🚤</span>
-        Help
-      </button>
       <div class="mobile-nav-cta">
         <app-user-auth (closeMobileMenu)="closeMobileMenu()"></app-user-auth>
       </div>
+      <button class="mobile-help-btn" (click)="toggleHelpPopup(); closeMobileMenu()" aria-label="Open help guide">
+        <span class="help-icon">🚤</span>
+        Guide
+      </button>
     </div>
   </div>
 

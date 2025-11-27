@@ -7,22 +7,9 @@ import { AuthService } from '../../../services/auth/auth.service';
 import { AdminService } from '../../../services/admin/admin.service';
 import { NavigatorService } from '../../../services/navigator/navigator.service';
 import {Subject, takeUntil, filter} from 'rxjs';
+import { NavigationItem } from "../../../models/navigation.model";
+import { OceanTerm } from '../../../models/ocean.model';
 
-export interface NavigationItem {
-  id: string;
-  name: string;
-  icon: string;
-  description: string;
-  route?: string;
-  action?: string;
-  display?: boolean;
-}
-
-export interface OceanTerm {
-  name: string;
-  icon: string;
-  definition: string;
-}
 
 @Component({
   selector: 'app-navigator-sidebar',

@@ -3,6 +3,7 @@ import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-landing',
+  standalone: true,
   imports: [
     RouterLink
   ],
@@ -10,5 +11,4 @@ import {RouterLink} from '@angular/router';
   styleUrl: './landing.component.scss'
 })
 export class LandingComponent {
-
 }

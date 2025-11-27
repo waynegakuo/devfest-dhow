@@ -22,7 +22,8 @@ export class OracleFabComponent implements OnInit, OnDestroy {
       filter((event): event is NavigationEnd => event instanceof NavigationEnd),
       takeUntil(this.destroy$)
     ).subscribe((event: NavigationEnd) => {
-      this.isVisible = !event.urlAfterRedirects.includes('/ask-the-oracle');
+      const url = event.urlAfterRedirects;
+      this.isVisible = !url.includes('/ask-the-oracle') && url !== '/' && !url.includes('/#');
     });
   }
 
