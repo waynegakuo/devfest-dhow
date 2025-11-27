@@ -1,0 +1,42 @@
+.fab-container {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  background-color: var(--ocean-blue);
+  color: white;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 1000;
+
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+  }
+}
+
+.fab-icon {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 100%;
+    height: 100%;
+    filter: brightness(0) invert(1);
+  }
+}
+
+.fab-text {
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+}
