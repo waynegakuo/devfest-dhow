@@ -18,7 +18,7 @@ export class LandingComponent implements OnInit {
     this.seoService.setMetaTags({
       title: 'DevFest Pwani 2025 | The Ultimate AI Voyage',
       description: 'Join us for DevFest Pwani 2025, a one-of-a-kind AI conference experience. Explore the latest in AI, connect with experts, and set sail on a voyage of discovery.',
-      ogImageUrl: 'https://devfest-dhow.web.app/assets/images/devfest-dhow-og-image.jpg' // Example URL
+      ogImageUrl: 'https://devfest-dhow.web.app/assets/logo/devfest-dhow-emblem.png'
     });
 
     this.seoService.setStructuredData({

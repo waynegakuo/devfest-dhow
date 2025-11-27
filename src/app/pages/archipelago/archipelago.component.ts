@@ -27,7 +27,7 @@ export class ArchipelagoComponent implements OnInit {
     this.seoService.setMetaTags({
       title: 'Archipelago of Sessions | DevFest Pwani 2025',
       description: 'Explore the full schedule of sessions, workshops, and talks at DevFest Pwani 2025. Discover the islands of knowledge and plan your voyage.',
-      ogImageUrl: 'https://devfest-dhow.web.app/assets/images/archipelago-og-image.jpg' // Example URL
+      ogImageUrl: 'https://devfest-dhow.web.app/assets/logo/devfest-dhow-emblem.png'
     });
   }
 

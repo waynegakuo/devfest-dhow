@@ -70,7 +70,7 @@ export class HelmDashboardComponent implements OnInit {
     this.seoService.setMetaTags({
       title: 'Helm Dashboard | DevFest Pwani 2025',
       description: 'Your personal dashboard for DevFest Pwani 2025. Track your progress, view your schedule, and manage your voyage plan.',
-      ogImageUrl: 'https://devfest-dhow.web.app/assets/images/helm-dashboard-og-image.jpg' // Example URL
+      ogImageUrl: 'https://devfest-dhow.web.app/assets/logo/devfest-dhow-emblem.png'
     });
   }
 

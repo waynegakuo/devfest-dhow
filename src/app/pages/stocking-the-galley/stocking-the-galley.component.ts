@@ -34,7 +34,7 @@ export class StockingTheGalleyComponent implements OnInit {
     this.seoService.setMetaTags({
       title: 'Stocking the Galley | DevFest Pwani 2025',
       description: 'Prepare for your voyage with our curated list of preparatory content. Get up to speed on the latest technologies before DevFest Pwani 2025.',
-      ogImageUrl: 'https://devfest-dhow.web.app/assets/images/stocking-the-galley-og-image.jpg' // Example URL
+      ogImageUrl: 'https://devfest-dhow.web.app/assets/logo/devfest-dhow-emblem.png'
     });
 
     // Initialize navigator data and then load content

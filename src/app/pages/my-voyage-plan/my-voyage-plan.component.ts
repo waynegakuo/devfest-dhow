@@ -25,7 +25,7 @@ export class MyVoyagePlanComponent implements OnInit {
     this.seoService.setMetaTags({
       title: 'My Voyage Plan | DevFest Pwani 2025',
       description: 'Your personalized schedule for DevFest Pwani 2025. View, manage, and export your selected sessions to your calendar.',
-      ogImageUrl: 'https://devfest-dhow.web.app/assets/images/my-voyage-plan-og-image.jpg' // Example URL
+      ogImageUrl: 'https://devfest-dhow.web.app/assets/logo/devfest-dhow-emblem.png'
     });
   }
 

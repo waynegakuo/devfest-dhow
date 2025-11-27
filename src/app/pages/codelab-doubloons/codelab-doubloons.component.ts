@@ -16,7 +16,7 @@ export class CodelabDoubloonsComponent implements OnInit {
     this.seoService.setMetaTags({
       title: 'Codelab Doubloons | DevFest Pwani 2025',
       description: 'Earn Codelab Doubloons by completing hands-on codelabs at DevFest Pwani 2025. Redeem your doubloons for exclusive swag and prizes.',
-      ogImageUrl: 'https://devfest-dhow.web.app/assets/images/codelab-doubloons-og-image.jpg' // Example URL
+      ogImageUrl: 'https://devfest-dhow.web.app/assets/logo/devfest-dhow-emblem.png'
     });
   }
 }

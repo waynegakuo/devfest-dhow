@@ -37,7 +37,7 @@ export class NavigationalDrillsComponent implements OnInit {
     this.seoService.setMetaTags({
       title: 'Navigational Drills | DevFest Pwani 2025',
       description: 'Test your knowledge with our AI-powered navigational drills. Take quizzes on various topics related to the DevFest Pwani 2025 conference.',
-      ogImageUrl: 'https://devfest-dhow.web.app/assets/images/navigational-drills-og-image.jpg' // Example URL
+      ogImageUrl: 'https://devfest-dhow.web.app/assets/logo/devfest-dhow-emblem.png'
     });
 
     this.seoService.setStructuredData({

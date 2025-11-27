@@ -36,7 +36,7 @@ export class AskTheOracleComponent implements OnInit, OnDestroy {
     this.seoService.setMetaTags({
       title: 'Ask the Oracle | DevFest Pwani 2025',
       description: 'Get instant answers to your questions about DevFest Pwani 2025. Ask our AI-powered Oracle about sessions, speakers, schedules, and more.',
-      ogImageUrl: 'https://devfest-dhow.web.app/assets/images/oracle-og-image.jpg' // Example URL
+      ogImageUrl: 'https://devfest-dhow.web.app/assets/logo/devfest-dhow-emblem.png'
     });
 
     this.seoService.setStructuredData({
