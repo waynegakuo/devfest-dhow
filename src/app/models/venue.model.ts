@@ -64,3 +64,12 @@ export const DEFAULT_SCHEDULE_CONSTRAINTS: ScheduleConstraints = {
   closingStart: '17:00',
   closingDeck: Deck.ALPHA
 };
+
+export interface EventDetails {
+  title: string;
+  date: string;
+  description: string;
+  time: string;
+  map: string;
+  location: string;
+}

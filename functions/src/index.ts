@@ -112,6 +112,15 @@ const GetNavigatorQuizStatsResponseSchema = z.object({
   stats: QuizStatsSchema
 });
 
+const EventDetailsSchema = z.object({
+  title: z.string(),
+  date: z.string(),
+  description: z.string(),
+  time: z.string(),
+  map: z.string(),
+  location: z.string(),
+});
+
 const AskTheOracleInputSchema = z.object({
   question: z.string().min(1),
 });
@@ -593,6 +602,37 @@ const getRooms = ai.defineTool(
   }
 );
 
+const getEventDetails = ai.defineTool(
+  {
+    name: 'getEventDetails',
+    description: 'Get general details about the event, such as the date, time, location, and description.',
+    inputSchema: z.object({}),
+    outputSchema: EventDetailsSchema.nullable(),
+  },
+  async () => {
+    try {
+      const eventDetailsSnapshot = await db.collection('event_details').limit(1).get();
+      if (eventDetailsSnapshot.empty) {
+        console.error('[getEventDetails] No event details found in Firestore.');
+        return null;
+      }
+      const eventDetailsDoc = eventDetailsSnapshot.docs[0];
+      const eventData = eventDetailsDoc.data();
+
+      const validation = EventDetailsSchema.safeParse(eventData);
+      if (!validation.success) {
+          console.error('[getEventDetails] Firestore data does not match EventDetails schema:', validation.error);
+          return null;
+      }
+
+      return validation.data;
+    } catch (error) {
+      console.error('[getEventDetails] Error fetching data:', error);
+      return null;
+    }
+  }
+);
+
 
 export const _askTheOracleFlowLogic = ai.defineFlow(
   {
@@ -602,16 +642,16 @@ export const _askTheOracleFlowLogic = ai.defineFlow(
   },
   async (input) => {
     const prompt = `
-      You are the Oracle, a helpful AI assistant for the DevFest Pwani event. Your ONLY purpose is to answer questions about this event. You have access to tools that can provide you with information about sessions, speakers, and rooms.
+      You are the Oracle, a helpful AI assistant for the DevFest Pwani event. Your ONLY purpose is to answer questions about this event. You have access to tools that can provide you with information about the event itself (like date, time, location), sessions, speakers, and rooms.
 
-      If a question is about something other than DevFest Pwani, or if you cannot find the answer using your tools, you MUST respond with: "As the Oracle of DevFest Pwani, I can only answer questions about our grand event. What would you like to know about the sessions, speakers, or schedule?"
+      If a question is about something other than DevFest Pwani, or if you cannot find the answer using your tools, you MUST respond with: "As the Oracle of DevFest Pwani, I can only answer questions about our grand event. What would you like to know about the event, sessions, speakers, or schedule?"
 
       Question: ${input.question}
     `;
 
     const result = await ai.generate({
       prompt: prompt,
-      tools: [getSessions, getSpeakers, getRooms],
+      tools: [getSessions, getSpeakers, getRooms, getEventDetails],
     });
 
     return {
