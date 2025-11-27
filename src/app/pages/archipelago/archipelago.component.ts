@@ -1,4 +1,4 @@
-import { Component, signal, inject } from '@angular/core';
+import { Component, signal, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Voyage } from '../../models/voyage.model';
 import { Island } from '../../models/island.model';
@@ -6,6 +6,7 @@ import { Deck, SessionType } from '../../models/venue.model';
 import { VoyagesDataService } from '../../services/voyages-data/voyages-data.service';
 import { MyVoyagePlanService } from '../../services/my-voyage-plan/my-voyage-plan.service';
 import { VoyagePlanItem } from '../../models/voyage-plan.model';
+import { SeoService } from '../../services/seo/seo.service';
 
 @Component({
   selector: 'app-archipelago',
@@ -14,12 +15,21 @@ import { VoyagePlanItem } from '../../models/voyage-plan.model';
   templateUrl: './archipelago.component.html',
   styleUrl: './archipelago.component.scss'
 })
-export class ArchipelagoComponent {
+export class ArchipelagoComponent implements OnInit {
   private voyagesDataService = inject(VoyagesDataService);
   private myVoyagePlanService = inject(MyVoyagePlanService);
+  private seoService = inject(SeoService);
 
   // Use centralized voyages data service
   voyages = this.voyagesDataService.voyages;
+
+  ngOnInit() {
+    this.seoService.setMetaTags({
+      title: 'Archipelago of Sessions | DevFest Pwani 2025',
+      description: 'Explore the full schedule of sessions, workshops, and talks at DevFest Pwani 2025. Discover the islands of knowledge and plan your voyage.',
+      ogImageUrl: 'https://devfest-dhow.web.app/assets/images/archipelago-og-image.jpg' // Example URL
+    });
+  }
 
   // Get all islands sorted by time
   getAllIslandsByTime(): Island[] {

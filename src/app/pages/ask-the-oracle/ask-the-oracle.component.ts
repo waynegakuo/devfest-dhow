@@ -34,16 +34,16 @@ export class AskTheOracleComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.seoService.setMetaTags({
-      title: 'Ask the Oracle | DevFest Dhow 2025',
-      description: 'Get instant answers to your questions about DevFest Dhow 2025. Ask our AI-powered Oracle about sessions, speakers, schedules, and more.',
+      title: 'Ask the Oracle | DevFest Pwani 2025',
+      description: 'Get instant answers to your questions about DevFest Pwani 2025. Ask our AI-powered Oracle about sessions, speakers, schedules, and more.',
       ogImageUrl: 'https://devfest-dhow.web.app/assets/images/oracle-og-image.jpg' // Example URL
     });
 
     this.seoService.setStructuredData({
       '@context': 'https://schema.org',
       '@type': 'WebPage',
-      'name': 'Ask the Oracle | DevFest Dhow 2025',
-      'description': 'Your personal AI guide to the DevFest Dhow 2025 conference. Get real-time information about the event.',
+      'name': 'Ask the Oracle | DevFest Pwani 2025',
+      'description': 'Your personal AI guide to the DevFest Pwani 2025 conference. Get real-time information about the event.',
       'url': 'https://devfest-dhow.web.app/ask-the-oracle'
     });
 
