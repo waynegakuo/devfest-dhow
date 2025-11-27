@@ -1,4 +1,5 @@
 @use '../../../styles/variables' as *;
+@use '../../../styles/google-sans' as *;
 
 .course-selection-container {
   min-height: 100vh;
@@ -96,6 +97,9 @@
   align-items: center;
   gap: 0.75rem;
 
+  font-family: 'Google Sans', sans-serif;
+  font-weight: bold;
+
   &:hover {
     border-color: $magenta-violet;
     box-shadow: 0 8px 25px rgba($magenta-violet, 0.1);
@@ -140,6 +144,8 @@
   align-items: center;
   gap: 1rem;
   text-align: left;
+
+  font-family: 'Google Sans', sans-serif;
 
   &:hover {
     border-color: $magenta-violet;
