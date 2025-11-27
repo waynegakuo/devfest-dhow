@@ -167,6 +167,50 @@ body {
   }
 }
 
+.info-card {
+  background: white;
+  border: 1px solid rgba(21, 101, 192, 0.1);
+  border-radius: 1rem;
+  padding: 1.25rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+  h3 {
+    margin: 0 0 1rem 0;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: $gray-700;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  ul {
+    margin: 0;
+    padding-left: 1.25rem;
+    list-style: none;
+
+    li {
+      position: relative;
+      margin-bottom: 0.5rem;
+      font-size: 0.875rem;
+      color: $gray-600;
+      line-height: 1.4;
+
+      &::before {
+        content: '•';
+        color: $ocean-blue;
+        position: absolute;
+        left: -1rem;
+        font-weight: bold;
+      }
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
 // Common admin components styles
 .stat-card {
   background: white;
@@ -296,18 +340,34 @@ body {
   background-clip: initial !important;
 }
 
+.page-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
 
 // Page header styles - global styles for consistent page headers
 .page-header {
-  padding: 1.5rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 2rem;
   background: white;
   border-bottom: 1px solid rgba(21, 101, 192, 0.1);
   box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+  z-index: 10;
 
   .page-title {
     h1 {
       margin: 0;
-      font-size: 1.5rem;
+      font-size: 1.75rem;
       font-weight: bold;
       color: $gray-700;
     }
@@ -315,12 +375,29 @@ body {
     p {
       margin: 0;
       font-size: 0.875rem;
-      color: $gray-400;
+      color: $gray-500;
+      font-weight: 500;
     }
+  }
+
+  .header-actions {
+    display: flex;
+    gap: 1rem;
   }
 
   @media (max-width: 768px) {
     padding: 1rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+
+    .page-title h1 {
+      font-size: 1.5rem;
+    }
+
+    .header-actions {
+      align-self: flex-end;
+    }
   }
 }
 
@@ -798,6 +875,26 @@ body {
 @keyframes spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+
+@keyframes messageSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes typingBounce {
+  0%, 80%, 100% {
+    transform: scale(0);
+  }
+  40% {
+    transform: scale(1);
+  }
 }
 
 // ===================================
@@ -1688,6 +1785,7 @@ body {
 :root {
   // Colors
   --ocean-blue: #1565C0;
+  --cyan-blue: #00FFFF;
   --wave-teal: #00ACC1;
   --sand-beige: #D7CCC8;
   --coral-orange: #FF7043;
@@ -1849,3 +1947,14 @@ body {
   }
 }
 
+.chat-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.875rem;
+  font-weight: 500;
+}

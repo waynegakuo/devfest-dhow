@@ -2,7 +2,8 @@ export enum Deck {
   ALPHA = 'Alpha Deck',
   BRAVO = 'Bravo Deck',
   CHARLIE = 'Charlie Deck',
-  DELTA = 'Delta Deck'
+  DELTA = 'Delta Deck',
+  AUDITORIUM = 'Auditorium'
 }
 
 export enum SessionType {
@@ -63,3 +64,12 @@ export const DEFAULT_SCHEDULE_CONSTRAINTS: ScheduleConstraints = {
   closingStart: '17:00',
   closingDeck: Deck.ALPHA
 };
+
+export interface EventDetails {
+  title: string;
+  date: string;
+  description: string;
+  time: string;
+  map: string;
+  location: string;
+}

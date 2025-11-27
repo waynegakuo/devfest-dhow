@@ -112,6 +112,23 @@ const GetNavigatorQuizStatsResponseSchema = z.object({
   stats: QuizStatsSchema
 });
 
+const EventDetailsSchema = z.object({
+  title: z.string(),
+  date: z.string(),
+  description: z.string(),
+  time: z.string(),
+  map: z.string(),
+  location: z.string(),
+});
+
+const AskTheOracleInputSchema = z.object({
+  question: z.string().min(1),
+});
+
+const AskTheOracleResponseSchema = z.object({
+  answer: z.string(),
+});
+
 // Define your secret keys and other environment variables here
 const GEMINI_API_KEY = defineSecret('GEMINI_API_KEY');
 
@@ -482,6 +499,174 @@ export const getNavigatorQuizStats = onCall(
   }
 });
 
+// Oracle Tools
+const getSessions = ai.defineTool(
+  {
+    name: 'getSessions',
+    description: 'Get a list of all sessions, including title, speaker, room, and time, sorted chronologically.',
+    inputSchema: z.object({}),
+    outputSchema: z.array(z.object({
+      title: z.string(),
+      speaker: z.string(),
+      room: z.string(),
+      time: z.string(),
+    })),
+  },
+  async () => {
+    try {
+      const voyagesSnapshot = await db.collection('voyages').get();
+      const sessions: any[] = [];
+      for (const voyageDoc of voyagesSnapshot.docs) {
+        const islandsSnapshot = await voyageDoc.ref.collection('islands').get();
+        for (const islandDoc of islandsSnapshot.docs) {
+          const islandData = islandDoc.data();
+          sessions.push({
+            title: islandData.title || 'N/A',
+            speaker: islandData.speaker || 'N/A',
+            room: islandData.venue || 'N/A',
+            time: islandData.time || 'N/A',
+          });
+        }
+      }
+      // Sort sessions chronologically by time
+      sessions.sort((a, b) => a.time.localeCompare(b.time));
+      return sessions;
+    } catch (error) {
+      console.error('[getSessions] Error fetching data:', error);
+      return [];
+    }
+  }
+);
+
+const getSpeakers = ai.defineTool(
+  {
+    name: 'getSpeakers',
+    description: 'Get a list of all speakers, including their name, title, and company.',
+    inputSchema: z.object({}),
+    outputSchema: z.array(z.object({
+      name: z.string(),
+      title: z.string().optional(),
+      company: z.string().optional(),
+    })),
+  },
+  async () => {
+    try {
+      const voyagesSnapshot = await db.collection('voyages').get();
+      const speakers = new Map<string, any>();
+      for (const voyageDoc of voyagesSnapshot.docs) {
+        const islandsSnapshot = await voyageDoc.ref.collection('islands').get();
+        for (const islandDoc of islandsSnapshot.docs) {
+          const islandData = islandDoc.data();
+          if (islandData.speaker && !speakers.has(islandData.speaker)) {
+            speakers.set(islandData.speaker, {
+              name: islandData.speaker,
+              title: islandData.speakerRole,
+              company: islandData.speakerCompany,
+            });
+          }
+        }
+      }
+      return Array.from(speakers.values());
+    } catch (error) {
+      console.error('[getSpeakers] Error fetching data:', error);
+      return [];
+    }
+  }
+);
+
+const getRooms = ai.defineTool(
+  {
+    name: 'getRooms',
+    description: 'Get a list of all rooms being used for sessions.',
+    inputSchema: z.object({}),
+    outputSchema: z.array(z.string()),
+  },
+  async () => {
+    try {
+      const voyagesSnapshot = await db.collection('voyages').get();
+      const rooms = new Set<string>();
+      for (const voyageDoc of voyagesSnapshot.docs) {
+        const islandsSnapshot = await voyageDoc.ref.collection('islands').get();
+        for (const islandDoc of islandsSnapshot.docs) {
+          const islandData = islandDoc.data();
+          if (islandData.venue) {
+            rooms.add(islandData.venue);
+          }
+        }
+      }
+      return Array.from(rooms);
+    } catch (error) {
+      console.error('[getRooms] Error fetching data:', error);
+      return [];
+    }
+  }
+);
+
+const getEventDetails = ai.defineTool(
+  {
+    name: 'getEventDetails',
+    description: 'Get general details about the event, such as the date, time, location, and description.',
+    inputSchema: z.object({}),
+    outputSchema: EventDetailsSchema.nullable(),
+  },
+  async () => {
+    try {
+      const eventDetailsSnapshot = await db.collection('event_details').limit(1).get();
+      if (eventDetailsSnapshot.empty) {
+        console.error('[getEventDetails] No event details found in Firestore.');
+        return null;
+      }
+      const eventDetailsDoc = eventDetailsSnapshot.docs[0];
+      const eventData = eventDetailsDoc.data();
+
+      const validation = EventDetailsSchema.safeParse(eventData);
+      if (!validation.success) {
+          console.error('[getEventDetails] Firestore data does not match EventDetails schema:', validation.error);
+          return null;
+      }
+
+      return validation.data;
+    } catch (error) {
+      console.error('[getEventDetails] Error fetching data:', error);
+      return null;
+    }
+  }
+);
 
 
+export const _askTheOracleFlowLogic = ai.defineFlow(
+  {
+    name: 'askTheOracle',
+    inputSchema: AskTheOracleInputSchema,
+    outputSchema: AskTheOracleResponseSchema,
+  },
+  async (input) => {
+    const prompt = `
+      You are the Oracle, a helpful AI assistant for the DevFest Pwani event. Your ONLY purpose is to answer questions about this event. You have access to tools that can provide you with information about the event itself (like date, time, location), sessions, speakers, and rooms.
 
+      When a user asks for the event location or venue, you MUST use the getEventDetails tool and provide the location and the map link.
+
+      If a question is about something other than DevFest Pwani, or if you cannot find the answer using your tools, you MUST respond with: "As the Oracle of DevFest Pwani, I can only answer questions about our grand event. What would you like to know about the event, sessions, speakers, or schedule?"
+
+      Question: ${input.question}
+    `;
+
+    const result = await ai.generate({
+      prompt: prompt,
+      tools: [getSessions, getSpeakers, getRooms, getEventDetails],
+    });
+
+    return {
+      answer: result.text,
+    };
+  }
+);
+
+export const askTheOracle = onCallGenkit(
+  {
+    secrets: [GEMINI_API_KEY],
+    region: 'africa-south1',
+    cors: true,
+  },
+  _askTheOracleFlowLogic
+);

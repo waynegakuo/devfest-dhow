@@ -15,6 +15,7 @@ export interface NavigationItem {
   description: string;
   route?: string;
   action?: string;
+  display?: boolean;
 }
 
 export interface OceanTerm {
@@ -78,17 +79,17 @@ export class NavigatorSidebarComponent implements OnInit, OnDestroy{
 
   // Navigation items configuration
   navigationItems: NavigationItem[] = [
-    { id: 'helm', name: 'The Helm', icon: '⚓', description: 'Dashboard - Central hub and key information', route: '/dashboard/helm' },
-    { id: 'archipelago', name: 'The Archipelago', icon: '🏝️', description: 'Full Schedule - Complete conference schedule', route: '/dashboard/archipelago' },
-    { id: 'voyage-plan', name: 'My Voyage Plan', icon: '🗺️', description: 'My Schedule - Your personalized sessions', route: '/dashboard/my-voyage-plan' },
-    { id: 'galley', name: 'Stocking the Galley', icon: '📚', description: 'Preparatory Content - Curated learning resources for your track', route: '/dashboard/stocking-the-galley' },
-    { id: 'drills', name: 'Navigational Drills', icon: '🎯', description: 'Challenges - Pre-conference challenges and quizzes', route: '/dashboard/navigational-drills' },
-    { id: 'doubloons', name: 'Codelab Doubloons', icon: '🪙', description: 'Rewards - Gamification and codelab progress', route: '/dashboard/codelab-doubloons' },
-    { id: 'oracle', name: 'Ask the Oracle', icon: '🔮', description: 'AI Assistant - Gemini-powered chatbot', route: '/dashboard/ask-the-oracle' },
-    { id: 'atlantis', name: 'The Quest for Atlantis', icon: '🏛️', description: 'AR Hunt - Augmented reality scavenger hunt', route: '/dashboard/quest-for-atlantis' },
-    { id: 'profile', name: 'My Profile', icon: '👤', description: 'Profile - View and edit your navigator profile', route: '/dashboard/my-profile' },
-    { id: 'admin-roles', name: 'Admiral Command', icon: '👑', description: 'Admin - Manage navigator roles and permissions', route: '/dashboard/admin-role-assignment' },
-    { id: 'logout', name: 'Log Out', icon: '🚪', description: 'Securely end your session', action: 'logout' }
+    { id: 'helm', name: 'The Helm', icon: '⚓', description: 'Dashboard - Central hub and key information', route: '/dashboard/helm', display: true },
+    { id: 'archipelago', name: 'The Archipelago', icon: '🏝️', description: 'Full Schedule - Complete conference schedule', route: '/dashboard/archipelago', display: true },
+    { id: 'voyage-plan', name: 'My Voyage Plan', icon: '🗺️', description: 'My Schedule - Your personalized sessions', route: '/dashboard/my-voyage-plan', display: true },
+    { id: 'galley', name: 'Stocking the Galley', icon: '📚', description: 'Preparatory Content - Curated learning resources for your track', route: '/dashboard/stocking-the-galley', display: true },
+    { id: 'drills', name: 'Navigational Drills', icon: '🎯', description: 'Challenges - Pre-conference challenges and quizzes', route: '/dashboard/navigational-drills', display: true },
+    { id: 'doubloons', name: 'Codelab Doubloons', icon: '🪙', description: 'Rewards - Gamification and codelab progress', route: '/dashboard/codelab-doubloons', display: false },
+    { id: 'oracle', name: 'Ask the Oracle', icon: '🔮', description: 'AI Assistant - Gemini-powered chatbot', route: '/dashboard/ask-the-oracle', display: true },
+    { id: 'atlantis', name: 'The Quest for Atlantis', icon: '🏛️', description: 'AR Hunt - Augmented reality scavenger hunt', route: '/dashboard/quest-for-atlantis', display: false },
+    { id: 'profile', name: 'My Profile', icon: '👤', description: 'Profile - View and edit your navigator profile', route: '/dashboard/my-profile', display: false },
+    { id: 'admin-roles', name: 'Admiral Command', icon: '👑', description: 'Admin - Manage navigator roles and permissions', route: '/dashboard/admin-role-assignment', display: true },
+    { id: 'logout', name: 'Log Out', icon: '🚪', description: 'Securely end your session', action: 'logout', display: true }
   ];
 
   // Ocean terminology explanations

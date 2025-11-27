@@ -470,6 +470,8 @@ export class AdminService {
         return Deck.CHARLIE;
       case 'Delta Deck':
         return Deck.DELTA;
+      case 'Auditorium':
+        return Deck.AUDITORIUM;
       default:
         return Deck.ALPHA;
     }
