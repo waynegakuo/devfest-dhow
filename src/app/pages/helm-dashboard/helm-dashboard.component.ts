@@ -1,4 +1,4 @@
-import { Component, signal, inject, computed } from '@angular/core';
+import { Component, signal, inject, computed, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Island } from '../../models/island.model';
 import { Voyage } from '../../models/voyage.model';
@@ -7,6 +7,7 @@ import { AuthService } from '../../services/auth/auth.service';
 import { MyVoyagePlanService } from '../../services/my-voyage-plan/my-voyage-plan.service';
 import { VoyagePlanItem } from '../../models/voyage-plan.model';
 import { VoyagesDataService } from '../../services/voyages-data/voyages-data.service';
+import { SeoService } from '../../services/seo/seo.service';
 
 @Component({
   selector: 'app-helm-dashboard',
@@ -15,10 +16,11 @@ import { VoyagesDataService } from '../../services/voyages-data/voyages-data.ser
   templateUrl: './helm-dashboard.component.html',
   styleUrl: './helm-dashboard.component.scss'
 })
-export class HelmDashboardComponent {
+export class HelmDashboardComponent implements OnInit {
   private authService = inject(AuthService);
   private myVoyage = inject(MyVoyagePlanService);
   private voyagesDataService = inject(VoyagesDataService);
+  private seoService = inject(SeoService);
 
   // Use centralized voyages data service
   readonly voyages = this.voyagesDataService.voyages;
@@ -63,6 +65,14 @@ export class HelmDashboardComponent {
       voyageLevel
     };
   });
+
+  ngOnInit() {
+    this.seoService.setMetaTags({
+      title: 'Helm Dashboard | DevFest Pwani 2025',
+      description: 'Your personal dashboard for DevFest Pwani 2025. Track your progress, view your schedule, and manage your voyage plan.',
+      ogImageUrl: 'https://devfest-dhow.web.app/assets/logo/devfest-dhow-emblem.png'
+    });
+  }
 
 
   // Toggle island attendance

@@ -5,6 +5,7 @@ import { NavigatorService } from '../../services/navigator/navigator.service';
 import { TracksService } from '../../services/tracks/tracks.service';
 import { CuratedContent, PreparatoryContent, PreparatoryContentSection } from '../../models/preparatory-content.model';
 import { TechTrack, ExpertiseLevel } from '../../models/navigator.model';
+import { SeoService } from '../../services/seo/seo.service';
 
 @Component({
   selector: 'app-stocking-the-galley',
@@ -17,6 +18,7 @@ export class StockingTheGalleyComponent implements OnInit {
   private navigatorService = inject(NavigatorService);
   private tracksService = inject(TracksService);
   private router = inject(Router);
+  private seoService = inject(SeoService);
 
   // Component state
   navigator = this.navigatorService.currentNavigator;
@@ -29,6 +31,12 @@ export class StockingTheGalleyComponent implements OnInit {
   expandedSections = signal<Set<string>>(new Set());
 
   ngOnInit(): void {
+    this.seoService.setMetaTags({
+      title: 'Stocking the Galley | DevFest Pwani 2025',
+      description: 'Prepare for your voyage with our curated list of preparatory content. Get up to speed on the latest technologies before DevFest Pwani 2025.',
+      ogImageUrl: 'https://devfest-dhow.web.app/assets/logo/devfest-dhow-emblem.png'
+    });
+
     // Initialize navigator data and then load content
     this.navigatorService.getNavigator().subscribe({
       next: (navigator) => {

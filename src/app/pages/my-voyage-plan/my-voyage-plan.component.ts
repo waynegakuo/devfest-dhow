@@ -1,8 +1,9 @@
-import { Component, signal, inject } from '@angular/core';
+import { Component, signal, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { MyVoyagePlanService } from '../../services/my-voyage-plan/my-voyage-plan.service';
 import { VoyagePlanItem } from '../../models/voyage-plan.model';
+import { SeoService } from '../../services/seo/seo.service';
 
 @Component({
   selector: 'app-my-voyage-plan',
@@ -11,13 +12,22 @@ import { VoyagePlanItem } from '../../models/voyage-plan.model';
   templateUrl: './my-voyage-plan.component.html',
   styleUrl: './my-voyage-plan.component.scss'
 })
-export class MyVoyagePlanComponent {
+export class MyVoyagePlanComponent implements OnInit {
   private myVoyageService = inject(MyVoyagePlanService);
   private router = inject(Router);
+  private seoService = inject(SeoService);
 
   // Get sorted voyage plan items from service
   readonly myVoyagePlan = this.myVoyageService.itemsSorted;
   readonly totalSessions = this.myVoyageService.items;
+
+  ngOnInit() {
+    this.seoService.setMetaTags({
+      title: 'My Voyage Plan | DevFest Pwani 2025',
+      description: 'Your personalized schedule for DevFest Pwani 2025. View, manage, and export your selected sessions to your calendar.',
+      ogImageUrl: 'https://devfest-dhow.web.app/assets/logo/devfest-dhow-emblem.png'
+    });
+  }
 
   // Remove session from voyage plan
   removeFromPlan(islandId: string): void {
