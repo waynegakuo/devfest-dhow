@@ -36,12 +36,18 @@ export class ArchipelagoComponent implements OnInit {
     return this.voyagesDataService.getAllIslandsByTime();
   }
 
+  // Hardcoded event date: November 29, 2025
+  private getEventDate(time: string): Date {
+    const [hours, minutes] = time.split(':');
+    const eventDate = new Date('2025-11-29T00:00:00');
+    eventDate.setHours(parseInt(hours), parseInt(minutes));
+    return eventDate;
+  }
+
   // Check if island session has completed (time has passed)
   isIslandComplete(island: Island): boolean {
     const now = new Date();
-    const sessionTime = new Date();
-    const [hours, minutes] = island.time.split(':');
-    sessionTime.setHours(parseInt(hours), parseInt(minutes));
+    const sessionTime = this.getEventDate(island.time);
 
     // Parse duration to add to session time (e.g., "40 min" -> 40)
     const durationMatch = island.duration.match(/(\d+)/);
@@ -57,9 +63,7 @@ export class ArchipelagoComponent implements OnInit {
   // Check if island session is currently ongoing
   isIslandOngoing(island: Island): boolean {
     const now = new Date();
-    const sessionStartTime = new Date();
-    const [hours, minutes] = island.time.split(':');
-    sessionStartTime.setHours(parseInt(hours), parseInt(minutes));
+    const sessionStartTime = this.getEventDate(island.time);
 
     // Parse duration to calculate session end time
     const durationMatch = island.duration.match(/(\d+)/);
