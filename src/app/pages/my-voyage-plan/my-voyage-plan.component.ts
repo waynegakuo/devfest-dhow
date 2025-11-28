@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { MyVoyagePlanService } from '../../services/my-voyage-plan/my-voyage-plan.service';
 import { VoyagePlanItem } from '../../models/voyage-plan.model';
 import { SeoService } from '../../services/seo/seo.service';
+import { AnalyticsService } from '../../services/analytics/analytics.service';
 
 @Component({
   selector: 'app-my-voyage-plan',
@@ -16,6 +17,7 @@ export class MyVoyagePlanComponent implements OnInit {
   private myVoyageService = inject(MyVoyagePlanService);
   private router = inject(Router);
   private seoService = inject(SeoService);
+  private analyticsService = inject(AnalyticsService);
 
   // Get sorted voyage plan items from service
   readonly myVoyagePlan = this.myVoyageService.itemsSorted;
@@ -31,12 +33,18 @@ export class MyVoyagePlanComponent implements OnInit {
 
   // Remove session from voyage plan
   removeFromPlan(islandId: string): void {
+    this.analyticsService.logEvent('remove_from_voyage_plan', {
+      island_id: islandId
+    });
     this.myVoyageService.removeSession(islandId);
   }
 
   // Clear entire voyage plan
   clearVoyagePlan(): void {
     if (confirm('Are you sure you want to clear your entire voyage plan? This action cannot be undone.')) {
+      this.analyticsService.logEvent('clear_voyage_plan', {
+        session_count: this.totalSessions().length
+      });
       this.myVoyageService.clear();
     }
   }
@@ -81,6 +89,10 @@ export class MyVoyagePlanComponent implements OnInit {
       alert('No sessions to export. Add sessions to your voyage plan first.');
       return;
     }
+
+    this.analyticsService.logEvent('export_to_calendar', {
+      session_count: voyagePlan.length
+    });
 
     const icsContent = this.generateICSContent(voyagePlan);
     this.downloadICSFile(icsContent);

@@ -5,6 +5,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { MessageFormatterPipe } from '../../pipes/message-formatter.pipe';
 import { AskTheOracleService } from '../../services/ask-the-oracle/ask-the-oracle.service';
 import { SeoService } from '../../services/seo/seo.service';
+import { AnalyticsService } from '../../services/analytics/analytics.service';
 
 export interface OracleMessage {
   id: string;
@@ -25,6 +26,7 @@ export class AskTheOracleComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   private oracleService = inject(AskTheOracleService);
   private seoService = inject(SeoService);
+  private analyticsService = inject(AnalyticsService);
 
   // Chat state
   messages = signal<OracleMessage[]>([]);
@@ -64,6 +66,11 @@ export class AskTheOracleComponent implements OnInit, OnDestroy {
   sendMessage() {
     const messageContent = this.currentMessage().trim();
     if (!messageContent) return;
+
+    // Log the custom event
+    this.analyticsService.logEvent('ask_oracle', {
+      question: messageContent
+    });
 
     // Add user message
     this.addMessage({

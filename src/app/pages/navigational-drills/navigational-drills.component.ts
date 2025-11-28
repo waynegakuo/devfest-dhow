@@ -7,6 +7,7 @@ import { QuizHistoryComponent } from '../../components/quiz-history/quiz-history
 import { QuizTopic } from '../../models/quiz.model';
 import {AuthService} from '../../services/auth/auth.service';
 import { SeoService } from '../../services/seo/seo.service';
+import { AnalyticsService } from '../../services/analytics/analytics.service';
 
 @Component({
   selector: 'app-navigational-drills',
@@ -20,6 +21,7 @@ export class NavigationalDrillsComponent implements OnInit {
   private authService = inject(AuthService);
   private router = inject(Router);
   private seoService = inject(SeoService);
+  private analyticsService = inject(AnalyticsService);
 
   quizTopics: QuizTopic[] = [];
   isLoading = false;
@@ -67,6 +69,12 @@ export class NavigationalDrillsComponent implements OnInit {
       this.router.navigate(['/login']);
       return;
     }
+
+    this.analyticsService.logEvent('start_quiz', {
+      topic_id: topic.id,
+      topic_name: topic.name,
+      difficulty: difficulty
+    });
 
     this.isLoading = true;
 
