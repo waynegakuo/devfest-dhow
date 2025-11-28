@@ -118,13 +118,19 @@ export class HelmDashboardComponent implements OnInit {
     return this.myVoyage.itemsSorted();
   }
 
+  // Hardcoded event date: November 29, 2025
+  private getEventDate(time: string): Date {
+    const [hours, minutes] = time.split(':');
+    const eventDate = new Date('2025-11-29T00:00:00');
+    eventDate.setHours(parseInt(hours), parseInt(minutes));
+    return eventDate;
+  }
+
   // Check if island is happening now or soon
   isIslandUpcoming(island: Island): boolean {
     // For demo purposes, consider sessions in the next 2 hours as upcoming
-    const now = new Date();
-    const sessionTime = new Date();
-    const [hours, minutes] = island.time.split(':');
-    sessionTime.setHours(parseInt(hours), parseInt(minutes));
+    const now = new Date(); // This will be compared against the hardcoded event date
+    const sessionTime = this.getEventDate(island.time);
 
     const timeDiff = sessionTime.getTime() - now.getTime();
     return timeDiff > 0 && timeDiff <= 2 * 60 * 60 * 1000; // 2 hours in milliseconds
@@ -132,10 +138,8 @@ export class HelmDashboardComponent implements OnInit {
 
   // Check if island session has completed (time has passed)
   isIslandComplete(island: Island): boolean {
-    const now = new Date();
-    const sessionTime = new Date();
-    const [hours, minutes] = island.time.split(':');
-    sessionTime.setHours(parseInt(hours), parseInt(minutes));
+    const now = new Date(); // This will be compared against the hardcoded event date
+    const sessionTime = this.getEventDate(island.time);
 
     // Parse duration to add to session time (e.g., "40 min" -> 40)
     const durationMatch = island.duration.match(/(\d+)/);
@@ -150,10 +154,8 @@ export class HelmDashboardComponent implements OnInit {
 
   // Check if island session is currently ongoing
   isIslandOngoing(island: Island): boolean {
-    const now = new Date();
-    const sessionStartTime = new Date();
-    const [hours, minutes] = island.time.split(':');
-    sessionStartTime.setHours(parseInt(hours), parseInt(minutes));
+    const now = new Date(); // This will be compared against the hardcoded event date
+    const sessionStartTime = this.getEventDate(island.time);
 
     // Parse duration to calculate session end time
     const durationMatch = island.duration.match(/(\d+)/);
