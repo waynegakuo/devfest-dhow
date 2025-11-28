@@ -8,6 +8,7 @@ import { MyVoyagePlanService } from '../../services/my-voyage-plan/my-voyage-pla
 import { VoyagePlanItem } from '../../models/voyage-plan.model';
 import { VoyagesDataService } from '../../services/voyages-data/voyages-data.service';
 import { SeoService } from '../../services/seo/seo.service';
+import { AnalyticsService } from '../../services/analytics/analytics.service';
 
 @Component({
   selector: 'app-helm-dashboard',
@@ -21,6 +22,7 @@ export class HelmDashboardComponent implements OnInit {
   private myVoyage = inject(MyVoyagePlanService);
   private voyagesDataService = inject(VoyagesDataService);
   private seoService = inject(SeoService);
+  private analyticsService = inject(AnalyticsService);
 
   // Use centralized voyages data service
   readonly voyages = this.voyagesDataService.voyages;
@@ -79,6 +81,10 @@ export class HelmDashboardComponent implements OnInit {
   toggleAttendance(voyageId: string, islandId: string): void {
     const island = this.voyagesDataService.getIslandById(islandId);
     if (island) {
+      this.analyticsService.logEvent('toggle_attendance', {
+        island_id: islandId,
+        attended: !island.attended
+      });
       this.voyagesDataService.markIslandAsAttended(islandId, !island.attended);
     }
   }
@@ -105,6 +111,13 @@ export class HelmDashboardComponent implements OnInit {
       voyageName: voyage.name,
       voyageDate: voyage.date
     };
+    const isInPlan = this.isInMyVoyage(island.id);
+    this.analyticsService.logEvent(isInPlan ? 'remove_from_voyage_plan' : 'add_to_voyage_plan', {
+      island_id: island.id,
+      island_title: island.title,
+      voyage_id: voyage.id,
+      voyage_name: voyage.name
+    });
     this.myVoyage.toggleSession(item);
   }
 

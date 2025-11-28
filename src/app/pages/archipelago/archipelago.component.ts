@@ -7,6 +7,7 @@ import { VoyagesDataService } from '../../services/voyages-data/voyages-data.ser
 import { MyVoyagePlanService } from '../../services/my-voyage-plan/my-voyage-plan.service';
 import { VoyagePlanItem } from '../../models/voyage-plan.model';
 import { SeoService } from '../../services/seo/seo.service';
+import { AnalyticsService } from '../../services/analytics/analytics.service';
 
 @Component({
   selector: 'app-archipelago',
@@ -19,6 +20,7 @@ export class ArchipelagoComponent implements OnInit {
   private voyagesDataService = inject(VoyagesDataService);
   private myVoyagePlanService = inject(MyVoyagePlanService);
   private seoService = inject(SeoService);
+  private analyticsService = inject(AnalyticsService);
 
   // Use centralized voyages data service
   voyages = this.voyagesDataService.voyages;
@@ -93,6 +95,14 @@ export class ArchipelagoComponent implements OnInit {
         voyageName: voyage.name,
         voyageDate: voyage.date
       };
+
+      const isInPlan = this.isInVoyagePlan(island);
+      this.analyticsService.logEvent(isInPlan ? 'remove_from_voyage_plan' : 'add_to_voyage_plan', {
+        island_id: island.id,
+        island_title: island.title,
+        voyage_id: voyage.id,
+        voyage_name: voyage.name
+      });
 
       this.myVoyagePlanService.toggleSession(voyagePlanItem);
     }
