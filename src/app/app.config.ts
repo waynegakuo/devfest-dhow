@@ -8,6 +8,7 @@ import {environment} from '../environments/environment.development';
 import {getAuth, provideAuth} from '@angular/fire/auth';
 import {getFirestore, provideFirestore} from '@angular/fire/firestore';
 import { provideServiceWorker } from '@angular/service-worker';
+import {getAnalytics, provideAnalytics} from '@angular/fire/analytics';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -22,6 +23,7 @@ export const appConfig: ApplicationConfig = {
           }), provideServiceWorker('ngsw-worker.js', {
             enabled: !isDevMode(),
             registrationStrategy: 'registerWhenStable:30000'
-          })
+          }),
+    provideAnalytics(() => getAnalytics())
   ]
 };
