@@ -1,4 +1,5 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { Analytics, logEvent, setUserId, setUserProperties } from '@angular/fire/analytics';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
@@ -9,9 +10,13 @@ import { filter } from 'rxjs/operators';
 export class AnalyticsService {
   private analytics: Analytics = inject(Analytics);
   private router: Router = inject(Router);
+  private isBrowser: boolean;
 
   constructor() {
-    this.trackPageViews();
+    this.isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
+    if (this.isBrowser) {
+      this.trackPageViews();
+    }
   }
 
   // Automatically track page views on navigation changes
@@ -21,23 +26,29 @@ export class AnalyticsService {
     ).subscribe((event: NavigationEnd) => {
       logEvent(this.analytics, 'page_view', {
         page_path: event.urlAfterRedirects,
-        page_title: document.title // Assuming title is set by SeoService
+        page_title: document.title
       });
     });
   }
 
   // Log a custom event
   logEvent(eventName: string, eventParams: { [key: string]: any }): void {
-    logEvent(this.analytics, eventName, eventParams);
+    if (this.isBrowser) {
+      logEvent(this.analytics, eventName, eventParams);
+    }
   }
 
   // Set user ID for tracking
   setUserId(userId: string): void {
-    setUserId(this.analytics, userId);
+    if (this.isBrowser) {
+      setUserId(this.analytics, userId);
+    }
   }
 
   // Set user properties
   setUserProperties(properties: { [key: string]: any }): void {
-    setUserProperties(this.analytics, properties);
+    if (this.isBrowser) {
+      setUserProperties(this.analytics, properties);
+    }
   }
 }
