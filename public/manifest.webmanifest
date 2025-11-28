@@ -1,6 +1,6 @@
 {
-  "name": "devfest-dhow",
-  "short_name": "devfest-dhow",
+  "name": "DevFest Dhow",
+  "short_name": "DevFest Dhow",
   "display": "standalone",
   "scope": "./",
   "start_url": "./",
